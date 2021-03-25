@@ -1,5 +1,24 @@
 {
+  "name": "ds2",
+  "version": "1.0.0",
+  "description": "Proyecto final DS2",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidC0rtes/ds2.git"
+  },
+  "author": "NDS",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DavidC0rtes/ds2/issues"
+  },
+  "homepage": "https://github.com/DavidC0rtes/ds2#readme",
   "dependencies": {
-    "pg": "^8.5.1"
+    "dotenv": "^8.2.0",
+    "pg": "^8.5.1",
+    "typeorm": "^0.2.31"
   }
 }
