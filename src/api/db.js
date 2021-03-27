@@ -2,7 +2,7 @@ const typeorm = require('typeorm')
 
 const initializeConnection = async () => {
     const connection = await typeorm.createConnection()
-    console.log(typeorm.getConnection())
+    console.log('Conectado satisfactoriamente')
 }
-//initializeConnection
+initializeConnection()
 module.exports = initializeConnection
