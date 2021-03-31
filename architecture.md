@@ -14,6 +14,7 @@ Según las interacciones del usuario el frontend hace peticiones al backend, est
 ```
 ds2
 ├── src                    # Todos los archivos de código del proyecto.
+    ├── views              # Las vistas (páginas) de la aplicación.
     ├── components         # En react se pueden definir elementos llamados componentes, acá irían.
     ├── services           # Esto corresponde al intermediario entre el front-end y back-end.
     ├── tests              # Pruebas
