@@ -13,14 +13,14 @@ Según las interacciones del usuario el frontend hace peticiones al backend, est
 ## Organización de archivos
 ```
 ds2
-├── front                  # Todos lo correspondiente al front-end.
-    ├── components         # Vistas de la aplicación y componentes pequeños.
-    ├── services           # Esto corresponde al intermediario entre el front-end y back-end.
+├── front                   # Todos lo correspondiente al front-end.
+    ├── components          # Vistas de la aplicación y componentes pequeños.
+    ├── services            # Esto corresponde al intermediario entre el front-end y back-end.
     
-├── api                    # Todo lo correspondiente al back-end.
-        ├── entity         # Las entidades de la bd.
-        ├── controller(s)  # Los controladores manipulan a las entidades (select, insert, etc).
-        ├── utils          # Archivos de apoyo.
-        ├── tests          # Pruebas
-├── build                  # Archivos listos para producción, minificados. 
+├── api                     # Todo lo correspondiente al back-end.
+    ├── entity              # Las entidades de la bd.
+    ├── controller(s)       # Los controladores manipulan a las entidades (select, insert, etc).
+    ├── utils               # Archivos de apoyo.
+    ├── tests               # Pruebas
+├── build                   # Archivos listos para producción, minificados. 
 ```
