@@ -24,6 +24,13 @@ const foo = (async () => {
 app.use(cors())
 app.use(express.json())
 
+/*
+ * RUTAS van aca
+ */
+
+app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
+
 app.use(middleware.requestLogger)
 
 module.exports = app
