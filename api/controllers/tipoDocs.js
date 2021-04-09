@@ -1,6 +1,6 @@
 const repository = require('typeorm').getRepository
 const control = require('./Control')
-const tipoDoc = require('../entity/TipoDoc')
+const tipoDoc = require('../entity/TipoDocumento')
 
 
 async function getByName(name) {
