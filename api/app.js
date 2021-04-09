@@ -4,7 +4,20 @@
  * no podría funcionar
  */
 const typeorm = require('typeorm')
-const tipoDoc = require('./entity/TipoDoc')
+const CategoriasEntity = require('./entity/Categorias')
+const CategoriasSedeEntity = require('./entity/CategoriasSede')
+const EntidadEntity = require('./entity/Entidad')
+const FacturaEntity = require('./entity/Factura')
+const HorarioEntity = require('./entity/Horario')
+const InformacionPersonalEntity = require('./entity/InformacionPersonal')
+const PagoEntity = require('./entity/Pago')
+const PagoTarjetaEntity = require('./entity/PagoTarjeta')
+const ProductoEntity = require('./entity/Producto')
+const ProductoFacturaEntity = require('./entity/ProductoFactura')
+const RolesEntity = require('./entity/Roles')
+const SedesEntity = require('./entity/Sedes')
+const TipoDocumentoEntity = require('./entity/TipoDocumento')
+const UsuarioEntity = require('./entity/Usuario')
 const express = require('express')
 const app = express()
 
@@ -21,7 +34,7 @@ const foo = (async () => {
      */
 
     // Traer todos los registros de la entidad tipoDoc
-    const result = await control.getAll(tipoDoc)
+    const result = await control.getAll(TipoDocumentoEntity)
     console.log(result)
 
     // Insertar registro nuevo
@@ -37,12 +50,12 @@ const foo = (async () => {
     console.log(todos)
 
     const Like = typeorm.Like
-    const nombreEmpiezaConC = await typeorm.getRepository(tipoDoc)
+    const nombreEmpiezaConC = await typeorm.getRepository(TipoDocumentoEntity)
         .find({ name: Like('C%')})
 
     console.log(nombreEmpiezaConC)
 
-    const primerRegistro = await typeorm.getRepository(tipoDoc)
+    const primerRegistro = await typeorm.getRepository(TipoDocumentoEntity)
         .findOne(1)
 
     console.log(primerRegistro)
