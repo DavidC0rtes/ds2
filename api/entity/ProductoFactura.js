@@ -1,16 +1,22 @@
 const EntitySchema = require("typeorm").EntitySchema
 
 module.exports = new EntitySchema({
-    name: "Tipo_Documento",
-    tableName: "tipo_documento",
+    name: "ProductoFactura",
+    tableName: "producto_factura",
     columns: {
         id: {
             primary: true,
             type: "int",
             generated: true
         },
-        name: {
-            type: "varchar"
+        id_factura: {
+            type: "int"
+        },
+        id_producto: {
+            type: "int"
+        },
+        cantidad: {
+            type: "int"
         }
     }
 })
