@@ -1,22 +1,16 @@
 const EntitySchema = require("typeorm").EntitySchema
 
 module.exports = new EntitySchema({
-    name: "horario",
+    name: "Tipo_Documento",
+    tableName: "tipo_documento",
     columns: {
         id: {
             primary: true,
             type: "int",
             generated: true
         },
-        descripcion: {
+        name: {
             type: "varchar"
-        }
-    },
-    relations: {
-        sede: {
-            target: "sede",
-            type: "one-to-many",
-            inverseSide: "hurario"
         }
     }
 })
