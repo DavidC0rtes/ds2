@@ -10,7 +10,6 @@ const app = express()
 const cors = require('cors')
 const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
-const tabla = require('./utils/entities')
 
 // Esta función se ejecuta inmediatamente.
 const foo = (async () => {
