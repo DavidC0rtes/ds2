@@ -1,16 +1,23 @@
 const EntitySchema = require("typeorm").EntitySchema
 
 module.exports = new EntitySchema({
-    name: "Tipo_Documento",
-    tableName: "tipo_documento",
+    name: "roles",
     columns: {
         id: {
             primary: true,
             type: "int",
             generated: true
         },
-        name: {
-            type: "varchar"
+        nombre_rol: {
+            type: "varchar",
+            nullable: false
+        }
+    },
+    relations: {
+        usuario: {
+            target: "Usuarios",
+            type: "one-to-one"
         }
     }
+        
 })

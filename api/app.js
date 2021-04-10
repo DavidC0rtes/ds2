@@ -4,51 +4,31 @@
  * no podría funcionar
  */
 const typeorm = require('typeorm')
-const tipoDoc = require('./entity/TipoDoc')
 const express = require('express')
+require('express-async-errors')
 const app = express()
+const cors = require('cors')
+const logger = require('./utils/logger')
+const middleware = require('./utils/middleware')
 
 // Esta función se ejecuta inmediatamente.
 const foo = (async () => {
     // Se crea la conexión 
     const conn = await typeorm.createConnection()
-    // Solo después de crear la conexión se puede importar 
-    // el control de las entidades
-    const control = require('./controllers/Control')
+    // Importan las rutas
+    const usersRouter = require('./routes/users')
+
+    app.use(cors())
+    app.use(express.json())
+    app.use(middleware.requestLogger)
+
+    // Aquí se especifica al servidor que rutas va a escuchar
+    app.use('/api/users', usersRouter)
+    // Fin especificaciones
     
-    /*
-     * Ejemplos del uso de control
-     */
-
-    // Traer todos los registros de la entidad tipoDoc
-    const result = await control.getAll(tipoDoc)
-    console.log(result)
-
-    // Insertar registro nuevo
-    //const nuevoDoc = {
-    //    name: 'Libreta militar'
-    //}
-    //const insertResult = await control.insert(tipoDoc, nuevoDoc)
-    console.log(insertResult)
-
-    
-    const todos = await control.getField(tipoDoc, "name") 
-
-    console.log(todos)
-
-    const Like = typeorm.Like
-    const nombreEmpiezaConC = await typeorm.getRepository(tipoDoc)
-        .find({ name: Like('C%')})
-
-    console.log(nombreEmpiezaConC)
-
-    const primerRegistro = await typeorm.getRepository(tipoDoc)
-        .findOne(1)
-
-    console.log(primerRegistro)
-
-    await conn.close()
-    console.log('Conexión terminada')
+    app.use(middleware.unknownEndpoint)
+    app.use(middleware.errorHandler)
 })()
+
 
 module.exports = app
