@@ -15,19 +15,15 @@ module.exports = new EntitySchema({
     },
     relations: {
         factura: {
-            target: "Factura",
+            target: "Facturas",
             type: "many-to-one",
             nullable: false,
-            joinColumn: {
-                name: "id_factura"
-            }
+            joinColumn: true
         },
         producto: {
             target: "producto",
             type: "one-to-one",
-            joinColumn: {
-                name: "id_producto"
-            }
+            joinColumn: true
         }
     }
         

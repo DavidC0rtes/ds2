@@ -58,9 +58,7 @@ module.exports = new EntitySchema({
             target: "Tipo_documento",
             type: "one-to-one",
             nullable: false,
-            joinColumn: {
-                name: "tipo_documento"
-            }
+            joinColumn: true
         }
 
     }

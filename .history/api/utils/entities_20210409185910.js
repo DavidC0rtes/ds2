@@ -11,7 +11,7 @@ const pago = require ('../entity/Pago.js')
 const producto_factura = require ('../entity/Producto_factura.js')
 const producto = require ('../entity/Productos.js')
 const sede = require ('../entity/Sedes.js')
-const tipo_documento = require ('../entity/Tipo_documento.js')
+const tipoDoc = require ('../entity/Tipo_documento.js')
 const usuarios = require ('../entity/Usuarios.js')
 
 
@@ -20,13 +20,13 @@ module.exports = {
     entidad,
     factura,
     horario,
-    roles,
+    rol,
     Informacion_personal,
-    pago_tarjeta,
+    tarjeta,
     pago,
     producto_factura,
     producto,
-    sede,
-    tipo_documento,
+    sedes,
+    tipoDoc,
     usuarios
 }

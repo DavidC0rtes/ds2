@@ -16,7 +16,7 @@ module.exports = new EntitySchema({
         sede: {
             target: "sede",
             type: "one-to-many",
-            inverseSide: "horario"
+            inverseSide: "hurario"
         }
     }
 })

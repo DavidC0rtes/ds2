@@ -1,32 +1,32 @@
 const EntitySchema = require("typeorm").EntitySchema
 
 module.exports = new EntitySchema({
-    name: "Pago",
+    name: "producto_factura",
     columns: {
         id: {
             primary: true,
             type: "int",
-            generated: true
+            generated:true
         },
-        monto: {
+        cantidad: {
             type: "int",
-            nullable: false
+            default: 1
         }
     },
     relations: {
-        Factura: {
+        factura: {
             target: "Factura",
             type: "many-to-one",
             nullable: false,
             joinColumn: {
-                name: "id_factura"
+                name:
             }
         },
-        medio_de_pago: {
-            target: "pago_tarjeta",
-            type: "one-to-many",
-            inverseSide: "Pagos"
+        producto: {
+            target: "producto",
+            type: "one-to-one",
+            joinColumn: true
         }
     }
-    
+        
 })

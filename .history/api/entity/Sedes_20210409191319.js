@@ -25,12 +25,10 @@ module.exports = new EntitySchema({
             target: "horario",
             type: "many-to-one",
             nullable: false,
-            joinColumn: {
-                name: "id_horario"
-            }
+            joinColumn: true
         },
         factura: {
-            target: "Factura",
+            target: "factura",
             type: "one-to-many",
             inverseSide: "sede"
         }

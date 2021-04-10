@@ -27,7 +27,7 @@ module.exports = new EntitySchema({
             }
         },
         pago: {
-            target: "Pago",
+            target: "Pagos",
             type: "one-to-many",
             inverseSide: "Factura"
         },

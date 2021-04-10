@@ -27,6 +27,6 @@ module.exports = {
     producto_factura,
     producto,
     sede,
-    tipo_documento,
+    tipoDoc,
     usuarios
 }

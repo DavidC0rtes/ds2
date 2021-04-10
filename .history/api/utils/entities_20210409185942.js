@@ -20,13 +20,13 @@ module.exports = {
     entidad,
     factura,
     horario,
-    roles,
+    rol,
     Informacion_personal,
-    pago_tarjeta,
+    tarjeta,
     pago,
     producto_factura,
     producto,
-    sede,
-    tipo_documento,
+    sedes,
+    tipoDoc,
     usuarios
 }

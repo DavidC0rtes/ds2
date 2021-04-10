@@ -18,7 +18,7 @@ module.exports = new EntitySchema({
             target: "Informacion_personal",
             type: "one-to-one",
             joinColumn: {
-                name: "id_info"
+                name: "Info_id"
             }
         },
         id_rol: {

@@ -22,19 +22,17 @@ module.exports = new EntitySchema({
             target: "Usuarios",
             type: "many-to-one",
             nullable: false,
-            joinColumn: {
-                name: "id_usuario"
-            }
+            joinColumn: true
         },
         pago: {
-            target: "Pago",
+            target: "Pagos",
             type: "one-to-many",
             inverseSide: "Factura"
         },
         producto_facturado: {
             target: "producto_factura",
             type: "one-to-many",
-            inverseSide: "Factura"
+            inverseSide: "Facturas"
         },
         sede: {
             target: "sede",

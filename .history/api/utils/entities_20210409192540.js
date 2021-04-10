@@ -26,7 +26,7 @@ module.exports = {
     pago,
     producto_factura,
     producto,
-    sede,
-    tipo_documento,
+    sedes,
+    tipoDoc,
     usuarios
 }

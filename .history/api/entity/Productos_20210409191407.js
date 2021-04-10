@@ -37,7 +37,7 @@ module.exports = new EntitySchema({
             type: "many-to-one",
             nullable: false,        
             joinColumn: {
-                name: "id_categoria"
+                name: id_categoria"
             }
         }
     }

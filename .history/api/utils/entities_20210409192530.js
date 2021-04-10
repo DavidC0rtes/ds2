@@ -22,11 +22,11 @@ module.exports = {
     horario,
     roles,
     Informacion_personal,
-    pago_tarjeta,
+    tarjeta,
     pago,
     producto_factura,
     producto,
-    sede,
-    tipo_documento,
+    sedes,
+    tipoDoc,
     usuarios
 }

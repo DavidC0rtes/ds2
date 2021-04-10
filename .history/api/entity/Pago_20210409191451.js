@@ -1,7 +1,7 @@
 const EntitySchema = require("typeorm").EntitySchema
 
 module.exports = new EntitySchema({
-    name: "Pago",
+    name: "Pagos",
     columns: {
         id: {
             primary: true,
@@ -19,7 +19,7 @@ module.exports = new EntitySchema({
             type: "many-to-one",
             nullable: false,
             joinColumn: {
-                name: "id_factura"
+                name: 
             }
         },
         medio_de_pago: {

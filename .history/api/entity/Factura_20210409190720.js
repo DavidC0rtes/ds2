@@ -1,7 +1,7 @@
 const EntitySchema = require("typeorm").EntitySchema
 
 module.exports = new EntitySchema({
-    name: "Factura",
+    name: "Facturas",
     columns: {
         id: {
             primary: true,
@@ -22,28 +22,19 @@ module.exports = new EntitySchema({
             target: "Usuarios",
             type: "many-to-one",
             nullable: false,
-            joinColumn: {
-                name: "id_usuario"
-            }
+            joinColumn: true
         },
         pago: {
-            target: "Pago",
+            target: "Pagos",
             type: "one-to-many",
-            inverseSide: "Factura"
+            inverseSide: "Facturas"
         },
         producto_facturado: {
             target: "producto_factura",
             type: "one-to-many",
-            inverseSide: "Factura"
+            inverseSide: "Facturas"
         },
-        sede: {
-            target: "sede",
-            type: "many-to-one",
-            nullable: false,
-            joinColumn: {
-                name: "id_sede"
-            }
-        }
+        sede:
 
     }
 })
