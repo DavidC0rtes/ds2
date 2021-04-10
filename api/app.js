@@ -22,8 +22,13 @@ const foo = (async () => {
     await conn.close()
 })()
 
+/*
+ * RUTAS van aca
+ */
+
 //app.use(cors())
 //app.use(express.json())
+//app.use(middleware.requestLogger)
 //
 //// RUTAS
 //app.use('/api/users', usersRouter)
@@ -32,6 +37,6 @@ const foo = (async () => {
 //app.use(middleware.unknownEndpoint)
 //app.use(middleware.errorHandler)
 //
-//app.use(middleware.requestLogger)
+
 
 module.exports = app
