@@ -1,12 +1,12 @@
 const usersRouter = require('express').Router()
 const bcrypt = require('bcrypt')
 const control = require('../controllers/Control')
-//const User = require('../entity/User') <-- todavía no existe esta entidad en mi rama
+const User = require('../entity/Usuarios')
 //
 
 // Devuelve todos los usuarios del proyecto cuando se hace un get
 usersRouter.get('/', async (request, response) => {
-    const users = await control.getAll(User) 
+    const users = await control.getAll(Usuarios) 
     response.json(users)
 })
 

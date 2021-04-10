@@ -16,10 +16,7 @@ const tabla = require('./utils/entities')
 const foo = (async () => {
     // Se crea la conexión 
     const conn = await typeorm.createConnection()
-    // Solo después de crear la conexión se puede importar 
-    // el control de las entidades
-    const control = require('./controllers/Control')
-    await conn.close()
+    
     
 })()
 app.use(cors())
@@ -28,6 +25,7 @@ app.use(express.json())
 /*
  * RUTAS van aca
  */
+const usersRouter = require('./routes/users')
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
