@@ -10,33 +10,25 @@ const app = express()
 const cors = require('cors')
 const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
-//const usersRouter = require('./routes/users')
 
 // Esta función se ejecuta inmediatamente.
 const foo = (async () => {
     // Se crea la conexión 
     const conn = await typeorm.createConnection()
-    // Solo después de crear la conexión se puede importar 
-    // el control de las entidades
+    // Importan las rutas
     const usersRouter = require('./routes/users')
-    await conn.close()
+
+    app.use(cors())
+    app.use(express.json())
+    app.use(middleware.requestLogger)
+
+    // Aquí se especifica al servidor que rutas va a escuchar
+    app.use('/api/users', usersRouter)
+    // Fin especificaciones
+    
+    app.use(middleware.unknownEndpoint)
+    app.use(middleware.errorHandler)
 })()
-
-/*
- * RUTAS van aca
- */
-
-//app.use(cors())
-//app.use(express.json())
-//app.use(middleware.requestLogger)
-//
-//// RUTAS
-//app.use('/api/users', usersRouter)
-//// FIN RUTAS
-//
-//app.use(middleware.unknownEndpoint)
-//app.use(middleware.errorHandler)
-//
 
 
 module.exports = app

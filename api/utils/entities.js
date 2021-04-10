@@ -11,7 +11,7 @@ const pago = require ('../entity/Pago.js')
 const producto_factura = require ('../entity/Producto_factura.js')
 const producto = require ('../entity/Productos.js')
 const sede = require ('../entity/Sedes.js')
-const tipo_documento = require ('../entity/Tipo_documento.js')
+const tipo_documento = require ('../entity/TipoDocumento.js')
 const usuarios = require ('../entity/Usuarios.js')
 
 

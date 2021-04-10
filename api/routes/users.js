@@ -1,7 +1,7 @@
 const usersRouter = require('express').Router()
 const bcrypt = require('bcrypt')
 const control = require('../controllers/Control')
-const User = require('../entity/Usuarios')
+const Usuarios = require('../entity/Usuarios')
 
 // Devuelve todos los usuarios del proyecto cuando se hace un get
 usersRouter.get('/', async (request, response) => {
