@@ -9,7 +9,11 @@ usersRouter.get('/', async (request, response) => {
     response.json(users)
 })
 
-// Creación de usuarios: un POST
+/* Creación de usuarios, los campos obligatorios son:
+ * email
+ * num_documento
+ * tipo_documento
+ */
 usersRouter.post('/', async (request, response) => {
     const body = request.body
 
