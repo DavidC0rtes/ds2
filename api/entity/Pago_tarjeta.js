@@ -21,7 +21,7 @@ module.exports = new EntitySchema({
     relations: {
         id_pago: {
             target: "Pago",
-            type: "many-to-one",
+            type: "one-to-one",
             nullable: false,
             joinColumn: {
                 name: "id_pago"
@@ -29,12 +29,11 @@ module.exports = new EntitySchema({
         },
         entidad: {
             target: "Entidad",
-            type: "one-to-one",
+            type: "many-to-one",
             nullable: false,
             joinColumn: {
                 name: "id_entidad"
             }
         }
     }
-       
 })
