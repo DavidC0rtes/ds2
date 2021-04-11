@@ -24,9 +24,7 @@ module.exports = new EntitySchema({
         },
         medio_de_pago: {
             target: "pago_tarjeta",
-            type: "one-to-many",
-            inverseSide: "Pagos"
+            type: "one-to-one"
         }
     }
-    
 })

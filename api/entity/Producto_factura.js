@@ -20,15 +20,17 @@ module.exports = new EntitySchema({
             nullable: false,
             joinColumn: {
                 name: "id_factura"
-            }
+            },
+            onDelete: 'CASCADE'
         },
         producto: {
             target: "producto",
-            type: "one-to-one",
+            type: "many-to-one",
+            nullable: false,
             joinColumn: {
                 name: "id_producto"
-            }
+            },
+            onDelete: 'CASCADE'
         }
     }
-        
 })

@@ -21,7 +21,8 @@ module.exports = new EntitySchema({
             nullable: false
         },
         segundo_nombre: {
-            type: "varchar"
+            type: "varchar",
+            nullable: true
         },
         primer_apellido: {
             type: "varchar",
@@ -32,17 +33,20 @@ module.exports = new EntitySchema({
             nullable: false
         },
         direccion: {
-            type: "varchar"
+            type: "varchar",
+            nullable: true
         },
         password: {
             type: "varchar",
             nullable: false
         },
         birthday: {
-            type: "date"
+            type: "date",
+            nullable: true
         },
         telefono: {
-            type:"varchar"
+            type:"varchar",
+            nullable:true
         },
         num_documento: {
             type: "text",
@@ -52,11 +56,12 @@ module.exports = new EntitySchema({
     relations: {
         usuario: {
             target: "Usuarios",
-            type: "one-to-one"
+            type: "one-to-one",
+            onDelete: 'CASCADe'
         },
         tipo_documento: {
             target: "Tipo_documento",
-            type: "one-to-one",
+            type: "many-to-one",
             nullable: false,
             joinColumn: {
                 name: "tipo_documento"

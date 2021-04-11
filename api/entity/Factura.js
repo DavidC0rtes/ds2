@@ -21,10 +21,10 @@ module.exports = new EntitySchema({
         usuario: {
             target: "Usuarios",
             type: "many-to-one",
-            nullable: false,
             joinColumn: {
                 name: "id_usuario"
-            }
+            },
+            onDelete: 'SET NULL'
         },
         pago: {
             target: "Pago",

@@ -2,7 +2,6 @@ const EntitySchema = require("typeorm").EntitySchema
 
 module.exports = new EntitySchema({
     name: "Usuarios",
-    tableName: "usuarios",
     columns: {
         id: {
             primary: true,
@@ -24,7 +23,7 @@ module.exports = new EntitySchema({
         },
         id_rol: {
             target: "roles",
-            type: "one-to-one",
+            type: "many-to-one",
             joinColumn: {
                 name: "id_rol"
             },

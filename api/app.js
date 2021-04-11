@@ -15,6 +15,7 @@ const middleware = require('./utils/middleware')
 const foo = (async () => {
     // Se crea la conexión 
     const conn = await typeorm.createConnection()
+
     // Importan las rutas
     const usersRouter = require('./routes/users')
 

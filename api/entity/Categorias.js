@@ -24,7 +24,8 @@ module.exports = new EntitySchema({
         producto: {
             target: "producto",
             type: "one-to-many",
-            inverseSide: "categorias"
+            inverseSide: "categorias",
+            onDelete: 'UPDATE'
         },
         sede: {
             target: "sede",
@@ -39,7 +40,7 @@ module.exports = new EntitySchema({
                 },
             },
             inverseSide: "categorias",
-            cascade: true
+            
         }
     }
 })
