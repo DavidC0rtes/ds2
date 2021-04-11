@@ -4,9 +4,10 @@
  * no podría funcionar
  */
 const typeorm = require('typeorm')
-const tipoDoc = require('./entity/TipoDoc')
+const tipoDoc = require('./entity/Tipo_documento')
 const express = require('express')
 const app = express()
+const tabla = require('./utils/entities')
 
 // Esta función se ejecuta inmediatamente.
 const foo = (async () => {
@@ -21,24 +22,17 @@ const foo = (async () => {
      */
 
     // Traer todos los registros de la entidad tipoDoc
-    const result = await control.getAll(tipoDoc)
+    //const result = await control.getAll(tipoDoc)
+
+    const result = await control.borrar(tabla.producto, {nombre: "Ala sencilla"})
     console.log(result)
-
-    // Insertar registro nuevo
-    //const nuevoDoc = {
-    //    name: 'Libreta militar'
-    //}
-    //const insertResult = await control.insert(tipoDoc, nuevoDoc)
-    console.log(insertResult)
-
-    
-    const todos = await control.getField(tipoDoc, "name") 
+    const todos = await control.getField(tipoDoc, "nombre") 
 
     console.log(todos)
 
     const Like = typeorm.Like
     const nombreEmpiezaConC = await typeorm.getRepository(tipoDoc)
-        .find({ name: Like('C%')})
+        .find({ nombre: Like('C%')})
 
     console.log(nombreEmpiezaConC)
 

@@ -21,8 +21,24 @@ async function getField(entity, field) {
     return result
 }
 
+//edita el registro que cumpla con la condición usando el data.
+
+async function update(entity, condition, data){
+    const result = await manager.update(entity, condition, data)
+    return result
+}
+
+async function borrar(entity, condition){
+    const result = await manager.delete(entity, condition)
+    return result
+}
+
+
+
 module.exports = {
     getAll,
     insert,
-    getField
+    getField,
+    update,
+    borrar
 }
