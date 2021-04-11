@@ -180,6 +180,7 @@ const user4 = {
 }
 
 
+
 module.exports = {
     categorias,
     entidad,

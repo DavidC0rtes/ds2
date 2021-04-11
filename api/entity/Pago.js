@@ -27,5 +27,4 @@ module.exports = new EntitySchema({
             type: "one-to-one"
         }
     }
-    
 })

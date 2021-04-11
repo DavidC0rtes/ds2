@@ -33,5 +33,4 @@ module.exports = new EntitySchema({
             onDelete: 'CASCADE'
         }
     }
-        
 })
