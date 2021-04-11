@@ -16,8 +16,9 @@ usersRouter.get('/', async (request, response) => {
  */
 usersRouter.post('/', async (request, response) => {
     const body = request.body
+    const userInfo = body.info
 
-    if (body.passwordLength < 3) throw Error("contraseña demasiado corta")
+    if (body.password.length < 3) throw Error("contraseña demasiado corta")
 
     const passwordHash = await bcrypt.hash(body.password, 10) // Todas las contraseñas se guardan 'encriptadas'
 

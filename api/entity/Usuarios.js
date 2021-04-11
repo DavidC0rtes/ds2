@@ -11,7 +11,16 @@ module.exports = new EntitySchema({
         activo: {
             type: "boolean",
             default: true
+        },
+        password: {
+            type: "varchar",
+            nullable: false
+        },
+        email: {
+            type: "varchar",
+            nullable: false
         }
+
     },
     relations: {
         id_info: {

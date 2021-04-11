@@ -12,10 +12,6 @@ module.exports = new EntitySchema({
             type: "int",
             unique: true
         },
-        email: {
-            type: "varchar",
-            nullable: false
-        },
         primer_nombre: {
             type: "varchar",
             nullable: false
@@ -33,10 +29,6 @@ module.exports = new EntitySchema({
         },
         direccion: {
             type: "varchar"
-        },
-        password: {
-            type: "varchar",
-            nullable: false
         },
         birthday: {
             type: "date"
