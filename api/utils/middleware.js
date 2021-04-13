@@ -18,7 +18,16 @@ const unknownEndpoint = (request, response) => {
 }
 
 const errorHandler = (error, request, response, next) => {
-    logger.error(error.message)
+    if (error.name === 'QueryFailedError') {
+        return response.status(400).send({ error: error.message })
+    } else if(error.message === 'contraseña demasiado corta') {
+        return response.status(400).send({ error: 'La contraseña debe contener al menos tres caracteres' })
+
+    } else {
+        logger.error(error)
+    }
+
+    next(error)
 }
 
 module.exports = { 

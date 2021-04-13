@@ -10,26 +10,23 @@ const app = express()
 const cors = require('cors')
 const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
+const config = require('./utils/config')
 
-// Esta función se ejecuta inmediatamente.
-const foo = (async () => {
-    // Se crea la conexión 
-    const conn = await typeorm.createConnection()
+let usersRouter = null
 
-    // Importan las rutas
-    const usersRouter = require('./routes/users')
-
+typeorm.createConnection(config.DBNAME).then( (conn) => {
+    usersRouter = require('./routes/users')  
     app.use(cors())
     app.use(express.json())
     app.use(middleware.requestLogger)
-
+    
     // Aquí se especifica al servidor que rutas va a escuchar
     app.use('/api/users', usersRouter)
     // Fin especificaciones
-    
     app.use(middleware.unknownEndpoint)
     app.use(middleware.errorHandler)
-})()
 
+})
+.catch( err => console.log(err))
 
 module.exports = app

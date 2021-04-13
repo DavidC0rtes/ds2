@@ -4,3 +4,5 @@ node_modules
 .history
 */node_modules
 .history
+.env.secret
+ormconfig.yml
