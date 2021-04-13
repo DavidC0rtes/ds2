@@ -1,5 +1,8 @@
 tags
 node_modules
 .env
+.history
 */node_modules
 .history
+.env.secret
+ormconfig.yml

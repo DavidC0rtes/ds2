@@ -16,7 +16,8 @@ module.exports = new EntitySchema({
     relations: {
         tarjeta: {
             target: "pago_tarjeta",
-            type: "one-to-one"
+            type: "one-to-many",
+            inverseSide: "Entidad"
         }
     }
 })

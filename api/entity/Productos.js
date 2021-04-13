@@ -15,8 +15,9 @@ module.exports = new EntitySchema({
         descripcion: {
             type: "varchar"
         },
-        unidades: {
-            type: "int"
+        cantidad: {
+            type: "int",
+            default: 1
         },
         iva: {
             type: "float",
@@ -30,7 +31,8 @@ module.exports = new EntitySchema({
     relations: {
         factura: {
             target: "producto_factura",
-            type: "one-to-one"
+            type: "one-to-many",
+            inverseSide: "producto"
         },
         categoria: {                   
             target: "categorias",       
