@@ -5,6 +5,7 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import Chip from '@material-ui/core/Chip'
 import HomeIcon from '@material-ui/icons/Home'
 import UserIcon from '@material-ui/icons/Person'
+import { Typography } from '@material-ui/core'
 
 const StyledBreadcrumb = withStyles((theme) => ({
   root: {
@@ -29,8 +30,10 @@ function handleClick(event) {
 
 const NavBar = () => {
     return (
+    
     <Breadcrumbs aria-label="breadcrumb">
-      <StyledBreadcrumb
+        <Typography variant="h6">Restaurante</Typography>
+        <StyledBreadcrumb
         component={Link}
         to="/"
         label="Inicio"

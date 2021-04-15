@@ -1,4 +1,5 @@
 import React from 'react'
+import Container from '@material-ui/core/Container'
 import NavBar from './components/Navbar'
 import Login from './pages/Login'
 
@@ -11,13 +12,16 @@ import {
 function App() {
   return (
       <div>
+        <Container maxWidth="sm">
         <Router>
             <NavBar />
             <Switch>
                 <Route exact path="/"/>
                 <Route exact path="/login" component={Login} />
             </Switch>
-        </Router>        
+        </Router> 
+        </Container>
+               
       </div>
   );
 }
