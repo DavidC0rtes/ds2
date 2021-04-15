@@ -28,10 +28,15 @@ function handleClick(event) {
   console.info('You clicked a breadcrumb.');
 }
 
+const breadCrumbStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+}
+
 const NavBar = () => {
     return (
     
-    <Breadcrumbs aria-label="breadcrumb">
+    <Breadcrumbs aria-label="breadcrumb" style={breadCrumbStyle}>
         <Typography variant="h6">Restaurante</Typography>
         <StyledBreadcrumb
         component={Link}
@@ -47,6 +52,7 @@ const NavBar = () => {
         label="Iniciar sesión"
         icon={<UserIcon fontSize="small" />}
       />
+      <StyledBreadcrumb component={Link} to="/registrarse" label="Crear cuenta" />
     </Breadcrumbs>
     )
 }
