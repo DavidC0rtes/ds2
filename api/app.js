@@ -16,6 +16,9 @@ let usersRouter = null
 
 typeorm.createConnection(config.DBNAME).then( (conn) => {
     usersRouter = require('./routes/users')  
+
+    if (config.ENV === 'production') app.use(express.static('build'))
+
     app.use(cors())
     app.use(express.json())
     app.use(middleware.requestLogger)

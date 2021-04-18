@@ -1,30 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Copyright from '../components/Copyright'
+import FormNewUser from '../components/FormNewUser'
+import userService from '../services/users'
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,7 +32,55 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function SignUp() {
+  const [newName, setNewName] = useState('')
+  const [newLastName, setNewLastName] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [newEmail, setNewEmail] = useState('')
+  const [newRol, setNewRol] = useState('')
+  const [errors, setNewErrors] = useState({})
+  
+  // Se encarga de añadir un nuevo usuario una vez se dé click al boton 'Registrar'
+  const addUser = async (event) => {
+    event.preventDefault()
+    
+    // Verificar que el formulario este completo.
+    if ( newName && newLastName && newPassword && newEmail) {
+      const emailInUse = await userService.getByEmail(newEmail)
+
+      if (emailInUse) {
+        window.alert('Correo en uso')
+        const newErrors = {}
+        newErrors.email = 'Correo en uso'
+        setNewErrors(newErrors)
+
+      } else {
+        window.alert('Correo disponible!')
+        setNewErrors({})
+        // ToDo
+      }
+      
+    } else {
+      const newErrors = {}
+      // Añadir mensaje de error solo a campos vacíos
+      if (!newName) newErrors.firstname = 'Campo obligatorio'
+      if (!newLastName) newErrors.lastname = 'Campo obligatorio'
+      if (!newEmail) newErrors.email = 'Campo obligatorio'
+      if (!newPassword) newErrors.password = 'Campo obligatorio'
+
+      setNewErrors(newErrors)
+    }
+
+  }
+  
+  const handleNewName = (event) => setNewName(event.target.value)
+  const handleNewLastName = (event) => setNewLastName(event.target.value)
+  const handleNewPassword = (event) => setNewPassword(event.target.value)
+  const handleNewEmail = (event) => setNewEmail(event.target.value)
+  const handleNewRol = (event) => setNewRol(event.target.value)
+
+  
   const classes = useStyles();
 
   return (
@@ -57,80 +91,16 @@ export default function SignUp() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Registrarse
         </Typography>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign Up
-          </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="#" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
+        <FormNewUser
+          handleSubmit={addUser}
+          handleNewName={handleNewName}
+          handleNewLastName={handleNewLastName}
+          handleNewPassword={handleNewPassword}
+          handleNewEmail={handleNewEmail}
+          errors={errors}
+        />
       </div>
       <Box mt={5}>
         <Copyright />

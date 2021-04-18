@@ -13,6 +13,8 @@ async function insert(entity, data) {
     return result
 }
 
+// Retorna una columna (field) de una entidad (entity).EJ:
+// SELECT primer_nombre FROM usuarios
 async function getField(entity, field) {
     const result = await manager
         .createQueryBuilder(entity, "query")
@@ -40,6 +42,22 @@ async function deleteAll(entity) {
     return result
 }
 
+/* Asemeja una clausula SQL WHERE tipica con una sola condición =.
+ *
+ * @param entity {String} entidad a consultar
+ * @param field {String} campo sobre el cual aplicar la condición
+ * @param value {Any} valor del campo. 
+ */
+
+async function getBy(entity, field, value) {
+    const result = await manager
+        .createQueryBuilder(entity, "query")
+        .where(`query.${field} = :value`, { value })
+        .getOne()
+    
+    return result
+}
+
 module.exports = {
     manager,
     getAll,
@@ -47,5 +65,6 @@ module.exports = {
     getField,
     update,
     borrar,
-    deleteAll
+    deleteAll,
+    getBy
 }

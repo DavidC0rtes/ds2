@@ -1,3 +1,4 @@
+const typeorm = require('typeorm')
 const usersRouter = require('express').Router()
 const bcrypt = require('bcrypt')
 const control = require('../controllers/Control')
@@ -6,8 +7,19 @@ const InformacionPersonal = require('../entity/InformacionPersonal')
 
 // Devuelve todos los usuarios del proyecto cuando se hace un get
 usersRouter.get('/', async (request, response) => {
-    const users = await control.getAll(Usuarios) 
+    const users = await control.getAll(User) 
     response.json(users)
+})
+
+// Determina si el usuario con correo email existe. No devuelve al usuario 
+usersRouter.head('/:email', async (request, response) => {
+    const result = await control.getBy(User, 'email', request.params.email)
+
+    if (result) {
+        return response.status(204).end()
+    }
+
+    return response.status(404).end()
 })
 
 /* Creación de usuarios, se entiende como una solicitud POST a /api/users,
@@ -47,7 +59,7 @@ usersRouter.post('/', async (request, response) => {
     response.json(savedUser)
 })
 
-// ToDo:
-// - Modificación (put), hace parte de otra HU
+
+
 
 module.exports = usersRouter
