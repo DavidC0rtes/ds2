@@ -16,7 +16,8 @@ module.exports = new EntitySchema({
     relations: {
         info: {
             target: "Informacion_personal",
-            type: "one-to-one"
+            type: "one-to-many",
+            inverseSide: "Tipo_documento"
         }
     }
 })
