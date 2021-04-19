@@ -34,11 +34,10 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function SignUp() {
-  const [newName, setNewName] = useState('')
-  const [newLastName, setNewLastName] = useState('')
-  const [newPassword, setNewPassword] = useState('')
-  const [newEmail, setNewEmail] = useState('')
-  const [newRol, setNewRol] = useState('')
+  const [name, setNewName] = useState('')
+  const [lastName, setNewLastName] = useState('')
+  const [password, setNewPassword] = useState('')
+  const [email, setNewEmail] = useState('')
   const [errors, setNewErrors] = useState({})
   
   // Se encarga de añadir un nuevo usuario una vez se dé click al boton 'Registrar'
@@ -46,30 +45,42 @@ export default function SignUp() {
     event.preventDefault()
     
     // Verificar que el formulario este completo.
-    if ( newName && newLastName && newPassword && newEmail) {
-      const emailInUse = await userService.getByEmail(newEmail)
+    if ( name && lastName && password && email ) {
+        const emailInUse = await userService.getByEmail(email)
 
-      if (emailInUse) {
-        window.alert('Correo en uso')
-        const newErrors = {}
-        newErrors.email = 'Correo en uso'
-        setNewErrors(newErrors)
+        if (emailInUse) {
+            const newErrors = {}
+            newErrors.email = 'Correo en uso'
+            setNewErrors(newErrors)
 
-      } else {
-        window.alert('Correo disponible!')
-        setNewErrors({})
-        // ToDo
-      }
+        } else {
+            window.alert('Correo disponible!')
+            setNewErrors({})
+            // ToDo
+            // Objeto del cliente
+            const newUser = {
+                email: email,
+                id_rol: 1,
+                password: password,
+                info: {
+                    primer_nombre: name,
+                    primer_apellido: lastName
+                }
+            }
+
+            const result = await userService.create(newUser) 
+            console.log(result.status)
+        }
       
     } else {
-      const newErrors = {}
-      // Añadir mensaje de error solo a campos vacíos
-      if (!newName) newErrors.firstname = 'Campo obligatorio'
-      if (!newLastName) newErrors.lastname = 'Campo obligatorio'
-      if (!newEmail) newErrors.email = 'Campo obligatorio'
-      if (!newPassword) newErrors.password = 'Campo obligatorio'
+        const newErrors = {}
+        // Añadir mensaje de error solo a campos vacíos
+        if (!name) newErrors.firstname = 'Campo obligatorio'
+        if (!lastName) newErrors.lastname = 'Campo obligatorio'
+        if (!email) newErrors.email = 'Campo obligatorio'
+        if (!password) newErrors.password = 'Campo obligatorio'
 
-      setNewErrors(newErrors)
+        setNewErrors(newErrors)
     }
 
   }
@@ -78,7 +89,6 @@ export default function SignUp() {
   const handleNewLastName = (event) => setNewLastName(event.target.value)
   const handleNewPassword = (event) => setNewPassword(event.target.value)
   const handleNewEmail = (event) => setNewEmail(event.target.value)
-  const handleNewRol = (event) => setNewRol(event.target.value)
 
   
   const classes = useStyles();

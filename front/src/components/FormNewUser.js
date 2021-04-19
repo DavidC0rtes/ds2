@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-const roles = ['Cliente', 'Administrador']
 
 const FormNewUser = (props) => {
     const classes = useStyles()
@@ -24,8 +23,8 @@ const FormNewUser = (props) => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
-                error={props.errors.firstname}
-                helperText={props.errors.firstname && 'Campo obligatorio'}
+                error={ props.errors.firstname  && true }
+                helperText={props.errors.firstname }
                 autoComplete="fname"
                 name="firstName"
                 variant="outlined"
@@ -40,8 +39,8 @@ const FormNewUser = (props) => {
             <Grid item xs={12} sm={6}>
               <TextField
                 variant="outlined"
-                error={props.errors.lastname}
-                helperText={props.errors.lastname && 'Campo obligatorio'}
+                error={props.errors.lastname && true}
+                helperText={props.errors.lastname}
                 required
                 fullWidth
                 id="lastName"
@@ -53,8 +52,8 @@ const FormNewUser = (props) => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                error={props.errors.email}
-                helperText={props.errors.email && 'Correo en uso'}
+                error={props.errors.email && true}
+                helperText={ props.errors.email }
                 variant="outlined"
                 required
                 fullWidth
@@ -67,8 +66,8 @@ const FormNewUser = (props) => {
             </Grid>
             <Grid item xs={12}>
               <TextField
-                error={props.errors.password}
-                helperText={props.errors.password && 'Campo obligatorio'}
+                error={props.errors.password && true}
+                helperText={props.errors.password}
                 variant="outlined"
                 required
                 fullWidth

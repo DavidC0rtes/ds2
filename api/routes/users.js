@@ -55,7 +55,12 @@ usersRouter.post('/', async (request, response) => {
 
         if (userInfo.birthday) userInfo.birthday = new Date(userInfo.birthday)
         const savedInfo = await control.insert(InformacionPersonal, userInfo)
+        
+        // Actualizar tabla usuario con el id de información personal
+        const updateResult = await control
+            .update(User, {id: userInfo.id_user } , savedInfo.id)
     }
+
     response.json(savedUser)
 })
 
