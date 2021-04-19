@@ -9,7 +9,9 @@ import Container from '@material-ui/core/Container';
 
 import Copyright from '../components/Copyright'
 import FormNewUser from '../components/FormNewUser'
+import Toast from '../components/Toast'
 import userService from '../services/users'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +41,7 @@ export default function SignUp() {
   const [password, setNewPassword] = useState('')
   const [email, setNewEmail] = useState('')
   const [errors, setNewErrors] = useState({})
+  const [message, setNewMessage] = useState(null)
   
   // Se encarga de añadir un nuevo usuario una vez se dé click al boton 'Registrar'
   const addUser = async (event) => {
@@ -54,9 +57,8 @@ export default function SignUp() {
             setNewErrors(newErrors)
 
         } else {
-            window.alert('Correo disponible!')
             setNewErrors({})
-            // ToDo
+
             // Objeto del cliente
             const newUser = {
                 email: email,
@@ -67,9 +69,19 @@ export default function SignUp() {
                     primer_apellido: lastName
                 }
             }
+            
+            try {
+                const result = await userService.create(newUser) 
+                if (result.identifiers) setNewMessage('¡Te has registrado correctamente!')
+                
+            } catch (err) {
+                setNewMessage('Algo ha salido mal')
+            }
+            
+            setTimeout(() => {
+                setNewMessage(null)
+            }, 4000)
 
-            const result = await userService.create(newUser) 
-            console.log(result.status)
         }
       
     } else {
@@ -87,10 +99,20 @@ export default function SignUp() {
   
   const handleNewName = (event) => setNewName(event.target.value)
   const handleNewLastName = (event) => setNewLastName(event.target.value)
-  const handleNewPassword = (event) => setNewPassword(event.target.value)
   const handleNewEmail = (event) => setNewEmail(event.target.value)
+  const handleNewPassword = (event) => {
+      if (event.target.value.length < 3) {
+          const newErrs = JSON.parse(JSON.stringify(errors))
+          newErrs.password = 'Contraseña demasiado corta'
+          setNewErrors(newErrs)
+      } else {
+          const newErrs = JSON.parse(JSON.stringify(errors))
+          delete newErrs.password
+          setNewErrors(newErrs)
+          setNewPassword(event.target.value)
+      }
+  }
 
-  
   const classes = useStyles();
 
   return (
@@ -110,6 +132,11 @@ export default function SignUp() {
           handleNewPassword={handleNewPassword}
           handleNewEmail={handleNewEmail}
           errors={errors}
+        />
+        <Toast
+            message={message}
+            vertical='bottom'
+            horizontal='center'
         />
       </div>
       <Box mt={5}>
