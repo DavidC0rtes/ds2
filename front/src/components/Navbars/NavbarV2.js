@@ -53,6 +53,7 @@ const NavBar = () => {
         icon={<UserIcon fontSize="small" />}
       />
       <StyledBreadcrumb component={Link} to="/registrarse" label="Crear cuenta" />
+      <StyledBreadcrumb component={Link} to="/admin" label="Dashboard" />
     </Breadcrumbs>
     )
 }
