@@ -1,8 +1,8 @@
 import React from 'react'
 import Container from '@material-ui/core/Container'
-import NavBar from './components/Navbar'
-import Login from './pages/Login'
-import SignUp from './pages/SingUp'
+import NavBar from '../components/Navbars/NavbarV2'
+import Login from '../views/Login/Login.js'
+import SignUp from '../views/Login/SignUp.js'
 
 // Estas cosas nos permiten redirigir
 // a las diferentes vistas cuando
@@ -13,7 +13,7 @@ import {
   Route,
 } from "react-router-dom"
 
-function App() {
+function Inicio() {
   return (
       <div>
         <Container maxWidth="md">
@@ -23,6 +23,7 @@ function App() {
                 <Route exact path="/"/>
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/registrarse" component={SignUp} />
+                <Route exact path = "/admin/dashboard"/>
             </Switch>
         </Router> 
         </Container>
@@ -31,4 +32,4 @@ function App() {
   );
 }
 
-export default App;
+export default Inicio;
