@@ -1,7 +1,7 @@
 # Funcionamiento del front-end
 
 ## Instalacion
-Para instalar la aplicacion se debe inicializar el comando `npm install`
+Para instalar la aplicacion se debe inicializar el comando `npm install --force`
 
 ## Uso
 Para iniciar la aplicacion se debe utilizar el comando `npm start`
