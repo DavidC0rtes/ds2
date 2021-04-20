@@ -7,10 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-import Copyright from '../components/Copyright'
-import FormNewUser from '../components/FormNewUser'
-import Toast from '../components/Toast'
-import userService from '../services/users'
+import Copyright from '../../components/Copyright'
+import FormNewUser from '../../components/FormNewUser'
+import Toast from '../../components/Toast'
+import userService from '../../services/users'
 
 
 
@@ -139,9 +139,6 @@ export default function SignUp() {
             horizontal='center'
         />
       </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
     </Container>
   );
 }
