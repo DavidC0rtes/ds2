@@ -19,6 +19,8 @@ loginRouter.post('/', async (request, response) => {
     
     // Se trae al usuario con el email proporcionado desde la BD
     const user = await control.getBy(User, 'email', body.email)
+
+    if (!user) return response.status(401).json({ error: 'correo electrónico y/o contraseña inválidos'})
     
     // Se comprueba si el hash en la bd es el mismo que el hash
     // calculado a partir de la contraseña ingresada.
