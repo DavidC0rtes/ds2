@@ -15,7 +15,9 @@ import Copyright from '../../components/Copyright'
 import Toast from '../../components/Toast'
 import { ErrorOutlineSharp } from '@material-ui/icons';
 
+import { useHistory } from 'react-router-dom'
 import loginService from '../../services/login'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,14 +40,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login() {
+const Login = (props) => {
   const classes = useStyles();
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({})
   const [message, setMessage] = useState(null)
-  const [user, setUser] = useState(null)
+  //const [user, setUser] = useState(null)
+
+  const history = useHistory();
 
   const doLogin = async (event) => {
     event.preventDefault()
@@ -58,7 +62,7 @@ export default function Login() {
         })
         
         // El estado user ahora contiene el correo y el token generado desde el backend
-        setUser(user)
+        props.setUser(user)
         /**
          * Sin embargo lo anterior no es suficiente. Si se le da f5 a la página, la variable
          * user es destruida por React, para hacerlo persistente decidí guardar la información
@@ -68,11 +72,14 @@ export default function Login() {
         window.localStorage.setItem(
           'usuarioLogueado', JSON.stringify(user)
         )
-        setEmail('')
-        setPassword('')
+        
+        //setEmail('')
+        //setPassword('')
+        
+        history.push("/")
 
       } catch(err) {
-        console.log(err.response)
+        console.log(err)
         setMessage('Contraseña y/o correo electrónico inválidos')
         setTimeout(() => {
           setMessage(null)
@@ -170,4 +177,6 @@ export default function Login() {
       </Box>
     </Container>
   );
+
 }
+export default Login
