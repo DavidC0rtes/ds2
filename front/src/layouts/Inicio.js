@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Container from '@material-ui/core/Container'
 import NavBar from '../components/Navbars/NavbarV2'
 import Login from '../views/Login/Login.js'
@@ -14,6 +14,14 @@ import {
 } from "react-router-dom"
 
 function Inicio() {
+  // Revisar si un usuario inició sesión
+  useEffect(() => {
+    const userJSON = window.localStorage.getItem('usuarioLogueado')
+    if (userJSON) {
+      const user = JSON.parse(userJSON)
+      console.log('ESTAS LOGUEADO')
+    }
+  })
   return (
       <div>
         <Container maxWidth="md">

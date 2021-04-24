@@ -7,6 +7,7 @@ import HomeIcon from '@material-ui/icons/Home'
 import UserIcon from '@material-ui/icons/Person'
 import { Typography } from '@material-ui/core'
 
+
 const StyledBreadcrumb = withStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.grey[100],
@@ -33,8 +34,9 @@ const breadCrumbStyle = {
     justifyContent: 'center',
 }
 
-const NavBar = () => {
-    return (
+const NavBar = (props) => {
+  //console.log(user)
+  return (
     
     <Breadcrumbs aria-label="breadcrumb" style={breadCrumbStyle}>
         <Typography variant="h6">Restaurante</Typography>
@@ -46,13 +48,9 @@ const NavBar = () => {
       />
       <StyledBreadcrumb component={Link} to="/menu" label="Menú" onClick={handleClick} />
       <StyledBreadcrumb component={Link} to="/sedes" label="Sedes" onClick={handleClick} />
-      <StyledBreadcrumb
-        component={Link}
-        to="/login"
-        label="Iniciar sesión"
-        icon={<UserIcon fontSize="small" />}
-      />
-      <StyledBreadcrumb component={Link} to="/registrarse" label="Crear cuenta" />
+      {!props.user && <StyledBreadcrumb component={Link} to="/login" label="Iniciar sesión"/>}
+
+
       <a href = "/admin/dashboard">Admin</a>
     </Breadcrumbs>
     )

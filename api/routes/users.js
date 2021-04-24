@@ -22,6 +22,20 @@ usersRouter.head('/:email', async (request, response) => {
     return response.status(404).end()
 })
 
+/*
+ * Devuelve el usuario con email especificado. A diferencia del anterior, este
+ * responde a una solicitud GET
+ */
+usersRouter.get('/:email', async (request, response) => {
+    const result = await control.getBy(User, 'email', request.params.email)
+
+    if (result) {
+        response.json(result)
+    } else {
+        return response.status(404).end()
+    }
+})
+
 /* Creación de usuarios, se entiende como una solicitud POST a /api/users,
  * el json de la petición debe tener la sgte estructura:
  * "email": "xxx",
