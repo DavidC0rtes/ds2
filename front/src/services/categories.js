@@ -4,14 +4,12 @@
 
 import axios from 'axios'
 const baseUrl = 'http://localhost:3001/api/categories'
-
 /**
  * Obtiene todos las categorias del proyecto, i.e: manda una petición
  * GET a baseUrl
  *
  * @return array
  */
-
  const getAll = () => {
     const request = axios.get(baseUrl)
     return request.then(response => response.data)
