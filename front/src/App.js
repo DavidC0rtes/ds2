@@ -1,34 +1,46 @@
-import React from 'react'
+import React, {useState, useEffect} from "react";
+import ReactDOM from "react-dom";
+import Navbar from './components/Navbars/NavbarV2'
 import Container from '@material-ui/core/Container'
-import NavBar from './components/Navbar'
-import Login from './pages/Login'
-import SignUp from './pages/SingUp'
-
-// Estas cosas nos permiten redirigir
-// a las diferentes vistas cuando
-// se le da clic a algún enlace.
+import { createBrowserHistory } from "history";
 import { 
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom"
+  Router,
+  Route, 
+  Switch, 
+  Redirect 
+} from "react-router-dom";
 
-function App() {
-  return (
-      <div>
-        <Container maxWidth="md">
-        <Router> {/* <-- importante que el Router este acá*/}
-            <NavBar />
-            <Switch>  {/*<-- acá se definen todas las rutas y hacia que componente redirigen*/}
-                <Route exact path="/"/>
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/registrarse" component={SignUp} />
-            </Switch>
-        </Router> 
-        </Container>
-               
-      </div>
-  );
+// Layouts
+import Admin from "layouts/Admin.js";
+import Login from './views/Login/Login'
+import SignUp from './views/Login/SignUp'
+
+import "assets/css/material-dashboard-react.css?v=1.9.0";
+const hist = createBrowserHistory()
+
+const App = () => {
+    const [user, setUser] = useState([])    
+   
+    useEffect(() => {
+        setUser(JSON.parse(window.localStorage.getItem('usuarioLogueado')))
+    }, [])
+
+    console.log(user)
+   
+        return (
+            <Router history={hist}>
+                <Navbar user={user} setUser={setUser}/>
+                <Switch>
+                    <Route exact path="/" />
+                    <Route exact path="/admin" component={Admin} />
+                    <Route exact path="/login" render={(props) => (<Login user={user} setUser={setUser} />)}/>
+                    <Route exact path="/registrarse" component={SignUp} />
+                    <Redirect exact from = "/admin" to= "/admin/dashboard"/>
+                </Switch>
+            </Router>
+        );
+    
 }
 
-export default App;
+
+export default App
