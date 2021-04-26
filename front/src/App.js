@@ -35,6 +35,7 @@ const App = () => {
                     <Route exact path="/admin" component={Admin} />
                     <Route exact path="/login" render={(props) => (<Login user={user} setUser={setUser} />)}/>
                     <Route exact path="/registrarse" component={SignUp} />
+                    <Route exact path="/menu" component={ConsultarProducto} />
                     <Redirect exact from = "/admin" to= "/admin/dashboard"/>
                 </Switch>
             </Router>

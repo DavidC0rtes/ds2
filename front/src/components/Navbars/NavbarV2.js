@@ -46,7 +46,7 @@ const NavBar = (props) => {
         label="Inicio"
         icon={<HomeIcon fontSize="small" />}
       />
-      <StyledBreadcrumb component={Link} to="/menu" label="Menú" onClick={handleClick} />
+      {!props.user && <StyledBreadcrumb component={Link} to="/menu" label="Menú"/>}
       <StyledBreadcrumb component={Link} to="/sedes" label="Sedes" onClick={handleClick} />
       {!props.user && <StyledBreadcrumb component={Link} to="/login" label="Iniciar sesión"/>}
 
