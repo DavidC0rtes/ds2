@@ -26,7 +26,7 @@ const App = () => {
                 <Navbar />
                 <Switch>
                     <Route exact path="/" />
-                    <Route exact path="/admin" component={Admin} />
+                    <Route path="/admin" component={Admin} />
                     <Route exact path="/login" component={Login}/>
                     <Route exact path="/registrarse" component={SignUp} />
                     <Redirect from="/admin" to="/admin/dashboard" />
