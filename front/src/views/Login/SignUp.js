@@ -7,10 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-import Copyright from '../../components/Copyright'
 import FormNewUser from '../../components/FormNewUser'
 import Toast from '../../components/Toast'
 import userService from '../../services/users'
+
+import { useHistory } from 'react-router-dom'
 
 
 
@@ -42,6 +43,8 @@ export default function SignUp() {
   const [email, setNewEmail] = useState('')
   const [errors, setNewErrors] = useState({})
   const [message, setNewMessage] = useState(null)
+
+  const history = useHistory()
   
   // Se encarga de añadir un nuevo usuario una vez se dé click al boton 'Registrar'
   const addUser = async (event) => {
@@ -73,6 +76,8 @@ export default function SignUp() {
             try {
                 const result = await userService.create(newUser) 
                 if (result.identifiers) setNewMessage('¡Te has registrado correctamente!')
+
+                history.replace("/login")
                 
             } catch (err) {
                 setNewMessage('Algo ha salido mal')
