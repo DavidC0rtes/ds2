@@ -14,6 +14,7 @@ import {
 import Admin from "layouts/Admin.js";
 import Login from './views/Login/Login'
 import SignUp from './views/Login/SignUp'
+import ConsultarProducto from './views/Producto/ConsultarProducto'
 
 import "assets/css/material-dashboard-react.css?v=1.9.0";
 const hist = createBrowserHistory()
