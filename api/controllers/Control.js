@@ -50,12 +50,12 @@ async function deleteAll(entity) {
  */
 
 async function getBy(entity, field, value) {
-    const result = await manager
-        .createQueryBuilder(entity, "query")
-        .where(`query.${field} = :value`, { value })
-        .getOne()
+    const criteria = {}
+    criteria[`${field}`] = value
     
-    return result
+    const result = await manager.find(entity, criteria) // Retorna un arreglo de un elemento.
+    
+    return result[0]
 }
 
 module.exports = {
