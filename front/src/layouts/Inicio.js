@@ -3,6 +3,7 @@ import Container from '@material-ui/core/Container'
 import NavBar from '../components/Navbars/NavbarV2'
 import Login from '../views/Login/Login.js'
 import SignUp from '../views/Login/SignUp.js'
+import Categories from './views/Categoria/Categoria'
 
 // Estas cosas nos permiten redirigir
 // a las diferentes vistas cuando
@@ -31,6 +32,7 @@ function Inicio() {
                 <Route exact path="/"/>
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/registrarse" component={SignUp} />
+                <Route exact path="/categorias" component={Categories} />
                 <Route exact path = "/admin/dashboard"/>
             </Switch>
         </Router> 

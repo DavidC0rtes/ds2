@@ -14,6 +14,7 @@ import {
 import Admin from "layouts/Admin.js";
 import Login from './views/Login/Login'
 import SignUp from './views/Login/SignUp'
+import Categories from './views/Categoria/Categoria'
 
 import "assets/css/material-dashboard-react.css?v=1.9.0";
 const hist = createBrowserHistory()
@@ -35,6 +36,7 @@ const App = () => {
                     <Route exact path="/admin" component={Admin} />
                     <Route exact path="/login" render={(props) => (<Login user={user} setUser={setUser} />)}/>
                     <Route exact path="/registrarse" component={SignUp} />
+                    <Route exact path="/categorias" component={Categories} />
                     <Redirect exact from = "/admin" to= "/admin/dashboard"/>
                 </Switch>
             </Router>
