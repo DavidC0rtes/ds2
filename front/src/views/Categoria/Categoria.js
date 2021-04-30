@@ -10,6 +10,8 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionActions from '@material-ui/core/AccordionActions';
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import CategoryService from '../../services/categories'
 
@@ -20,10 +22,23 @@ const styles = {
   }
 };
 
-const useStyles = makeStyles(styles);
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: "100%"
+  },
+  heading: {
+    fontSize: theme.typography.pxToRem(15),
+    flexBasis: "33.33%",
+    flexShrink: 0
+  },
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(15),
+    color: theme.palette.text.secondary
+  }
+}));
 
-const categorias = CategoryService.getAll().then(categorias => {console.log(categorias)})
-
+const categorias = CategoryService.getAll().then(categorias => {})
+console.log(categorias)
 export default function Categories() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
@@ -31,12 +46,12 @@ export default function Categories() {
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
- 
 
   return (
     <div className={classes.root}>
-      {categorias.map(accordion => {
-        const { id, nombre, descripcion, activo } = accordion;
+      <title>Funciona? </title>
+      {Object.keys(categorias).map(accordion => {
+        const { id, heading, secondaryHeading, details } = accordion;
         return (
           <Accordion
             expanded={expanded === id}
@@ -48,13 +63,13 @@ export default function Categories() {
               aria-controls="panel1bh-content"
               id="panel1bh-header"
             >
-              <Typography className={classes.nombre}>{nombre}</Typography>
-              <Typography className={classes.descripcion}>
-                {descripcion}
+              <Typography className={classes.heading}>{heading}</Typography>
+              <Typography className={classes.secondaryHeading}>
+                {secondaryHeading}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography>{activo}</Typography>
+              <Typography>{details}</Typography>
             </AccordionDetails>
           </Accordion>
         );

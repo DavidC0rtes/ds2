@@ -3,7 +3,7 @@ import Container from '@material-ui/core/Container'
 import NavBar from '../components/Navbars/NavbarV2'
 import Login from '../views/Login/Login.js'
 import SignUp from '../views/Login/SignUp.js'
-import Categories from './views/Categoria/Categoria'
+import Categories from './views/Categoria/Categoria.js'
 
 // Estas cosas nos permiten redirigir
 // a las diferentes vistas cuando
