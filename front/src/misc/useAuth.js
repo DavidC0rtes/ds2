@@ -1,4 +1,8 @@
-// Este archivo debe llamarse por cualquier componente que utiliza auth state.
+/**
+ * Este archivo implementa el manejo del usuario Logueado.
+ * Todos los componentes que necesiten acceder a el deben
+ * importar este documento.
+ */
 // https://usehooks.com/useAuth/
 // https://reactrouter.com/web/example/auth-workflow
 
@@ -27,18 +31,30 @@ function useProvideAuth() {
      * Métodos para manipular el estado del usuario
      */
 
+    /**
+     * Login de un usuario, el resultado primero se escribe
+     * en localStorage y después en el estado user.
+     * @param {object} credentials 
+     */
     const login = async (credentials) => {
         const result = await loginService.login(credentials)
         window.localStorage.setItem('user', JSON.stringify(result))
         setUser(result)
     }
-
+    /**
+     * Registrase, crear la cuenta de un usuario nuevo.
+     * Acá simplemente se crea la cuenta, por tanto
+     * no se escribe a localStorage ni se cambia el estado user.
+     * @param {objeto} obj 
+     */
     const signup = async (obj) => {
         const newUser = await userService.create(obj)
-        
-        setUser(newUser)
     }
 
+    /**
+     * Simula un cerrado de cesión. Se elimina la entrada user de localStorage
+     * y tambien se hace el estado user igual a null.
+     */
     const logout = () => { 
         window.localStorage.removeItem('user')
         setUser(null)
@@ -46,6 +62,7 @@ function useProvideAuth() {
 
     return {
         user,
+        signup,
         login,
         logout
     }

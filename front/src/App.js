@@ -30,10 +30,7 @@ const App = () => {
                     <Route path="/admin" component={Admin} />
                     <Route exact path="/login" component={Login}/>
                     <Route exact path="/registrarse" component={SignUp} />
-
                     <Route exact path="/menu" component={ConsultarProducto} />
-                 
-
                     <Redirect from="/admin" to="/admin/dashboard" />
 
                 </Switch>
