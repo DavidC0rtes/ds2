@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -62,7 +61,7 @@ export default function SignUp() {
         } else {
             setNewErrors({})
 
-            // Objeto del cliente
+            // Objeto del usuario cliente a registrar
             const newUser = {
                 email: email,
                 id_rol: 1,

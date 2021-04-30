@@ -49,7 +49,7 @@ const NavBar = () => {
         label="Inicio"
         icon={<HomeIcon fontSize="small" />}
       />
-      <StyledBreadcrumb component={Link} to="/menu" label="Menú" onClick={handleClick} />
+      <StyledBreadcrumb component={Link} to="/menu" label="Menú"/>
       <StyledBreadcrumb component={Link} to="/sedes" label="Sedes" onClick={handleClick} />
       <a href = "/admin/dashboard">Admin</a>
 

@@ -14,6 +14,7 @@ import {
 import Admin from "./layouts/Admin";
 import Login from './views/Login/Login'
 import SignUp from './views/Login/SignUp'
+import ConsultarProducto from './views/Producto/ConsultarProducto'
 
 
 import "assets/css/material-dashboard-react.css?v=1.9.0";
@@ -29,8 +30,9 @@ const App = () => {
                     <Route path="/admin" component={Admin} />
                     <Route exact path="/login" component={Login}/>
                     <Route exact path="/registrarse" component={SignUp} />
+                    <Route exact path="/menu" component={ConsultarProducto} />
                     <Redirect from="/admin" to="/admin/dashboard" />
-                    
+
                 </Switch>
             </Router>
             </ProvideAuth>
