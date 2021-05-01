@@ -6,7 +6,13 @@
 
  const login = async (credentials) => {
     const response = await axios.post(baseUrl, credentials)
-    return response.data
+    
+    // Manipulaciones para que el objeto devuelto sea un poco más sencillo.
+    const toReturn = JSON.parse(JSON.stringify(response.data))
+    delete toReturn.rol
+    toReturn.rol = response.data.rol.nombre_rol
+
+    return toReturn
  }
 
  export default { login }

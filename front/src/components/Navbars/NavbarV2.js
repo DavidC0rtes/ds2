@@ -5,6 +5,8 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import Chip from '@material-ui/core/Chip'
 import HomeIcon from '@material-ui/icons/Home'
 import UserIcon from '@material-ui/icons/Person'
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser'
+import AssessmentIcon from '@material-ui/icons/Assessment';
 import { Typography } from '@material-ui/core'
 
 // Sesión del usuario
@@ -51,19 +53,38 @@ const NavBar = () => {
       />
       <StyledBreadcrumb component={Link} to="/menu" label="Menú"/>
       <StyledBreadcrumb component={Link} to="/sedes" label="Sedes" onClick={handleClick} />
-      <a href = "/admin/dashboard">Admin</a>
-
+    
       {auth.user ? (
         <Breadcrumbs style={breadCrumbStyle}>
-          <StyledBreadcrumb component={Link} to="/perfil" label="Pérfil" icon={<UserIcon fontSize="small" />}/>
           
+          {
+            auth.user.rol !== 'Cliente' &&
+            <StyledBreadcrumb
+              component={Link}
+              to="/admin/dashboard"
+              label="Panel de control"
+              icon={<AssessmentIcon />}
+            />
+          }
+          <StyledBreadcrumb 
+            component={Link} 
+            to="/perfil" 
+            label="Pérfil" 
+            icon={
+              auth.user.nombre_rol === 'Cliente' 
+              ? (<UserIcon fontSize="small"/>)
+              : (<VerifiedUserIcon fontSize="small" />)
+            }
+          />
           <StyledBreadcrumb 
             component={Link} 
             to="/" 
             label="Cerrar sesión" 
             onClick={auth.logout}
           />
+          <span>{auth.user.rol}</span>
         </Breadcrumbs>
+
       ) : (
         <Breadcrumbs style={breadCrumbStyle}>
         <StyledBreadcrumb component={Link} to="/login" label="Iniciar sesión" />
@@ -71,6 +92,7 @@ const NavBar = () => {
         
         </Breadcrumbs>
       )}
+
       
     </Breadcrumbs>
     )

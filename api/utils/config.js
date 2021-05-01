@@ -14,7 +14,7 @@ const PORT = process.env.PORT
 // @see package.json 
 const DBNAME = process.env.NODE_ENV === 'test'
     ? "pruebas"
-    : "local" // si se quiere usar una conexión local, pongan local 
+    : "produccion" // si se quiere usar una conexión local, pongan local 
 
 
 const ENV = process.env.NODE_ENV
