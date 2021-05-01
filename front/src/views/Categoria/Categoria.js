@@ -37,7 +37,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const categorias = CategoryService.getAll().then(categorias => {})
+
+var categorias = CategoryService.getAll().then(function(cats) {categorias = cats})
 console.log(categorias)
 export default function Categories() {
   const classes = useStyles();
@@ -46,7 +47,7 @@ export default function Categories() {
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-
+  console.log(categorias)
   return (
     <div className={classes.root}>
       <title>Funciona? </title>
