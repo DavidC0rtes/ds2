@@ -70,11 +70,7 @@ const NavBar = () => {
             component={Link} 
             to="/perfil" 
             label="Pérfil" 
-            icon={
-              auth.user.nombre_rol === 'Cliente' 
-              ? (<UserIcon fontSize="small"/>)
-              : (<VerifiedUserIcon fontSize="small" />)
-            }
+            icon={<UserIcon fontSize="small"/>}
           />
           <StyledBreadcrumb 
             component={Link} 
