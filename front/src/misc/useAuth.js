@@ -25,7 +25,7 @@ export const useAuth = () => {
 
 // Provider hook that creates auth object and handles state
 function useProvideAuth() {
-    const [user, setUser] = useState(window.localStorage.getItem('user'))
+    const [user, setUser] = useState(null)
     
     /**
      * Métodos para manipular el estado del usuario
@@ -38,6 +38,7 @@ function useProvideAuth() {
      */
     const login = async (credentials) => {
         const result = await loginService.login(credentials)
+        console.log(result)
         window.localStorage.setItem('user', JSON.stringify(result))
         setUser(result)
     }
