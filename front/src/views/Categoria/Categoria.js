@@ -50,9 +50,8 @@ export default function Categories() {
   console.log(categorias)
   return (
     <div className={classes.root}>
-      <title>Funciona? </title>
       {Object.keys(categorias).map(accordion => {
-        const { id, heading, secondaryHeading, details } = accordion;
+        const { id, nombre, descripcion, activo } = accordion;
         return (
           <Accordion
             expanded={expanded === id}
@@ -64,13 +63,13 @@ export default function Categories() {
               aria-controls="panel1bh-content"
               id="panel1bh-header"
             >
-              <Typography className={classes.heading}>{heading}</Typography>
+              <Typography className={classes.heading}>{nombre}</Typography>
               <Typography className={classes.secondaryHeading}>
-                {secondaryHeading}
+                {descripcion}
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography>{details}</Typography>
+              <Typography>{activo}</Typography>
             </AccordionDetails>
           </Accordion>
         );
