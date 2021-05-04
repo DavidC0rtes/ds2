@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import FastfoodOutlinedIcon from '@material-ui/icons/FastfoodOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -124,7 +125,7 @@ export default function SignUp() {
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
+          <FastfoodOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Registrarse
