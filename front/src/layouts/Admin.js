@@ -117,7 +117,6 @@ export default function Admin({ ...rest }) {
           {...rest}
         />
         <div className={classes.mainPanel} ref={mainPanel}>
-          {console.log(routes[1])}
           {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
           {getRoute() ? (
             <div className={classes.content}>
