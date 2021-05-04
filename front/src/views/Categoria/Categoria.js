@@ -48,9 +48,31 @@ export default function Categories() {
     setExpanded(isExpanded ? panel : false);
   };
   console.log(categorias)
+  console.log(Object.values(categorias))
   return (
     <div className={classes.root}>
-      {Object.keys(categorias).map(accordion => {
+      <header>"Listado de categorias y productos"</header>
+      {Object.values(categorias).map(accordion => {
+        const { id, nombre, descripcion, activo } = accordion;
+        return (
+          <Accordion
+            expanded={expanded === id}
+            key={id}
+            onChange={handleChange(id)}
+            disabled = {!activo}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+            >
+              <Typography className={classes.heading}>{nombre}</Typography>
+              <Typography className={classes.secondaryHeading}>
+                {descripcion}
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>      {Object.values(categorias).map(accordion => {
         const { id, nombre, descripcion, activo } = accordion;
         return (
           <Accordion
@@ -70,6 +92,10 @@ export default function Categories() {
             </AccordionSummary>
             <AccordionDetails>
               <Typography>{activo}</Typography>
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}</Typography>
             </AccordionDetails>
           </Accordion>
         );
