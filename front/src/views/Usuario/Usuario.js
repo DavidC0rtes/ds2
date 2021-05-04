@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 // core components
 import {AppBar, Tabs, Tab} from '@material-ui/core';
+import UsersTable from './ConsultarUsuarios'
 
 
 const styles = {
@@ -53,7 +54,7 @@ const toggleView = (event, newValue) => {
       </AppBar>
 
       <TabPanel value={value} index={0}>
-        Hola
+        <UsersTable />
       </TabPanel>
       <TabPanel value={value} index={1}>
         Chao
