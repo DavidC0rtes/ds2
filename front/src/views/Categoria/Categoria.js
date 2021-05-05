@@ -41,6 +41,11 @@ const useStyles = makeStyles(theme => ({
 //Añadir producto
 
 
+//Añadir categoria
+
+const addCategory = async (event) => {
+
+}
 
 var categorias = CategoryService.getAll().then(function(cats) {categorias = cats})
 console.log(categorias)
