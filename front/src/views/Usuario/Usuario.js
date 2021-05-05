@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import {AppBar, Tabs, Tab} from '@material-ui/core';
 import UsersTable from './ConsultarUsuarios'
+import CreateUser from './CrearUsuario'
 
 
 const styles = {
@@ -57,7 +58,7 @@ const toggleView = (event, newValue) => {
         <UsersTable />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Chao
+        <CreateUser />
       </TabPanel>
     </React.Fragment>
   );

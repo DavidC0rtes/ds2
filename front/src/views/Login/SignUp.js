@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import FastfoodOutlinedIcon from '@material-ui/icons/FastfoodOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -10,10 +9,9 @@ import Container from '@material-ui/core/Container';
 import FormNewUser from '../../components/FormNewUser'
 import Toast from '../../components/Toast'
 import userService from '../../services/users'
+import FormHandler from '../../variables/formHandler'
 
 import { useHistory } from 'react-router-dom'
-
-
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,11 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function SignUp() {
-  const [name, setNewName] = useState('')
-  const [lastName, setNewLastName] = useState('')
-  const [password, setNewPassword] = useState('')
-  const [email, setNewEmail] = useState('')
-  const [errors, setNewErrors] = useState({})
+  const [state, setState] = useState({})
   const [message, setNewMessage] = useState(null)
 
   const history = useHistory()
@@ -49,27 +43,30 @@ export default function SignUp() {
   // Se encarga de añadir un nuevo usuario una vez se dé click al boton 'Registrar'
   const addUser = async (event) => {
     event.preventDefault()
+    const _copyState = JSON.parse(JSON.stringify(state))
     
     // Verificar que el formulario este completo.
-    if ( name && lastName && password && email ) {
-        const emailInUse = await userService.getByEmail(email)
+    if ( state.firstName && state.lastName && state.password && state.email ) {
+        const emailInUse = await userService.getByEmail(state.email)
 
         if (emailInUse) {
-            const newErrors = {}
-            newErrors.email = 'Correo en uso'
-            setNewErrors(newErrors)
-
+            _copyState.errorEmail = 'Correo en uso'
+            setState(_copyState)
         } else {
-            setNewErrors({})
+            delete _copyState.errorEmail
+            delete _copyState.errorFirstName
+            delete _copyState.errorLastName
+            delete _copyState.errorPassword
 
+            setState(_copyState)
             // Objeto del usuario cliente a registrar
             const newUser = {
-                email: email,
+                email: state.email,
                 id_rol: 1,
-                password: password,
+                password: state.password,
                 info: {
-                    primer_nombre: name,
-                    primer_apellido: lastName
+                    primer_nombre: state.firstName,
+                    primer_apellido: state.lastName
                 }
             }
             
@@ -80,6 +77,7 @@ export default function SignUp() {
                 history.replace("/login")
                 
             } catch (err) {
+                console.error(err)
                 setNewMessage('Algo ha salido mal')
             }
             
@@ -90,32 +88,14 @@ export default function SignUp() {
         }
       
     } else {
-        const newErrors = {}
         // Añadir mensaje de error solo a campos vacíos
-        if (!name) newErrors.firstname = 'Campo obligatorio'
-        if (!lastName) newErrors.lastname = 'Campo obligatorio'
-        if (!email) newErrors.email = 'Campo obligatorio'
-        if (!password) newErrors.password = 'Campo obligatorio'
+        if (!_copyState.firstName) _copyState.errorFirstname = 'Campo obligatorio'
+        if (!_copyState.lastName) _copyState.errorLastName = 'Campo obligatorio'
+        if (!_copyState.email) _copyState.errorEmail = 'Campo obligatorio'
+        if (!_copyState.password) _copyState.errorPassword = 'Campo obligatorio'
 
-        setNewErrors(newErrors)
+        setState(_copyState)
     }
-
-  }
-  
-  const handleNewName = (event) => setNewName(event.target.value)
-  const handleNewLastName = (event) => setNewLastName(event.target.value)
-  const handleNewEmail = (event) => setNewEmail(event.target.value)
-  const handleNewPassword = (event) => {
-      if (event.target.value.length < 3) {
-          const newErrs = JSON.parse(JSON.stringify(errors))
-          newErrs.password = 'Contraseña demasiado corta'
-          setNewErrors(newErrs)
-      } else {
-          const newErrs = JSON.parse(JSON.stringify(errors))
-          delete newErrs.password
-          setNewErrors(newErrs)
-          setNewPassword(event.target.value)
-      }
   }
 
   const classes = useStyles();
@@ -131,12 +111,9 @@ export default function SignUp() {
           Registrarse
         </Typography>
         <FormNewUser
+          handleFieldChange={(event) => FormHandler(state, setState, event)}
+          state={state}
           handleSubmit={addUser}
-          handleNewName={handleNewName}
-          handleNewLastName={handleNewLastName}
-          handleNewPassword={handleNewPassword}
-          handleNewEmail={handleNewEmail}
-          errors={errors}
         />
         <Toast
             message={message}
