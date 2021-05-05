@@ -1,11 +1,16 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import { emphasize, withStyles } from '@material-ui/core/styles'
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import Chip from '@material-ui/core/Chip'
 import HomeIcon from '@material-ui/icons/Home'
 import UserIcon from '@material-ui/icons/Person'
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser'
+import AssessmentIcon from '@material-ui/icons/Assessment';
 import { Typography } from '@material-ui/core'
+
+// Sesión del usuario
+import { useAuth } from '../../misc/useAuth'
 
 
 const StyledBreadcrumb = withStyles((theme) => ({
@@ -26,7 +31,6 @@ const StyledBreadcrumb = withStyles((theme) => ({
 
 function handleClick(event) {
   event.preventDefault();
-  console.info('You clicked a breadcrumb.');
 }
 
 const breadCrumbStyle = {
@@ -34,8 +38,9 @@ const breadCrumbStyle = {
     justifyContent: 'center',
 }
 
-const NavBar = (props) => {
-  //console.log(user)
+const NavBar = () => {
+  const auth = useAuth()
+
   return (
     
     <Breadcrumbs aria-label="breadcrumb" style={breadCrumbStyle}>
@@ -49,9 +54,45 @@ const NavBar = (props) => {
       <StyledBreadcrumb component={Link} to="/menu" label="Menú" onClick={handleClick} />
       <StyledBreadcrumb component={Link} to="/categorias" label="Categorias" />
       {!props.user && <StyledBreadcrumb component={Link} to="/login" label="Iniciar sesión"/>}
+      <StyledBreadcrumb component={Link} to="/menu" label="Menú"/>
+      <StyledBreadcrumb component={Link} to="/sedes" label="Sedes" onClick={handleClick} />
+    
+      {auth.user ? (
+        <Breadcrumbs style={breadCrumbStyle}>
+          
+          {
+            auth.user.rol !== 'Cliente' &&
+            <StyledBreadcrumb
+              component={Link}
+              to="/admin/dashboard"
+              label="Panel de control"
+              icon={<AssessmentIcon />}
+            />
+          }
+          <StyledBreadcrumb 
+            component={Link} 
+            to="/perfil" 
+            label="Pérfil" 
+            icon={<UserIcon fontSize="small"/>}
+          />
+          <StyledBreadcrumb 
+            component={Link} 
+            to="/" 
+            label="Cerrar sesión" 
+            onClick={auth.logout}
+          />
+          <span>{auth.user.rol}</span>
+        </Breadcrumbs>
 
+      ) : (
+        <Breadcrumbs style={breadCrumbStyle}>
+        <StyledBreadcrumb component={Link} to="/login" label="Iniciar sesión" />
+        <StyledBreadcrumb component={Link} to="/registrarse" label="Crear cuenta" />
+        
+        </Breadcrumbs>
+      )}
 
-      <a href = "/admin/dashboard">Admin</a>
+      
     </Breadcrumbs>
     )
 }

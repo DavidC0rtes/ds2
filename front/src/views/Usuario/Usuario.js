@@ -1,31 +1,65 @@
-import React from "react";
+import React, { useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
-import {AppBar, Toolbar, Button, Link} from '@material-ui/core';
+import {AppBar, Tabs, Tab} from '@material-ui/core';
+import UsersTable from './ConsultarUsuarios'
+import CreateUser from './CrearUsuario'
+
 
 const styles = {
   AppBarClass: {
     marginTop: "-80px",
-    backgroundColor: "#00acc1"
+    backgroundColor: "#a61414"
   }
 };
+
+const TabPanel = (props) => {
+  const {children, value, index, ...other} = props
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      {...other}
+      >
+        {value === index && (
+          <>{children}</>
+        )}
+    </div>
+  )
+}
+
 
 const useStyles = makeStyles(styles);
 
 export default function TableList() {
   const classes = useStyles();
+  
+  // Mantiene una referencia del componente que se encuentra activo
+  const [value, setValue] = useState(0)
+
+  // Función para manejar el cambio entre pestañas
+const toggleView = (event, newValue) => {
+  setValue(newValue)
+}
+
+
   return (
     <React.Fragment>
       <AppBar position="sticky" className = {classes.AppBarClass}>
-        <Toolbar>
-        <Button><Link href = "users" color="primary" style={{ color: 'white', textDecoration: 'none' }}>Usuarios </Link></Button>
-        <Button><Link href = "createuser" color="primary" style={{ color: 'white', textDecoration: 'none' }}> Crear Usuario </Link></Button>
-        <Button><Link href = "modifyuser" color="primary" style={{ color: 'white', textDecoration: 'none' }}>Modificar Usuario </Link></Button>
-        <Button><Link href = "viewuser" color="primary" style={{ color: 'white', textDecoration: 'none' }}>Consultar Usuario </Link></Button>
-        </Toolbar>
+        <Tabs value={value} onChange={toggleView}>
+          <Tab label="Ver usuarios" />
+          <Tab label="Crear usuario"/>
+        </Tabs>
       </AppBar>
-      <Toolbar />
+
+      <TabPanel value={value} index={0}>
+        <UsersTable />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <CreateUser />
+      </TabPanel>
     </React.Fragment>
   );
 }
