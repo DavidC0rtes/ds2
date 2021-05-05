@@ -15,9 +15,16 @@ const category = require('../entity/Categorias')
 * Note que debe existir una categoría antes de agregar un producto 
 */
 
+//Retornar producto de una categoria dada
+
+productsRouter.get('/', async (request, response) => {
+    const categoryproducts = await control.getBy(product, id_categoria, request.params.id )
+    response.json(categoryproducts)
+})
+
 productsRouter.post('/', async (request, response) => {
     const body = request.body
-    if (body.nombre = null) throw Error("Por favor llenar todos los campos")
+    if (body.nombre = null) throw Error("Por favor introducir un nombre")
 
     const newProduct = {
         nombre: body.nombre,
