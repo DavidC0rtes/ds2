@@ -21,14 +21,9 @@ const useStyles = makeStyles((theme) => ({
  * @param {array} values : valores del select 
  * @returns 
  */
-const SimpleSelect = ( {values, errors} ) => {
+const SimpleSelect = ( {values, errors, handleChange, state} ) => {
     const classes = useStyles()
-    const [value, setValue] = React.useState('')
     const [open, setOpen] = React.useState(false)
-
-    const handleChange = (event) => {
-        setValue(event.target.value)
-    }
 
     const toggleSelect = () => {
         open ? setOpen(false) : setOpen(true)
@@ -41,8 +36,9 @@ const SimpleSelect = ( {values, errors} ) => {
                 <Select
                     labelId="label-select"
                     id="select-roles"
+                    name="rol"
                     open={open}
-                    value={value}
+                    value={state}
                     required
                     error={errors && 'Campo obligatorio'}
                     onClose={toggleSelect}
