@@ -53,7 +53,6 @@ const NavBar = () => {
       />
       <StyledBreadcrumb component={Link} to="/menu" label="Menú" onClick={handleClick} />
       <StyledBreadcrumb component={Link} to="/categorias" label="Categorias" />
-      {!props.user && <StyledBreadcrumb component={Link} to="/login" label="Iniciar sesión"/>}
       <StyledBreadcrumb component={Link} to="/menu" label="Menú"/>
       <StyledBreadcrumb component={Link} to="/sedes" label="Sedes" onClick={handleClick} />
     
