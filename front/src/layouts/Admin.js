@@ -14,6 +14,8 @@ import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
 import bgImage from "assets/img/background-food.jpg";
 
+import CenteredCard from '../components/Card/CenteredCard'
+
 // Sesión del usuario (para autenticar esta vista)
 import { useAuth } from '../misc/useAuth'
 
@@ -131,8 +133,13 @@ export default function Admin({ ...rest }) {
   }
   return (
     <div>
-      <h2>¡NO!</h2>
+      <CenteredCard
+        header={'404'}
+        title={'Error'}
+        variant={'outlined'} 
+      >
+        No encontramos la página que buscas.
+      </CenteredCard>
     </div>
-  )
-  
+  ) 
 }

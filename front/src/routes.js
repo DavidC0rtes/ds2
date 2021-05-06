@@ -35,7 +35,7 @@ const dashboardRoutes = [
   },
   {
     path: "/users",
-    name: "Users",
+    name: "Usuarios",
     icon: Person,
     component: Usuarios,
     layout: "/admin"
