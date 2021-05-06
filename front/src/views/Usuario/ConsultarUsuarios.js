@@ -3,6 +3,8 @@ import React, {useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import DataTable from '../../components/Table/DataGrid'
 import userService from '../../services/users'
+import CustomTextField from '../../components/CustomInput/Textfield'
+import SearchIcon from '@material-ui/icons/Search';
 
 const styles = {
   AppBarClass: {
@@ -62,6 +64,11 @@ export default function UsersTable() {
   const classes = useStyles();
   return (
     <React.Fragment>
+      <CustomTextField
+        id="txt-busqueda"
+        label="Buscar"
+        icon={<SearchIcon />}
+      />
       <DataTable
         rows={users}
         columns={headers}
