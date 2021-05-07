@@ -18,6 +18,7 @@ import { DataGrid } from '@material-ui/data-grid'
  * llaves: field, headerName, width, type, description, sortable, valueGetter
  */
 const DataTable = ( {rows, columns, pageSize} ) => {
+	
 	return (
 		<div style={{ width: '100%', height: '400px'}}>
 			<DataGrid rows={rows} columns={columns} pageSize={pageSize} />
@@ -25,4 +26,4 @@ const DataTable = ( {rows, columns, pageSize} ) => {
 	)
 }
 
-export default DataTable
+export default React.memo(DataTable)
