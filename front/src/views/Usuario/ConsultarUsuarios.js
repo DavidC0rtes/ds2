@@ -75,10 +75,21 @@ export default function UsersTable() {
     // al botón de actualizar.
     if (previousUpdate !== update) {
       fetchUsers()
-      console.log('hola')
     } 
   }, [update])
   
+  /**
+   * Filtra los usuarios según el filtro en cualquiera de los campos.
+   * Si no hay filtro devuelve todos los usuarios.
+   */
+  const usersToShow = filter
+    ? users.filter( (user) => 
+      user.primer_nombre.match(new RegExp(filter, "i")) ||
+      user.primer_apellido.match(new RegExp(filter, "i")) ||
+      user.email.match(new RegExp(filter, "i")) ||
+      user.rol.match(new RegExp(filter, "i"))
+    )
+    : users
 
   return (
     <React.Fragment>
@@ -105,7 +116,7 @@ export default function UsersTable() {
       </Grid>
       
       <DataTable
-        rows={users}
+        rows={usersToShow}
         columns={headers}
         pageSize={10}
       />
