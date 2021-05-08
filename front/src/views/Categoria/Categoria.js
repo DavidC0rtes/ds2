@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -13,8 +13,11 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ModalNewCategory from '../../components/modalNewCategory'
+import FormHandler from '../../variables/formHandler'
 
-import CategoryService from '../../services/categories'
+import categoryService from '../../services/categories'
+import productService from '../../services/products'
 
 const styles = {
   AppBarClass: {
@@ -30,10 +33,12 @@ const useStyles = makeStyles(theme => ({
   heading: {
     fontSize: theme.typography.pxToRem(15),
     flexBasis: "33.33%",
+
     flexShrink: 0
   },
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
+    display: 'inline-block',
     color: theme.palette.text.secondary
   }
 }));
@@ -43,24 +48,71 @@ const useStyles = makeStyles(theme => ({
 
 //Añadir categoria
 
-const addCategory = async (event) => {
 
-}
 
-var categorias = CategoryService.getAll().then(function(cats) {categorias = cats})
-console.log(categorias)
+var categorias = categoryService.getAll().then(function(cats) {categorias = cats})
+
 export default function Categories() {
+  //Añadir categoria
+  const [state, setState] = useState({})
+  const [message, setNewMessage] = useState(null)
+
+  
+  const addCategory = async (event) => {
+    event.preventDefault()
+    const _copyState = JSON.parse(JSON.stringify(state)) 
+    
+    // Verificar que el nombre no este en uso y el campo no este vacio
+
+    if(state.nombre) {
+      const nameInUse = await categoryService.getByName(state.nombre)
+
+      if (nameInUse) {
+        _copyState.errorNombre = 'Ya existe una categoria con este nombre'
+        setState(_copyState)
+      } else {
+          delete _copyState.errorNombre
+
+          setState(_copyState)
+
+          const newCategory = {
+            nombre: state.nombre,
+            descripcion: state.descripcion,
+            activo: state.activo
+          }
+
+          try {
+            const result = await categoryService.create(newCategory)
+            if (result.identifiers) setNewMessage('Categoria creada')
+          } catch (err) {
+              console.error(err)
+              setNewMessage('Algo ha salido mal')
+        }
+        setTimeout(() => {
+            setNewMessage(null)
+        }, 4000)
+
+        }
+    } else {
+      if (!_copyState.nombre) _copyState.errorNombre = 'Campo obligatorio'
+      setState(_copyState)
+    }
+
+  }
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  console.log(categorias)
-  console.log(Object.values(categorias))
+
   return (
     <div className={classes.root}>
       <header>"Listado de categorias y productos"</header>
+      <ModalNewCategory
+        handleFieldChange={(event) => FormHandler(state, setState, event)}
+        state={state}
+        handleSubmit={addCategory}/>
       {Object.values(categorias).map(accordion => {
         const { id, nombre, descripcion, activo } = accordion;
         return (
@@ -68,7 +120,7 @@ export default function Categories() {
             expanded={expanded === id}
             key={id}
             onChange={handleChange(id)}
-            disabled = {activo}
+            disabled = {!activo}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -80,18 +132,17 @@ export default function Categories() {
                 {descripcion}
               </Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails style={{display:'block'}}>
               <Typography width = "100%">
-              <Container component="main" maxWidth="xl" width = "100%">
-                asdasd
-              <Button
-                  width = "100%"
-                  fullWidth = {true}
-                  variant = "contained"
-                  color = "primary"
-                  >
-                    Nuevo Producto
-                  </Button>
+                <Container component="main" maxWidth="xl" width = "100%" >
+                
+                  <Button
+                    style={{width:'100%'}}
+                    fullWidth = {true}
+                    variant = "contained"
+                    color = "primary"
+                    >
+                      Nuevo Producto</Button>
                 </Container>
  
 

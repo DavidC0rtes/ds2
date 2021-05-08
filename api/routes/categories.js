@@ -8,6 +8,17 @@ categoriesRouter.get('/', async (request, response) => {
     response.json(categories)
 })
 
+//Revisar si el nombre de la categoria ya esta en uso
+categoriesRouter.head('/:name', async (request, response) => {
+    const result = await control.getBy(category, 'nombre', request.params.name)
+
+    if (result) {
+        return response.status(204).end()
+    }
+
+    return response.status(404).end()
+})
+
 //Insertar una nueva categoria, nombre NO puede estar vacio
 categoriesRouter.post('/', async (request, response) => {
     const body = request.body 

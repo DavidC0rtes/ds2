@@ -3,6 +3,20 @@ const control = require('../controllers/Control')
 const product = require('../entity/Productos')
 const category = require('../entity/Categorias')
 
+
+
+//Confirmar que existe la categoria asignada al producto
+// Determina si el usuario con correo email existe. No devuelve al usuario 
+productsRouter.head('/:id_categoria', async (request, response) => {
+    const result = await control.getBy(product, 'id_categoria', request.params.id_categoria)
+
+    if (result) {
+        return response.status(204).end()
+    }
+
+    return response.status(404).end()
+})
+
 /*Creación de un nuevo producto
 * La estructura es:
 * "nombre": "ejemplo",
@@ -18,7 +32,7 @@ const category = require('../entity/Categorias')
 //Retornar producto de una categoria dada
 
 productsRouter.get('/', async (request, response) => {
-    const categoryproducts = await control.getBy(product, id_categoria, request.params.id )
+    const categoryproducts = await control.getBy(product, 'id_categoria', request.params.id_categoria)
     response.json(categoryproducts)
 })
 

@@ -12,6 +12,11 @@ const baseUrl = 'http://localhost:3001/api/products'
     return request.then(response => response.data)
 }
 
+const getAll = () => {
+    const request = axios.get(baseUrl)
+    return request.then(response => response.data)
+}
+
 const getByCat = async (id_categoria) => {
     try {
         const request = axios.head(`${baseUrl}/${id_categoria}` )
@@ -30,6 +35,7 @@ const getByCat = async (id_categoria) => {
     
 }
 export default {
+    getAll,
     create,
     getByCat
 }

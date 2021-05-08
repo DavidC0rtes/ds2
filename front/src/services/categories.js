@@ -15,8 +15,26 @@ const baseUrl = 'http://localhost:3001/api/categories'
     return request.then(response => response.data).catch(error => console.log(error))
 }
 
+const getByName = async (name) => {
+    try {
+        const request = axios.head(`${baseUrl}/${name}` )
+        const response = await request
+        return response.status
+    } catch (error) {
+
+        if (error.response.status === 404) {
+            return null
+        } else {
+            console.error(error)
+        }
+        
+        
+    }
+    
+}    
+
 /**
- * Manda una petición POST con su cuerpo al servidor. Esta función se usa para crear un usuario.
+ * Manda una petición POST con su cuerpo al servidor. Esta función se usa para crear una categoria.
  *
  * @param newObject - objeto
  * @return ?
@@ -28,5 +46,6 @@ const baseUrl = 'http://localhost:3001/api/categories'
 
 export default {
     getAll,
+    getByName,
     create
 }
