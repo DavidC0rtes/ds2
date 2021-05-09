@@ -120,7 +120,6 @@ export default function Categories() {
             expanded={expanded === id}
             key={id}
             onChange={handleChange(id)}
-            disabled = {!activo}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
