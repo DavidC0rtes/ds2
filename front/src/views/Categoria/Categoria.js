@@ -43,13 +43,19 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-//Añadir producto
-
+/* Añadir un producto
+* Se reciben todos los productos, y se los organiza por categoria aqui
+* Y los mapeamos a cada acordion
+*/
 
 //Añadir categoria
 
 
+//Eliminar categoria
 
+//Editar categoria
+
+//obtener todas las categorias
 var categorias = categoryService.getAll().then(function(cats) {categorias = cats})
 
 export default function Categories() {
@@ -57,7 +63,9 @@ export default function Categories() {
   const [state, setState] = useState({})
   const [message, setNewMessage] = useState(null)
 
-  
+  var products = productService.getAll().then(function(prods) {products = prods})
+  console.log(products)
+
   const addCategory = async (event) => {
     event.preventDefault()
     const _copyState = JSON.parse(JSON.stringify(state)) 
@@ -133,8 +141,6 @@ export default function Categories() {
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <Typography width = "100%">
-                <Container component="main" maxWidth="xl" width = "100%" >
-                
                   <Button
                     style={{width:'100%'}}
                     fullWidth = {true}
@@ -142,9 +148,7 @@ export default function Categories() {
                     color = "primary"
                     >
                       Nuevo Producto</Button>
-                </Container>
- 
-
+                       
               </Typography>
             </AccordionDetails>
           </Accordion>

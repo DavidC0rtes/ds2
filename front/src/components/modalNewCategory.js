@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
                           label="Nombre"
                           autoFocus
                           onChange={props.handleFieldChange}
-                          value={state.nombre}
+                          value={state.nombre || ''}
                           />
                       </Grid>
                       <Grid item xs={12}>
@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
                           label="Descripción"
                           autoFocus
                           onChange={props.handleFieldChange}
-                          value={state.descripcion}/>
+                          value={state.descripcion || ''}/>
                       </Grid>
                       <Grid component="label" container alignItems="center" spacing={1}>
                         <Grid item>Inactiva</Grid>

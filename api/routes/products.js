@@ -31,9 +31,13 @@ productsRouter.head('/:id_categoria', async (request, response) => {
 
 //Retornar producto de una categoria dada
 
+/*productsRouter.get('/', async (request, response) => {
+*    const categoryproducts = await control.getBy(product, 'id_categoria', request.params.id_categoria)
+*    response.json(categoryproducts)
+})*/
 productsRouter.get('/', async (request, response) => {
-    const categoryproducts = await control.getBy(product, 'id_categoria', request.params.id_categoria)
-    response.json(categoryproducts)
+    const products = await control.getAll(product)
+    response.json(products)
 })
 
 productsRouter.post('/', async (request, response) => {
@@ -63,6 +67,4 @@ productsRouter.post('/', async (request, response) => {
     response.json(insertedProduct)
 })
 
-module.exports = {
-    productsRouter
-}
+module.exports = productsRouter
