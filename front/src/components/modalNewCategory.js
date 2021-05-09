@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
                       <Grid container spacing={2}>
                       <Grid item xs={12}>
                           <TextField
-                          error ={state.errorNombre}
+                          error ={state.errorNombre && true}
                           helperText={ state.errorNombre}
                           name="nombre"
                           variant="outlined"
