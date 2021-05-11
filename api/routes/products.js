@@ -7,8 +7,8 @@ const category = require('../entity/Categorias')
 
 //Confirmar que existe la categoria asignada al producto
 // Determina si el usuario con correo email existe. No devuelve al usuario 
-productsRouter.head('/:id_categoria', async (request, response) => {
-    const result = await control.getBy(product, 'id_categoria', request.params.id_categoria)
+productsRouter.head('/:categoria', async (request, response) => {
+    const result = await control.getBy(product, 'categoria', request.params.categoria)
 
     if (result) {
         return response.status(204).end()
@@ -31,10 +31,10 @@ productsRouter.head('/:id_categoria', async (request, response) => {
 
 //Retornar producto de una categoria dada
 
-/*productsRouter.get('/', async (request, response) => {
-*    const categoryproducts = await control.getBy(product, 'id_categoria', request.params.id_categoria)
-*    response.json(categoryproducts)
-})*/
+productsRouter.get('/:categoria', async (request, response) => {
+    const categoryproducts = await control.getBy(product, 'categoria', request.params.categoria)
+    response.json(categoryproducts)
+})
 productsRouter.get('/', async (request, response) => {
     const products = await control.getAll(product)
     response.json(products)

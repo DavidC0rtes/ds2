@@ -55,7 +55,7 @@ async function getBy(entity, field, value) {
     
     const result = await manager.find(entity, criteria) // Retorna un arreglo de un elemento.
     
-    return result[0]
+    return result
 }
 
 module.exports = {

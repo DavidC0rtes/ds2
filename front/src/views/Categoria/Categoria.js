@@ -43,29 +43,37 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-/* Añadir un producto
+/* Añadir un producto y mostrar los productos por categoria TODO
 * Se reciben todos los productos, y se los organiza por categoria aqui
 * Y los mapeamos a cada acordion
 */
 
-//Añadir categoria
 
+//Eliminar categoria TODO
 
-//Eliminar categoria
+//Editar categoria TODO
 
-//Editar categoria
-
-//obtener todas las categorias
+/*obtener todas las categorias
+* Usamos esta variable
+*/
 var categorias = categoryService.getAll().then(function(cats) {categorias = cats})
 
+var allproducts = productService.getAll().then(function(prods){allproducts = prods})
+console.log(allproducts)
+//Función para obtener los productos de una categoria dada, EntityColumnNotFound Error
+const getProducts = function(id) {
+  var productsInCategory = productService.getByCat(id).then(function(products) {productsInCategory = products})
+  return productsInCategory
+}
+console.log(getProducts(2))
+
+
+
 export default function Categories() {
-  //Añadir categoria
   const [state, setState] = useState({})
   const [message, setNewMessage] = useState(null)
 
-  var products = productService.getAll().then(function(prods) {products = prods})
-  console.log(products)
-
+  //Añadir categoria
   const addCategory = async (event) => {
     event.preventDefault()
     const _copyState = JSON.parse(JSON.stringify(state)) 
@@ -123,6 +131,8 @@ export default function Categories() {
         handleSubmit={addCategory}/>
       {Object.values(categorias).map(accordion => {
         const { id, nombre, descripcion, activo } = accordion;
+        console.log(categorias)
+        console.log(typeof(accordion))
         return (
           <Accordion
             expanded={expanded === id}
@@ -136,7 +146,7 @@ export default function Categories() {
             >
               <Typography className={classes.heading}>{nombre}</Typography>
               <Typography className={classes.secondaryHeading}>
-                {descripcion}
+                {descripcion} 
               </Typography>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>

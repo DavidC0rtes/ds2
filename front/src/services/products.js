@@ -17,9 +17,9 @@ const getAll = () => {
     return request.then(response => response.data).catch(error => console.log(error))
 }
 
-const getByCat = async (id_categoria) => {
+const getByCat = async (categoria) => {
     try {
-        const request = axios.head(`${baseUrl}/${id_categoria}` )
+        const request = axios.get(`${baseUrl}/${categoria}` )
         const response = await request
         return response.status
     } catch (error) {
@@ -35,7 +35,7 @@ const getByCat = async (id_categoria) => {
     
 }
 export default {
-    getAll,
     create,
-    getByCat
+    getByCat,
+    getAll
 }
