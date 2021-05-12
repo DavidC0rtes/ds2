@@ -14,10 +14,12 @@ import AccordionActions from '@material-ui/core/AccordionActions';
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ModalNewCategory from '../../components/modalNewCategory'
+import ProductAccordion from '../../components/productAccordion'
 import FormHandler from '../../variables/formHandler'
 
 import categoryService from '../../services/categories'
 import productService from '../../services/products'
+
 
 const styles = {
   AppBarClass: {
@@ -58,14 +60,9 @@ const useStyles = makeStyles(theme => ({
 */
 var categorias = categoryService.getAll().then(function(cats) {categorias = cats})
 
-var allproducts = productService.getAll().then(function(prods){allproducts = prods})
-console.log(allproducts)
+
 //Función para obtener los productos de una categoria dada, EntityColumnNotFound Error
-const getProducts = function(id) {
-  var productsInCategory = productService.getByCat(id).then(function(products) {productsInCategory = products})
-  return productsInCategory
-}
-console.log(getProducts(2))
+
 
 
 
@@ -121,7 +118,7 @@ export default function Categories() {
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-
+  console.log(categorias)
   return (
     <div className={classes.root}>
       <header>"Listado de categorias y productos"</header>
@@ -131,8 +128,7 @@ export default function Categories() {
         handleSubmit={addCategory}/>
       {Object.values(categorias).map(accordion => {
         const { id, nombre, descripcion, activo } = accordion;
-        console.log(categorias)
-        console.log(typeof(accordion))
+
         return (
           <Accordion
             expanded={expanded === id}
@@ -158,7 +154,6 @@ export default function Categories() {
                     color = "primary"
                     >
                       Nuevo Producto</Button>
-                       
               </Typography>
             </AccordionDetails>
           </Accordion>

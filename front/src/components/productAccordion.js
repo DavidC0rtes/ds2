@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const classes = useStyles();
+
 
 
 
@@ -47,18 +47,18 @@ const productAccordion = (props) =>{
   return (
 
           <Accordion
-            expanded={expanded === id}
-            key={id}
-            onChange={handleChange(id)}
+            expanded={expanded === props.id}
+            key={props.id}
+            onChange={handleChange(props.id)}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1bh-content"
               id="panel1bh-header"
             >
-              <Typography className={classes.heading}>{nombre}</Typography>
-              <Typography id="secondheader" className={classes.secondaryHeading}>
-                {descripcion}
+              <Typography >{nombre}</Typography>
+              <Typography id="secondheader" >
+                {props.descripcion}
               </Typography>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
@@ -75,5 +75,8 @@ const productAccordion = (props) =>{
             </AccordionDetails>
           </Accordion>
           
+          
   )
 }
+
+export default productAccordion;
