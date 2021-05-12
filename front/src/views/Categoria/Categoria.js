@@ -61,7 +61,6 @@ const useStyles = makeStyles(theme => ({
 var categorias = categoryService.getAll().then(function(cats) {categorias = cats})
 
 
-//Función para obtener los productos de una categoria dada, EntityColumnNotFound Error
 
 
 
@@ -69,6 +68,15 @@ var categorias = categoryService.getAll().then(function(cats) {categorias = cats
 export default function Categories() {
   const [state, setState] = useState({})
   const [message, setNewMessage] = useState(null)
+
+  //Obtener los productos de una categoria dada
+
+  const getProducts = async function f1(id){
+    var products = await categoryService.getByCat(id);
+    return products
+  }
+
+    
 
   //Añadir categoria
   const addCategory = async (event) => {
