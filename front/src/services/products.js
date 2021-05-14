@@ -19,9 +19,8 @@ const getAll = () => {
 
 const getByCat = async (categoria) => {
     try {
-        const request = axios.get(`${baseUrl}/${categoria}` )
-        const response = await request
-        return response.status
+        const request = axios.get(`${baseUrl}/${categoria}`)
+        return request.then(response => response.data).catch(error => console.log(error))
     } catch (error) {
 
         if (error.response.status === 404) {

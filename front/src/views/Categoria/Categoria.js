@@ -71,11 +71,8 @@ export default function Categories() {
 
   //Obtener los productos de una categoria dada
 
-  const getProducts = async(id) => {
-    var products = await productService.getByCat(id).then(function(prods) {products = prods});
-    return products
-  }
-
+ productService.getByCat(2).then((value) => console.log(value));
+  
     
 
   //Añadir categoria
@@ -127,8 +124,7 @@ export default function Categories() {
     setExpanded(isExpanded ? panel : false);
   };
   console.log(categorias)
-  console.log(getProducts(2))
-  return (
+    return (
     <div className={classes.root}>
       <header>"Listado de categorias y productos"</header>
       <ModalNewCategory
