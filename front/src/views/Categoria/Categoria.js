@@ -71,8 +71,8 @@ export default function Categories() {
 
   //Obtener los productos de una categoria dada
 
-  const getProducts = async function f1(id){
-    var products = await categoryService.getByCat(id);
+  const getProducts = async(id) => {
+    var products = await productService.getByCat(id).then(function(prods) {products = prods});
     return products
   }
 
@@ -127,6 +127,7 @@ export default function Categories() {
     setExpanded(isExpanded ? panel : false);
   };
   console.log(categorias)
+  console.log(getProducts(2))
   return (
     <div className={classes.root}>
       <header>"Listado de categorias y productos"</header>
@@ -135,8 +136,7 @@ export default function Categories() {
         state={state}
         handleSubmit={addCategory}/>
       {Object.values(categorias).map(accordion => {
-        const { id, nombre, descripcion, activo } = accordion;
-
+        const { id, nombre, descripcion } = accordion;
         return (
           <Accordion
             expanded={expanded === id}
@@ -162,6 +162,42 @@ export default function Categories() {
                     color = "primary"
                     >
                       Nuevo Producto</Button>
+                      {Object.values().map(accordion => {
+                        const {id, nombre, descripcion, cantidad, precio, iva} = accordion;
+                        return (
+                          <Accordion
+                            expanded={expanded === id}
+                            key={id}
+                            onChange={handleChange(id)}
+                          >
+                            <AccordionSummary
+                              expandIcon={<ExpandMoreIcon />}
+                              aria-controls="panel1bh-content"
+                              id="panel1bh-header"
+                            >
+                              <Typography >{nombre}</Typography>
+                              <Typography id="secondheader" >
+                                {descripcion}
+                              </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails style={{display:'block'}}>
+                              <Typography width = "100%">
+                                  <Button
+                                    style={{width:'100%'}}
+                                    fullWidth = {true}
+                                    variant = "contained"
+                                    color = "primary"
+                                    >
+                                      Promises are bullshit</Button>
+                                       
+                              </Typography>
+                            </AccordionDetails>
+                          </Accordion>
+                          
+                          
+                  
+                        )
+                      })}
               </Typography>
             </AccordionDetails>
           </Accordion>

@@ -47,9 +47,9 @@ const productAccordion = (props) =>{
   return (
 
           <Accordion
-            expanded={expanded === props.id}
-            key={props.id}
-            onChange={handleChange(props.id)}
+            expanded={expanded === id}
+            key={id}
+            onChange={handleChange(id)}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -69,7 +69,7 @@ const productAccordion = (props) =>{
                     variant = "contained"
                     color = "primary"
                     >
-                      Nuevo Producto</Button>
+                      Promises are bullshit</Button>
                        
               </Typography>
             </AccordionDetails>
