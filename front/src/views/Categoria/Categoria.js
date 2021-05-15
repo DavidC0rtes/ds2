@@ -71,9 +71,13 @@ export default function Categories() {
 
   //Obtener los productos de una categoria dada
 
+
  productService.getByCat(2).then((value) => console.log(value));
   
-    
+ const getProducts = async(id) =>{
+   var products = await productService.getByCat(id)
+   return products
+ }   
 
   //Añadir categoria
   const addCategory = async (event) => {
@@ -123,7 +127,6 @@ export default function Categories() {
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
-  console.log(categorias)
     return (
     <div className={classes.root}>
       <header>"Listado de categorias y productos"</header>
@@ -133,6 +136,8 @@ export default function Categories() {
         handleSubmit={addCategory}/>
       {Object.values(categorias).map(accordion => {
         const { id, nombre, descripcion } = accordion;
+        console.log(getProducts(2))
+        productService.getByCat(id).then((value) => console.log(value))
         return (
           <Accordion
             expanded={expanded === id}
@@ -151,50 +156,37 @@ export default function Categories() {
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <Typography width = "100%">
-                  <Button
+              </Typography>
+              {productService.getByCat(id).then((prods) => Object.values(prods).map(accordion =>{
+      const {id, nombre, descripcion, cantidad, precio, iva} = accordion;
+      return(
+        <Accordion
+          expanded={expanded === id}
+          key={id}
+          onChange={handleChange(id)}>
+            <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1bh-content"
+            id="panel1bh-header">
+              <Typography >{nombre}</Typography>
+              <Typography id="secondheader" >
+                {descripcion}
+                </Typography>
+                </AccordionSummary>
+                <AccordionDetails style={{display:'block'}}>
+                  <Typography width = "100%">
+                    <Button
                     style={{width:'100%'}}
                     fullWidth = {true}
                     variant = "contained"
-                    color = "primary"
-                    >
-                      Nuevo Producto</Button>
-                      {Object.values().map(accordion => {
-                        const {id, nombre, descripcion, cantidad, precio, iva} = accordion;
-                        return (
-                          <Accordion
-                            expanded={expanded === id}
-                            key={id}
-                            onChange={handleChange(id)}
-                          >
-                            <AccordionSummary
-                              expandIcon={<ExpandMoreIcon />}
-                              aria-controls="panel1bh-content"
-                              id="panel1bh-header"
-                            >
-                              <Typography >{nombre}</Typography>
-                              <Typography id="secondheader" >
-                                {descripcion}
-                              </Typography>
-                            </AccordionSummary>
-                            <AccordionDetails style={{display:'block'}}>
-                              <Typography width = "100%">
-                                  <Button
-                                    style={{width:'100%'}}
-                                    fullWidth = {true}
-                                    variant = "contained"
-                                    color = "primary"
-                                    >
-                                      Promises are bullshit</Button>
-                                       
-                              </Typography>
-                            </AccordionDetails>
-                          </Accordion>
-                          
-                          
-                  
-                        )
-                      })}
-              </Typography>
+                    color = "primary">
+                      Promises are bullshit</Button>               
+                      </Typography>
+                      </AccordionDetails>
+                      </Accordion>
+      )
+    }
+     ))}              
             </AccordionDetails>
           </Accordion>
         );
