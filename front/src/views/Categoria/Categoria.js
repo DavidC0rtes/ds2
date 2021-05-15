@@ -157,7 +157,7 @@ export default function Categories() {
             <AccordionDetails style={{display:'block'}}>
               <Typography width = "100%">
               </Typography>
-              {productService.getByCat(id).then((prods) => Object.values(prods).map(accordion =>{
+              {Object.values(prods).map(accordion =>{
       const {id, nombre, descripcion, cantidad, precio, iva} = accordion;
       return(
         <Accordion
@@ -186,7 +186,7 @@ export default function Categories() {
                       </Accordion>
       )
     }
-     ))}              
+     )}              
             </AccordionDetails>
           </Accordion>
         );
