@@ -59,12 +59,16 @@ const useStyles = makeStyles(theme => ({
 * Usamos esta variable
 */
 var categorias = categoryService.getAll().then(function(cats) {categorias = cats})
+var productoss = productService.getAll().then(function(rp) {productoss = rp})
 
 
+const getProductos = function f1(id){
+  var productos = productService.getByCat(id).then(function(prods) {productos = prods})
+  return productos
+}
 
-
-
-
+getProductos(2).then((valor) => console.log(valor) )
+console.log(categorias)
 export default function Categories() {
   const [state, setState] = useState({})
   const [message, setNewMessage] = useState(null)
@@ -72,13 +76,28 @@ export default function Categories() {
   //Obtener los productos de una categoria dada
 
 
- productService.getByCat(2).then((value) => console.log(value));
   
- const getProducts = async(id) =>{
-   var products = await productService.getByCat(id)
-   return products
- }   
+  function getPromise(){
+    return new Promise(function(resolve,reject){
+      setTimeout(function(){
+        resolve({'country' : 'INDIA'});
+      },2000)
+    })
+  }
+  
+  async function getResult(){
+    let result = await getPromise();
+    return result
+  }
+  
+  async function doTask(){
+    let data = await getResult();
+    return data
+  }
+  doTask();
+  console.log(doTask())
 
+ 
   //Añadir categoria
   const addCategory = async (event) => {
     event.preventDefault()
@@ -136,8 +155,25 @@ export default function Categories() {
         handleSubmit={addCategory}/>
       {Object.values(categorias).map(accordion => {
         const { id, nombre, descripcion } = accordion;
-        console.log(getProducts(2))
-        productService.getByCat(id).then((value) => console.log(value))
+        return (
+          <Accordion
+            expanded={expanded === id}
+            key={id}
+            onChange={handleChange(id)}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1bh-content"
+              id="panel1bh-header"
+            >
+              <Typography className={classes.heading}>{nombre}</Typography>
+              <Typography className={classes.secondaryHeading}>
+                {descripcion} 
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails style={{display:'block'}}>
+            {Object.values(productoss).map(accordion => {
+        const { id, nombre, descripcion } = accordion;
         return (
           <Accordion
             expanded={expanded === id}
@@ -157,36 +193,14 @@ export default function Categories() {
             <AccordionDetails style={{display:'block'}}>
               <Typography width = "100%">
               </Typography>
-              {Object.values(prods).map(accordion =>{
-      const {id, nombre, descripcion, cantidad, precio, iva} = accordion;
-      return(
-        <Accordion
-          expanded={expanded === id}
-          key={id}
-          onChange={handleChange(id)}>
-            <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1bh-content"
-            id="panel1bh-header">
-              <Typography >{nombre}</Typography>
-              <Typography id="secondheader" >
-                {descripcion}
-                </Typography>
-                </AccordionSummary>
-                <AccordionDetails style={{display:'block'}}>
-                  <Typography width = "100%">
-                    <Button
-                    style={{width:'100%'}}
-                    fullWidth = {true}
-                    variant = "contained"
-                    color = "primary">
-                      Promises are bullshit</Button>               
-                      </Typography>
-                      </AccordionDetails>
-                      </Accordion>
-      )
-    }
-     )}              
+              
+            </AccordionDetails>
+          </Accordion>
+        );
+      })}
+              <Typography width = "100%">
+              </Typography>
+              
             </AccordionDetails>
           </Accordion>
         );

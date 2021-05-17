@@ -18,21 +18,11 @@ const getAll = () => {
 }
 
 const getByCat = async (categoria) => {
-    try {
-        const request = axios.get(`${baseUrl}/${categoria}`)
-        return request.then(response => response.data).catch(error => console.log(error))
-    } catch (error) {
-
-        if (error.response.status === 404) {
-            return null
-        } else {
-            console.error(error)
-        }
-        
-        
-    }
     
+        const request = axios.get(`${baseUrl}/${categoria}`)
+        return request.then(response => response.data).catch(error => console.log(error))    
 }
+
 export default {
     create,
     getByCat,
