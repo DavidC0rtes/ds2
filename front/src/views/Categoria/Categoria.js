@@ -71,6 +71,7 @@ getProductos(2).then((valor) => console.log(valor) )
 console.log(categorias)
 export default function Categories() {
   const [state, setState] = useState({})
+  const [products, setProducts] = useState(null)
   const [message, setNewMessage] = useState(null)
 
   //Obtener los productos de una categoria dada
@@ -199,6 +200,7 @@ export default function Categories() {
         );
       })}
               <Typography width = "100%">
+                {2+2}
               </Typography>
               
             </AccordionDetails>
