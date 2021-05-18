@@ -62,20 +62,20 @@ var categorias = categoryService.getAll().then(function(cats) {categorias = cats
 var productoss = productService.getAll().then(function(rp) {productoss = rp})
 
 
-const getProductos = function f1(id){
-  var productos = productService.getByCat(id).then(function(prods) {productos = prods})
-  return productos
-}
 
-getProductos(2).then((valor) => console.log(valor) )
-console.log(categorias)
+
 export default function Categories() {
   const [state, setState] = useState({})
-  const [products, setProducts] = useState(null)
+  const [products, setProducts] = useState({})
   const [message, setNewMessage] = useState(null)
 
   //Obtener los productos de una categoria dada
 
+  //Hacer la petición
+  const getProducts =  function f1(id){
+    productService.getByCat(id).then(function(prods) {setProducts(prods)})
+  }
+  
 
   
   function getPromise(){
@@ -144,7 +144,17 @@ export default function Categories() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
-  const handleChange = panel => (event, isExpanded) => {
+  const handleChange = panel => (event, isExpanded, id) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+  const productHandleChange = panel => (event, isExpanded) => {
+    var x = document.getElementById("secondheader");
+    if (x.style.display === 'none') {
+      x.style.display = 'block';
+    } else {
+      x.style.display = 'none';
+    }
     setExpanded(isExpanded ? panel : false);
   };
     return (
@@ -158,6 +168,7 @@ export default function Categories() {
         const { id, nombre, descripcion } = accordion;
         return (
           <Accordion
+            TransitionProps={{ unmountOnExit: true }} 
             expanded={expanded === id}
             key={id}
             onChange={handleChange(id)}
@@ -173,13 +184,13 @@ export default function Categories() {
               </Typography>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
-            {Object.values(productoss).map(accordion => {
+            {products ? Object.values(products).map(accordion => {
         const { id, nombre, descripcion } = accordion;
         return (
           <Accordion
-            expanded={expanded === id}
+            expanded={expanded === id*2}
             key={id}
-            onChange={handleChange(id)}
+            onChange={productHandleChange(id)}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -198,7 +209,7 @@ export default function Categories() {
             </AccordionDetails>
           </Accordion>
         );
-      })}
+      }) : <em>Cargando...</em> }
               <Typography width = "100%">
                 {2+2}
               </Typography>
