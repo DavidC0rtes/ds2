@@ -47,7 +47,7 @@ export default function UsersTable() {
       description: 'Link al pérfil del usuario',
       sortable: false,
       width: 100,
-      valueGetter: (params) => `perfil/${params.getValue('id')}`
+      valueGetter: (params) => `perfil/${params.getValue('email')}`
     }
   ]
 

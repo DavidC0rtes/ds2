@@ -33,11 +33,18 @@ const create = (newObject) => {
  * @param {string} email 
  * @returns 
  */
-const getByEmail = async (email) => {
+const getByEmail = async (email, method) => {
     try {
-        const request = axios.head(`${baseUrl}/${email}` )
+        let request
+        method === 'get'
+        ? request = axios.get(`${baseUrl}/${email}`)
+        : request = axios.head(`${baseUrl}/${email}`)
+        
         const response = await request
+        if (method === 'get') return response.data
+
         return response.status
+        
     } catch (error) {
 
         if (error.response.status === 404) {
@@ -45,15 +52,28 @@ const getByEmail = async (email) => {
         } else {
             console.error(error)
         }
-        
-        
     }
-    
-}    
+}
+
+/**
+ * Esta función se encarga de realizar una petición PUT a la API.
+ * Lo cual resulta en una actualización del usuario en la db.
+ * @param {obj} obj 
+ */
+const update = async (obj, id) => {
+    try {
+        const response = await axios.put(`${baseUrl}/${id}`, obj)
+        return response
+    } catch (err) {
+        console.error(err)
+        return err
+    }
+}
 
 // eslint-disable-next-line
 export default {
     getAll,
     create,
-    getByEmail
+    getByEmail,
+    update
 }

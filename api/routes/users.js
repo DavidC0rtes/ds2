@@ -77,7 +77,48 @@ usersRouter.post('/', async (request, response) => {
     response.json(savedUser)
 })
 
+/**
+ * Responde a peticiones PUT. Se utilizan para actualizar la información
+ * de usuarios. 
+ *
+ * El objeto que recibe contiene los campos a actualizar.
+ * Como los usuarios tocan dos tablas, debe revisarse que tablas
+ * deben actualizarse en base a los campos del objeto de la petición.
+ */
+usersRouter.put('/:id', async (request, response) => {
+    const body = request.body
+    const user = {}
+    const userInfo = {}
+    
+    if (body.password && body.password.length > 3) {
+        user.password = await bcrypt.hash(body.password, 10)
+        delete body.password
+        
+    } else {
+        throw Error('contraseña demasiado corta')
+    }
 
+    Object.keys(body).forEach((key) => {
+        if (key === 'birthday') {
+            userInfo[key] = new Date(body[key])
+        } else if (key === 'email') {
+            user[key] = body[key]
+        } else {
+            userInfo[key] = body[key]
+        }
+    })
+
+    let updatedUser
+    if (Object.keys(user).length > 0) {
+        updatedUser = await control.update(User, {id: request.params.id}, user)
+    }
+
+    if (Object.keys(userInfo).length > 0) {
+        await control.update(InformacionPersonal, {id_user: request.params.id}, userInfo) 
+    }
+
+    response.status(200).end()
+})
 
 
 module.exports = usersRouter

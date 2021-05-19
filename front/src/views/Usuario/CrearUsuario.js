@@ -38,7 +38,7 @@ export default function CreateUser() {
   const classes = useStyles();
   const [state, setState] = React.useState({})
   const [message, setMessage] = React.useState(null)
-  console.log(state)
+  
   const addUser = async (event) =>{
     event.preventDefault()
     // Verificación todo está lleno
