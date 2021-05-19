@@ -78,25 +78,6 @@ export default function Categories() {
   
 
   
-  function getPromise(){
-    return new Promise(function(resolve,reject){
-      setTimeout(function(){
-        resolve({'country' : 'INDIA'});
-      },2000)
-    })
-  }
-  
-  async function getResult(){
-    let result = await getPromise();
-    return result
-  }
-  
-  async function doTask(){
-    let data = await getResult();
-    return data
-  }
-  doTask();
-  console.log(doTask())
 
  
   //Añadir categoria
@@ -143,10 +124,17 @@ export default function Categories() {
   }
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
-
-  const handleChange = panel => (event, isExpanded, id) => {
-    setExpanded(isExpanded ? panel : false);
+  
+  const handleChange = panel => (event, isExpanded) => {
+    if(isExpanded){
+      setExpanded(panel)
+    }else{
+      setExpanded(false)
+    }
+       
   };
+
+
 
   const productHandleChange = panel => (event, isExpanded) => {
     var x = document.getElementById("secondheader");
@@ -166,9 +154,10 @@ export default function Categories() {
         handleSubmit={addCategory}/>
       {Object.values(categorias).map(accordion => {
         const { id, nombre, descripcion } = accordion;
+        productService.getByCat(id).then(function(prods) {setProducts(prods)});
         return (
           <Accordion
-            TransitionProps={{ unmountOnExit: true }} 
+            //TransitionProps={{ unmountOnExit: true }} 
             expanded={expanded === id}
             key={id}
             onChange={handleChange(id)}
