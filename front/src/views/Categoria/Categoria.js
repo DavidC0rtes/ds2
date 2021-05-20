@@ -164,8 +164,8 @@ export default function Categories() {
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1bh-content"
-              id="panel1bh-header"
+              aria-controls="category_panel1bh-content"
+              id="category_panel1bh-header"
             >
               <Typography className={classes.heading}>{nombre}</Typography>
               <Typography className={classes.secondaryHeading}>
@@ -183,11 +183,11 @@ export default function Categories() {
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1bh-content"
-              id="panel1bh-header"
+              aria-controls="product_panel1bh-content"
+              id="product_panel1bh-header"
             >
               <Typography className={classes.heading}>{nombre}</Typography>
-              <Typography className={classes.secondaryHeading}>
+              <Typography className={classes.secondaryHeading} id="secondheader">
                 {descripcion} 
               </Typography>
             </AccordionSummary>
