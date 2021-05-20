@@ -93,15 +93,10 @@ usersRouter.put('/:id', async (request, response) => {
     if (body.password && body.password.length > 3) {
         user.password = await bcrypt.hash(body.password, 10)
         delete body.password
-        
-    } else {
-        throw Error('contraseña demasiado corta')
-    }
+    } 
 
     Object.keys(body).forEach((key) => {
-        if (key === 'birthday') {
-            userInfo[key] = new Date(body[key])
-        } else if (key === 'email') {
+        if (key === 'email') {
             user[key] = body[key]
         } else {
             userInfo[key] = body[key]

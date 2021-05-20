@@ -84,7 +84,6 @@ export default function SignUp() {
             setTimeout(() => {
                 setNewMessage(null)
             }, 4000)
-
         }
       
     } else {
