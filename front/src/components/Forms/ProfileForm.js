@@ -1,24 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
-import SimpleSelect from '../Select'
 import Button from '@material-ui/core/Button'
 
 import FormHandler from '../../variables/formHandler'
 import userService from '../../services/users'
-
-const getIdRol = (rol) => {
-	switch(rol) {
-	  case 'Cliente':
-		return 1
-	  case 'Administrador':
-		return 2
-	  case 'Gerente':
-		return 3
-	  default:
-		return null
-	}
-}
+import Toast from '../Toast'
 
 /**
  * Se encarga de construir y manejar el formulario que se le presenta al usuario
@@ -34,6 +21,7 @@ const ProfileForm = ({user}) => {
 	 * es la información del usuario traída desde la db.
 	 */
 	const [state, setState] = useState(user)
+	const [message, setMessage] = useState(null)
 	const [disable, setDisable] = useState(true)
 
 	// Actualizar state cada que el prop user cambie.
@@ -51,8 +39,14 @@ const ProfileForm = ({user}) => {
 		})
 		const result = await userService.update(toSend, user.id_user)
 		if (result.status === 200) {
-			console.log('Actualizado con exito')
+			setMessage('¡Actualizado con éxito!')
+		} else {
+			setMessage('Ha ocurrido un error')
+			console.error(result)
 		}
+		setTimeout(() => {
+			setMessage(null)
+		}, 5000)
 		setDisable(true)
 	}
 
@@ -123,7 +117,6 @@ const ProfileForm = ({user}) => {
 						label="Segundo apellido"
 						InputLabelProps={{ shrink: true }}
 						error={state.errorSA && true}
-						autoFocus
 						value={state.segundo_apellido || ''}
 						disabled={disable}
 						variant="filled"
@@ -137,7 +130,6 @@ const ProfileForm = ({user}) => {
 						label="Correo electrónico"
 						InputLabelProps={{ shrink: true }}
 						error={state.errorEmail && true}
-						autoFocus
 						value={state.email || ''}
 						disabled={disable}
 						variant="filled"
@@ -146,23 +138,10 @@ const ProfileForm = ({user}) => {
 					/>
 				</Grid>
 				
-				<Grid item xs={2} md={2}>
-					<SimpleSelect
-						values={['CC', 'CE']}
-						errors={state.errorTipoDoc}
-						handleChange={() => 1+1}
-						state={state.tipo_doc || 'CC'}
-						label='Tipo documento'
-						name='tipo_doc'
-						disable={disable}
-						onChange={handleFieldChange}
-						InputLabelProps={{ shrink: true }}
-					/>
-				</Grid>
 				<Grid item xs={10} md={5}>
 					<TextField
 						name="num_documento"
-						label="No. identificación"
+						label="Cédula de ciudadanía"
 						type="tel"
 						value={state.num_documento || ''}
 						disabled={disable}
@@ -218,7 +197,6 @@ const ProfileForm = ({user}) => {
 						InputLabelProps={{ shrink: true }}
 						error={state.errorPassword && true}
 						helperText="Llena este campo solo si deseas cambiar tu contraseña"
-						autoFocus
 						value={state.password || ''}
 						disabled={disable}
 						variant="filled"
@@ -239,6 +217,11 @@ const ProfileForm = ({user}) => {
 				}
 			</Grid>
 		</form>
+		<Toast
+			message={message}
+			vertical='bottom'
+			horizontal='center'
+		/>
 		</>
 	)
 }

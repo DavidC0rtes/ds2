@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
 		margin: 'auto',
 		width: theme.spacing(10),
 		height: theme.spacing(10),
-		marginTop: '-4%',
 		marginBottom: '1em'
 	}
 }))
@@ -57,7 +56,7 @@ const Perfil = () => {
 		}
 		fetchUser()
 	}, [])
-	console.log(userData)
+
 	return (
 		<div>
 			<Container maxWidth="md">
@@ -76,7 +75,7 @@ const Perfil = () => {
 
 					<Grid item xs={3} className={classes.profile}>
 						<Paper elevation={3} className={classes.profileCard}>
-							<Avatar children={"h"} className={classes.avatar}/>
+							<Avatar children={userData.primer_nombre} className={classes.avatar}/>
 							<Chip
 								size="small" 
 								label={user.rol} 
