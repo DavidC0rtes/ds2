@@ -127,6 +127,7 @@ export default function Categories() {
   
   const handleChange = panel => (event, isExpanded) => {
     if(isExpanded){
+      getProducts(panel)
       setExpanded(panel)
     }else{
       setExpanded(false)
@@ -154,7 +155,6 @@ export default function Categories() {
         handleSubmit={addCategory}/>
       {Object.values(categorias).map(accordion => {
         const { id, nombre, descripcion } = accordion;
-        productService.getByCat(id).then(function(prods) {setProducts(prods)});
         return (
           <Accordion
             //TransitionProps={{ unmountOnExit: true }} 
@@ -179,7 +179,7 @@ export default function Categories() {
           <Accordion
             expanded={expanded === id*2}
             key={id}
-            onChange={productHandleChange(id)}
+            onChange={productHandleChange(id*2)}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
