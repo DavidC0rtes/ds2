@@ -123,7 +123,8 @@ export default function Categories() {
 
   }
   const classes = useStyles();
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [productExpanded, setProductExpanded] = useState(false);
   
   const handleChange = panel => (event, isExpanded) => {
     if(isExpanded){
@@ -144,7 +145,7 @@ export default function Categories() {
     } else {
       x.style.display = 'none';
     }
-    setExpanded(isExpanded ? panel : false);
+    setProductExpanded(isExpanded ? panel : false);
   };
     return (
     <div className={classes.root}>
@@ -177,9 +178,9 @@ export default function Categories() {
         const { id, nombre, descripcion } = accordion;
         return (
           <Accordion
-            expanded={expanded === id*2}
+            expanded={productExpanded === id}
             key={id}
-            onChange={productHandleChange(id*2)}
+            onChange={productHandleChange(id)}
           >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
