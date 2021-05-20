@@ -24,8 +24,12 @@ async function getField(entity, field) {
     return result
 }
 
-//edita el registro que cumpla con la condición usando el data.
-
+/**
+ * Actualiza una entidad que cumpla con la condición dada, ej:
+ * { firstName: "ejemplo"}
+ * Con el contenido del objeto data:
+ * { lastName: "apellido" }
+ */
 async function update(entity, condition, data){
     const result = await manager.update(entity, condition, data)
     return result

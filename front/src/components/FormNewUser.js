@@ -95,6 +95,8 @@ const FormNewUser = (props) => {
                 errors={state.errorRol}
                 handleChange={props.handleFieldChange}
                 state={state.rol || ''}
+                label='Rol'
+                name='rol'
               />
             </Grid>
           }

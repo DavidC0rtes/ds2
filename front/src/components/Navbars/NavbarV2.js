@@ -5,8 +5,8 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import Chip from '@material-ui/core/Chip'
 import HomeIcon from '@material-ui/icons/Home'
 import UserIcon from '@material-ui/icons/Person'
-import VerifiedUserIcon from '@material-ui/icons/VerifiedUser'
 import AssessmentIcon from '@material-ui/icons/Assessment';
+import Grid from '@material-ui/core/Grid'
 import { Typography } from '@material-ui/core'
 
 // Sesión del usuario
@@ -36,13 +36,13 @@ function handleClick(event) {
 const breadCrumbStyle = {
     display: 'flex',
     justifyContent: 'center',
+    flexWrap: 'wrap'
 }
 
 const NavBar = () => {
   const auth = useAuth()
 
   return (
-    
     <Breadcrumbs aria-label="breadcrumb" style={breadCrumbStyle}>
         <Typography variant="h6">Restaurante</Typography>
         <StyledBreadcrumb
@@ -90,8 +90,8 @@ const NavBar = () => {
       )}
 
       
-    </Breadcrumbs>
-    )
+    </Breadcrumbs> 
+  )
 }
 
 export default NavBar 
