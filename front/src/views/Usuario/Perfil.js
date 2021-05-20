@@ -26,13 +26,15 @@ const useStyles = makeStyles((theme) => ({
 	profileCard: {
 		display: 'block',
 		textAlign: 'center',
-		padding: '0 1% 2% 1%'
+		padding: '0 1% 2% 1%',
+		backgroundColor: '#fff39d'
 	}, 
 	avatar: {
 		margin: 'auto',
 		width: theme.spacing(10),
 		height: theme.spacing(10),
-		marginBottom: '1em'
+		marginBottom: '1em',
+		backgroundColor: '#da0a0a'
 	}
 }))
 
@@ -79,7 +81,7 @@ const Perfil = () => {
 							<Chip
 								size="small" 
 								label={user.rol} 
-								style={{marginBottom: '1em'}}
+								style={{marginBottom: '1em', fontWeight: 'bold'}}
 								color=
 									{ 
 										(user.rol == 'Administrador' || user.rol == 'Gerente')
@@ -89,6 +91,7 @@ const Perfil = () => {
 								icon = { user.rol == 'Gerente' ? (<GradeIcon />) : null }
 								
 								/>
+							<Grid item xs={12} children={userData.primer_nombre + ' ' + userData.primer_apellido} />
 							<Grid item xs={12} children={user.email} />
 						</Paper>
 					</Grid>
