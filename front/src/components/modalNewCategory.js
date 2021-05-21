@@ -91,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
                       <Grid component="label" container alignItems="center" spacing={1}>
                         <Grid item>Inactiva</Grid>
                         <Grid item>
-                            <Switch checked={checked} onChange={setAndCheck} name="checked" value={state.activo} />
+                            <Switch checked={checked} onChange={setAndCheck} name="checked" value={state.activo || ''} />
                         </Grid>
                         <Grid item>Activa</Grid>
                       </Grid>
