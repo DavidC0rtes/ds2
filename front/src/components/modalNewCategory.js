@@ -32,8 +32,9 @@ const useStyles = makeStyles((theme) => ({
       const classes = useStyles()
 
       const setAndCheck = () => {
-          setChecked;
-          props.handleFieldChange
+          props.handleFieldChange;
+          setChecked((prev) => !prev);
+          console.log(state.activo)
       }
 
       const handleClickOpen = () => {
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
       const submitAndClose = () => {
           props.handleSubmit;
-          handleClose;
+          setOpen(false);
       };
 
       return (

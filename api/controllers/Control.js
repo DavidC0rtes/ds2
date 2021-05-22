@@ -58,6 +58,15 @@ async function getBy(entity, field, value) {
     return result
 }
 
+async function getOneBy(entity, field, value) {
+    const criteria = {}
+    criteria[`${field}`] = value
+    
+    const result = await manager.find(entity, criteria) // Retorna un arreglo de un elemento.
+    
+    return result[0]
+}
+
 module.exports = {
     manager,
     getAll,
@@ -66,5 +75,6 @@ module.exports = {
     update,
     borrar,
     deleteAll,
-    getBy
+    getBy,
+    getOneBy
 }

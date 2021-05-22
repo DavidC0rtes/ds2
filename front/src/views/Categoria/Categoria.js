@@ -154,6 +154,7 @@ export default function Categories() {
         handleFieldChange={(event) => FormHandler(state, setState, event)}
         state={state}
         handleSubmit={addCategory}/>
+        
       {Object.values(categorias).map(accordion => {
         const { id, nombre, descripcion } = accordion;
         return (
