@@ -13,7 +13,7 @@ usersRouter.get('/', async (request, response) => {
 
 // Determina si el usuario con correo email existe. No devuelve al usuario 
 usersRouter.head('/:email', async (request, response) => {
-    const result = await control.getBy(User, 'email', request.params.email)
+    const result = await control.getOneBy(User, 'email', request.params.email)
 
     if (result) {
         return response.status(204).end()
