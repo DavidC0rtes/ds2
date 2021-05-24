@@ -13,10 +13,12 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Toast from '../../components/Toast'
+
 import ModalNewCategory from '../../components/modalNewCategory'
 import ProductAccordion from '../../components/productAccordion'
 import FormHandler from '../../variables/formHandler'
-
+import CategoryModalHandler from '../../variables/categoryModalHandler'
 import categoryService from '../../services/categories'
 import productService from '../../services/products'
 
@@ -151,7 +153,7 @@ export default function Categories() {
     <div className={classes.root}>
       <header>"Listado de categorias y productos"</header>
       <ModalNewCategory
-        handleFieldChange={(event) => FormHandler(state, setState, event)}
+        handleFieldChange={(event) => CategoryModalHandler(state, setState, event)}
         state={state}
         handleSubmit={addCategory}/>
         
@@ -208,7 +210,11 @@ export default function Categories() {
             </AccordionDetails>
           </Accordion>
         );
-      })}
+      })}<Toast
+            message={message}
+            vertical='bottom'
+            horizontal='center'
+        />
     </div>
     
   );

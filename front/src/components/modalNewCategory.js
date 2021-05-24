@@ -32,10 +32,8 @@ const useStyles = makeStyles((theme) => ({
       const classes = useStyles()
 
       const setAndCheck = () => {
-          props.handleFieldChange
           setChecked((prev) => !prev);
-          console.log(checked)
-          console.log(state.activo)
+          props.handleFieldChange(checked)
       }
 
       const handleClickOpen = () => {
@@ -48,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
 
       const submitAndClose = () => {
           props.handleSubmit;
-          setOpen(false);
       };
 
       return (
@@ -93,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
                       <Grid component="label" container alignItems="center" spacing={1}>
                         <Grid item>Inactiva</Grid>
                         <Grid item>
-                            <Switch checked={checked} onChange={setAndCheck} name="checked" value={state.activo} />
+                            <Switch checked={checked} onChange={setAndCheck} name="checked"/>
                         </Grid>
                         <Grid item>Activa</Grid>
                       </Grid>
