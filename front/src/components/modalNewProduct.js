@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import Switch from '@material-ui/core/Switch';
 import { makeStyles } from '@material-ui/core/styles';
 import SimpleSelect from './Select'
+import Typography from "@material-ui/core/Typography";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -24,18 +25,11 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-  const modalNewCategory = (props) => {
+  const ModalNewProduct = (props) => {
       const { state } = props
       const [open, setOpen] = useState(false);
-      const [checked, setChecked] = useState(true);
 
       const classes = useStyles()
-
-      const setAndCheck = () => {
-          setChecked;
-          props.handleFieldChange
-      }
-
       const handleClickOpen = () => {
           setOpen(true);
       };
@@ -52,20 +46,21 @@ const useStyles = makeStyles((theme) => ({
       return (
           <div>
               <Button variant="outlined" color="primary" fullWidth onClick ={handleClickOpen}>
-                  Nueva Categoria
+                  Nuevo Producto
               </Button>
               <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                   <DialogTitle id="form-dialog-title">Nuevo Producto</DialogTitle>
                   <DialogContent>
                       <DialogContentText>
-                        *Se puede poner una descripcion aqui*
+                        Agregar un nuevo producto a la base de datos, es requerido al menos un nombre y precio.
+                        En caso de no introducirse una cantidad o IVA, se creará el producto con una cantidad de una(1) existencia y una iva del 19%
                       </DialogContentText>
                       <form className={classes.form} validate="true" onSubmit={props.handleSubmit}>
-                      <Grid container spacing={2}>
+                      <Grid container spacing={1}>
                       <Grid item xs={12}>
                           <TextField
                           error ={state.errorNombre && true}
-                          helperText={ state.errorNombre}
+                          helperText={ state.errorNombre}                          
                           name="nombre"
                           variant="outlined"
                           required
@@ -88,12 +83,45 @@ const useStyles = makeStyles((theme) => ({
                           onChange={props.handleFieldChange}
                           value={state.descripcion || ''}/>
                       </Grid>
-                      <Grid component="label" container alignItems="center" spacing={1}>
-                        <Grid item>Inactiva</Grid>
-                        <Grid item>
-                            <Switch checked={checked} onChange={setAndCheck} name="checked" value={state.activo} />
-                        </Grid>
-                        <Grid item>Activa</Grid>
+                      <Grid item xs={4}>
+                          <TextField
+                          name="cantidad"
+                          variant="outlined"
+                          fullWidth
+                          id="cantidad"
+                          label="Cantidad"
+                          autoFocus
+                          onChange={props.handleFieldChange}
+                          value={state.cantidad || ''}/>
+                      </Grid>
+                      <Grid item xs={4}>
+                          <TextField
+                          error ={state.errorPrecio && true}
+                          helperText={state.errorPrecio}                               
+                          name="precio"
+                          variant="outlined"
+                          fullWidth
+                          id="precio"
+                          label="Precio"
+                          autoFocus
+                          onChange={props.handleFieldChange}
+                          value={state.precio || ''}/>
+                      </Grid>
+                      <Grid item xs={3}>
+                          <TextField
+                          name="iva"
+                          variant="outlined"
+                          fullWidth
+                          id="iva"
+                          label="IVA"
+                          autoFocus
+                          onChange={props.handleFieldChange}
+                          value={state.iva || ''}/>
+                      </Grid>
+                      <Grid item xs={1} >
+                          <Typography variant="h4">
+                              %
+                          </Typography>
                       </Grid>
                       </Grid>
                       <Button onClick ={handleClose} color="primary">
@@ -112,4 +140,4 @@ const useStyles = makeStyles((theme) => ({
       )
   }
 
-  export default modalNewCategory
+  export default ModalNewProduct

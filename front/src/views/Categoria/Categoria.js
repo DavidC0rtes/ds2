@@ -16,9 +16,12 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Toast from '../../components/Toast'
 
 import ModalNewCategory from '../../components/modalNewCategory'
+import ModalNewProduct from '../../components/modalNewProduct'
 import ProductAccordion from '../../components/productAccordion'
 import FormHandler from '../../variables/formHandler'
 import CategoryModalHandler from '../../variables/categoryModalHandler'
+import ProductModalHandler from '../../variables/productModalHandler'
+
 import categoryService from '../../services/categories'
 import productService from '../../services/products'
 
@@ -93,7 +96,6 @@ export default function Categories() {
         setState(_copyState)
       } else {
           delete _copyState.errorNombre
-
           setState(_copyState)
 
           const newCategory = {
@@ -124,7 +126,40 @@ export default function Categories() {
   //Añadir producto
   const addProduct = async (event) => {
     event.preventDefault()
-    const _copyState = JSON.parse(JSON.stringify(state)) 
+    const _copyState = JSON.parse(JSON.stringify(state))
+    setState(_copyState)
+    
+    if (state.nombre && state.precio) {
+      delete _copyState.errorNombre
+      delete _copyState.errorPrecio
+      setState(_copyState)
+
+      const newProduct ={
+        nombre: state.nombre,
+        descripcion: state.descripcion,
+        cantidad: state.cantidad,
+        precio: state.precio,
+        iva: (state.iva/100),
+        categoria: state.categoria
+      }
+
+      try {
+        const result = await productService.create(newProduct)
+        if (result.identifiers) setNewMessage('Producto Creado')
+      } catch (err){
+        console.log(err)
+        setNewMessage('Algo ha salido mal')
+      }
+
+      setTimeout(() =>  {
+        setNewMessage(null)
+      }, 4000)
+
+    } else {
+      if (!_copyState.nombre) _copyState.errorNombre = 'Campo obligatorio'
+      if (!_copyState.precio) _copyState.errorPrecio = 'Campo obligatorio'
+      setState(_copyState)
+    }
   }
 
 
@@ -181,6 +216,11 @@ export default function Categories() {
               </Typography>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
+              <ModalNewProduct
+              handleFieldChange={(event) => ProductModalHandler(state, setState, event, id)}
+              state={state}
+              handleSubmit={addProduct}  
+              />
             {products ? Object.values(products).map(accordion => {
         const { id, nombre, descripcion } = accordion;
         return (
