@@ -208,7 +208,6 @@ export default function Categories() {
         );
       }) : <em>Cargando...</em> }
               <Typography width = "100%">
-                {2+2}
               </Typography>
               
             </AccordionDetails>
