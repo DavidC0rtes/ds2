@@ -47,9 +47,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-/* Añadir un producto y mostrar los productos por categoria TODO
-* Se reciben todos los productos, y se los organiza por categoria aqui
-* Y los mapeamos a cada acordion
+/* Añadir un producto TODO
 */
 
 
@@ -61,7 +59,6 @@ const useStyles = makeStyles(theme => ({
 * Usamos esta variable
 */
 var categorias = categoryService.getAll().then(function(cats) {categorias = cats})
-var productoss = productService.getAll().then(function(rp) {productoss = rp})
 
 
 
@@ -72,8 +69,7 @@ export default function Categories() {
   const [message, setNewMessage] = useState(null)
 
   //Obtener los productos de una categoria dada
-
-  //Hacer la petición
+  //Se haca la petición y se cambia el estado.
   const getProducts =  function f1(id){
     productService.getByCat(id).then(function(prods) {setProducts(prods)})
   }
@@ -124,6 +120,14 @@ export default function Categories() {
     }
 
   }
+
+  //Añadir producto
+  const addProduct = async (event) => {
+    event.preventDefault()
+    const _copyState = JSON.parse(JSON.stringify(state)) 
+  }
+
+
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [productExpanded, setProductExpanded] = useState(false);
