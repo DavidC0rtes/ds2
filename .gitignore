@@ -6,3 +6,4 @@ node_modules
 .history
 .env.secret
 ormconfig.yml
+.vscode
