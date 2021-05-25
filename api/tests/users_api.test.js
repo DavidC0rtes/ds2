@@ -29,5 +29,5 @@ describe('cuando hay inicialmente un usuario en la db', () => {
 
 // Al finalizar de correr todos los tests
 afterAll(async () => {
-    await typeorm.getConnection('local').close()
+    await typeorm.getConnection(config.DBNAME).close()
 })

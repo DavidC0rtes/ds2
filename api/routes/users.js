@@ -1,3 +1,4 @@
+const typeorm = require('typeorm')
 const usersRouter = require('express').Router()
 const bcrypt = require('bcrypt')
 const control = require('../controllers/Control')
@@ -6,8 +7,33 @@ const InformacionPersonal = require('../entity/InformacionPersonal')
 
 // Devuelve todos los usuarios del proyecto cuando se hace un get
 usersRouter.get('/', async (request, response) => {
-    const users = await control.getAll(Usuarios) 
+    const users = await control.getAll(User) 
     response.json(users)
+})
+
+// Determina si el usuario con correo email existe. No devuelve al usuario 
+usersRouter.head('/:email', async (request, response) => {
+    const result = await control.getOneBy(User, 'email', request.params.email)
+
+    if (result) {
+        return response.status(204).end()
+    }
+
+    return response.status(404).end()
+})
+
+/*
+ * Devuelve el usuario con email especificado. A diferencia del anterior, este
+ * responde a una solicitud GET
+ */
+usersRouter.get('/:email', async (request, response) => {
+    const result = await control.getBy(User, 'email', request.params.email)
+
+    if (result) {
+        response.json(result)
+    } else {
+        return response.status(404).end()
+    }
 })
 
 /* Creación de usuarios, se entiende como una solicitud POST a /api/users,
@@ -43,11 +69,15 @@ usersRouter.post('/', async (request, response) => {
 
         if (userInfo.birthday) userInfo.birthday = new Date(userInfo.birthday)
         const savedInfo = await control.insert(InformacionPersonal, userInfo)
+        // Actualizar tabla usuario con el id de información personal
+        const updateResult = await control
+            .update(User, userInfo.id_user , {id_info: savedInfo.identifiers[0].id})
     }
+
     response.json(savedUser)
 })
 
-// ToDo:
-// - Modificación (put), hace parte de otra HU
+
+
 
 module.exports = usersRouter

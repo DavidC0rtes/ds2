@@ -14,31 +14,34 @@ module.exports = new EntitySchema({
         },
         primer_nombre: {
             type: "varchar",
-            nullable: false
         },
         segundo_nombre: {
-            type: "varchar"
+            type: "varchar",
+            nullable: true
         },
         primer_apellido: {
             type: "varchar",
-            nullable: false
+            nullable: true
         },
         segundo_apellido: {
             type: "varchar",
-            nullable: false
+            nullable: true
         },
         direccion: {
-            type: "varchar"
+            type: "varchar",
+            nullable: true
         },
         birthday: {
-            type: "date"
+            type: "date",
+            nullable: true
         },
         telefono: {
-            type:"varchar"
+            type:"varchar",
+            nullable: true
         },
         num_documento: {
             type: "text",
-            nullable: false
+            nullable: true
         }
     },
     relations: {
