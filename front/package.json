@@ -1,5 +1,5 @@
 {
-  "name": "NDS - DS2 Frontend",
+  "name": "frontend",
   "version": "1.9.0",
   "description": "Proyecto final ds2",
   "private": false,
@@ -16,9 +16,14 @@
     "chartist": "^0.10.1",
     "classnames": "^2.3.1",
     "history": "^4.10.1",
+    "material-ui": "^0.20.2",
     "perfect-scrollbar": "^1.5.0",
     "prop-types": "^15.7.2",
+    "react": "^17.0.2",
     "react-chartist": "^0.14.4",
+    "react-dom": "^17.0.2",
+    "react-google-maps": "^9.4.5",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.1"
   },

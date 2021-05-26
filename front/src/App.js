@@ -14,6 +14,7 @@ import {
 import Admin from "./layouts/Admin";
 import Login from './views/Login/Login'
 import SignUp from './views/Login/SignUp'
+import Categories from './views/Categoria/Categoria'
 import ConsultarProducto from './views/Producto/ConsultarProducto'
 import Perfil from './views/Usuario/Perfil.js'
 
@@ -32,6 +33,8 @@ const App = () => {
                     <Route path="/perfil" component={Perfil}/>
                     <Route exact path="/login" component={Login}/>
                     <Route exact path="/registrarse" component={SignUp} />
+                    <Route exact path="/categorias" component={Categories} />
+                    <Redirect exact from = "/admin" to= "/admin/dashboard"/>
                     <Route exact path="/menu" component={ConsultarProducto} />
                    
                     <Redirect from="/admin" to="/admin/dashboard" />

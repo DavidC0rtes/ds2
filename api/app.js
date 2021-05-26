@@ -17,6 +17,8 @@ let usersRouter = null
 typeorm.createConnection(config.DBNAME).then( (conn) => {
     usersRouter = require('./routes/users')  
     loginRouter = require('./routes/login')
+    categoriesRouter = require('./routes/categories')
+    productsRouter = require('./routes/products')
 
     if (config.ENV === 'production') app.use(express.static('build'))
 
@@ -27,6 +29,8 @@ typeorm.createConnection(config.DBNAME).then( (conn) => {
     // Aquí se especifica al servidor que rutas va a escuchar
     app.use('/api/users', usersRouter)
     app.use('/api/login', loginRouter)
+    app.use('/api/categories', categoriesRouter)
+    app.use('/api/products', productsRouter)
     // Fin especificaciones
     app.use(middleware.unknownEndpoint)
     app.use(middleware.errorHandler)

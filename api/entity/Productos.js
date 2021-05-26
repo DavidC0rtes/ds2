@@ -40,7 +40,9 @@ module.exports = new EntitySchema({
             nullable: false,        
             joinColumn: {
                 name: "id_categoria"
-            }
+            },
+            eager:true
+           
         }
     }
 })
