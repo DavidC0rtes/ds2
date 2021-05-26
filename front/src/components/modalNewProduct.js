@@ -52,8 +52,8 @@ const useStyles = makeStyles((theme) => ({
                   <DialogTitle id="form-dialog-title">Nuevo Producto</DialogTitle>
                   <DialogContent>
                       <DialogContentText>
-                        Agregar un nuevo producto a la base de datos, es requerido al menos un nombre y precio.
-                        En caso de no introducirse una cantidad o IVA, se creará el producto con una cantidad de una(1) existencia y una iva del 19%
+                        Agregar un nuevo producto a la base de datos, es necesario introducir un nombre, precio e iva
+                        El valor IVA para la mayoría de productos es del 19%
                       </DialogContentText>
                       <form className={classes.form} validate="true" onSubmit={props.handleSubmit}>
                       <Grid container spacing={1}>
@@ -74,6 +74,8 @@ const useStyles = makeStyles((theme) => ({
                       </Grid>
                       <Grid item xs={12}>
                           <TextField
+                          error ={state.errorDescripcion && true}
+                          helperText={ state.errorDescripcion}                              
                           name="descripcion"
                           variant="outlined"
                           fullWidth
@@ -84,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
                           value={state.descripcion || ''}/>
                       </Grid>
                       <Grid item xs={4}>
-                          <TextField
+                          <TextField                            
                           name="cantidad"
                           variant="outlined"
                           fullWidth
@@ -100,6 +102,7 @@ const useStyles = makeStyles((theme) => ({
                           helperText={state.errorPrecio}                               
                           name="precio"
                           variant="outlined"
+                          required                          
                           fullWidth
                           id="precio"
                           label="Precio"
@@ -109,8 +112,11 @@ const useStyles = makeStyles((theme) => ({
                       </Grid>
                       <Grid item xs={3}>
                           <TextField
+                          error ={state.errorIva && true}
+                          helperText={state.errorIva}                            
                           name="iva"
                           variant="outlined"
+                          required
                           fullWidth
                           id="iva"
                           label="IVA"

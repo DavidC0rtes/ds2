@@ -131,7 +131,9 @@ export default function Categories() {
     
     if (state.nombre && state.precio) {
       delete _copyState.errorNombre
-      delete _copyState.errorPrecio
+      delete _copyState.errorPrecio               
+      delete _copyState.errorIva
+
       setState(_copyState)
 
       const newProduct ={
@@ -145,7 +147,7 @@ export default function Categories() {
 
       try {
         const result = await productService.create(newProduct)
-        if (result.identifiers) setNewMessage('Producto Creado')
+        if (result.identifiers) setNewMessage('Producto registrado')
       } catch (err){
         console.log(err)
         setNewMessage('Algo ha salido mal')
@@ -158,6 +160,7 @@ export default function Categories() {
     } else {
       if (!_copyState.nombre) _copyState.errorNombre = 'Campo obligatorio'
       if (!_copyState.precio) _copyState.errorPrecio = 'Campo obligatorio'
+      if (!_copyState.iva) _copyState.errorIva = 'Campo obligatorio'
       setState(_copyState)
     }
   }
