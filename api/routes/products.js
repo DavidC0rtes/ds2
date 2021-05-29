@@ -41,27 +41,15 @@ productsRouter.get('/', async (request, response) => {
 })
 
 productsRouter.post('/', async (request, response) => {
-    const body = request.body
-    if (body.nombre = null) throw Error("Por favor introducir un nombre")
-
+    const body = request.body     
     const newProduct = {
         nombre: body.nombre,
         descripcion: body.descripcion,
         cantidad: body.cantidad,
         iva: body.iva,
         precio: body.precio,
-        id_categoria: body.id_categoria
-    }
-
-    const categories = await control.getField(category, id)
-    
-    function categoryExists(cat) {
-        return categories.some(function(el) {
-            return el.id == cat;
-        })
-    }
-    if (categoryExists(body.id_categoria) = false) throw Error("La categoría no existe")
-    
+        categoria: body.categoria
+    } 
     const insertedProduct = await control.insert(product, newProduct)
     
     response.json(insertedProduct)

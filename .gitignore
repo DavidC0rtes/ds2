@@ -3,7 +3,7 @@ node_modules
 .env
 .history
 */node_modules
-.history
+.vscode
 .env.secret
 ormconfig.yml
 .vscode
