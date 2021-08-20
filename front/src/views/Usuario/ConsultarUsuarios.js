@@ -33,22 +33,21 @@ export default function UsersTable() {
 
 
   const headers = [
-    { field: 'id', headerName: 'ID', width:70},
-    { field: 'activo', headerName: 'Activo', width:100, type:'boolean'},
+    { field: 'activo', headerName: 'Activo', width:120, type:'boolean'},
     { field: 'rol', headerName: 'Rol', width: 150},
     { field: 'email', headerName: 'Correo electrónico', width: 200},
     { field: 'primer_nombre', headerName: 'Primer nombre', width: 200},
-    { field: 'primer_apellido', headerName: 'Primer apellido', width: 200},
+    { field: 'primer_apellido', headerName: 'Primer apellido', width: 200}
     // Este campo define un link al perfil del usuario en valueGetter. 
     // Se debe utilizar react-router para realizar este redireccionamiento.
-    {
-      field: 'profile', 
-      headerName: 'Pérfil',
-      description: 'Link al pérfil del usuario',
-      sortable: false,
-      width: 100,
-      valueGetter: (params) => `perfil/${params.getValue('email')}`
-    }
+    //{
+    //  field: 'profile', 
+    //  headerName: 'Pérfil',
+    //  description: 'Link al pérfil del usuario',
+    //  sortable: false,
+    //  width: 100,
+    //  valueGetter: (params) => `perfil/${params.getValue('email')}`
+    //}
   ]
 
   /**
@@ -63,8 +62,14 @@ export default function UsersTable() {
       result.forEach((item) => {
         delete item.password
         item.rol = item.id_rol.nombre_rol
-        item.primer_nombre = item.id_info.primer_nombre
-        item.primer_apellido = item.id_info.primer_apellido
+        // Algunos usuarios creados manualmente no tienen
+        // datos personales (nombre, apellido, etc)
+        item.primer_nombre = 'NN' 
+        item.primer_apellido = 'NN'
+        if (item.id_info) {
+            item.primer_nombre = item.id_info.primer_nombre
+            item.primer_apellido = item.id_info.primer_apellido
+        }
         delete item.id_info
         delete item.id_rol
       })
