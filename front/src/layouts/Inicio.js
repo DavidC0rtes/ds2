@@ -1,45 +1,27 @@
 import React, { useEffect } from 'react'
 import Container from '@material-ui/core/Container'
-import NavBar from '../components/Navbars/NavbarV2'
-import Login from '../views/Login/Login.js'
-import SignUp from '../views/Login/SignUp.js'
-import Categories from './views/Categoria/Categoria.js'
+import { makeStyles } from '@material-ui/core/styles'
+import CardCarrousel from '../components/Card/CardCarrousel'
 
-// Estas cosas nos permiten redirigir
-// a las diferentes vistas cuando
-// se le da clic a algún enlace.
-import { 
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom"
+const useStyles = makeStyles({
+    root: {
+        border: '1px solid black',
+        marginTop: '3em',
+        background: '#b30000',
+        color: 'white'
+    }
+})
 
 function Inicio() {
-  // Revisar si un usuario inició sesión
-  useEffect(() => {
-    const userJSON = window.localStorage.getItem('usuarioLogueado')
-    if (userJSON) {
-      const user = JSON.parse(userJSON)
-      console.log('ESTAS LOGUEADO')
-    }
-  })
+  const classes = useStyles()
   return (
       <div>
-        <Container maxWidth="md">
-        <Router> {/* <-- importante que el Router este acá*/}
-            <NavBar />
-            <Switch>  {/*<-- acá se definen todas las rutas y hacia que componente redirigen*/}
-                <Route exact path="/"/>
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/registrarse" component={SignUp} />
-                <Route exact path="/categorias" component={Categories} />
-                <Route exact path = "/admin/dashboard"/>
-            </Switch>
-        </Router> 
+        <Container maxWidth="md" className={classes.root}>
+            <h2>¡Prueba nuestras deliciosas recetas!</h2>
         </Container>
-               
+        <CardCarrousel />
       </div>
   );
 }
 
-export default Inicio;
+export default React.memo(Inicio);
