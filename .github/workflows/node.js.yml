@@ -19,7 +19,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        ref: ${{ github.event.pull_request.head.sha }}
+        ref: ${{ github.head_ref }}
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
@@ -30,7 +30,7 @@ jobs:
           ./api/package-lock.json
     - run: npm ci
     - run: npm run build
-    - run: rm -rf ../api/build && mv build ../api/
+    - run: rm -rf ../api/build/* && mv build ../api/
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Add static files for deployment
