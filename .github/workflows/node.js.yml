@@ -30,4 +30,4 @@ jobs:
         cache-dependency-path: |
           ./front/package-lock.json
           ./api/package-lock.json
-    - run: npm install 
+    - run: npm ci 
