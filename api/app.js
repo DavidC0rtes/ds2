@@ -14,7 +14,9 @@ const config = require('./utils/config')
 
 let usersRouter = null
 
-typeorm.createConnection(config.DBNAME).then( (conn) => {
+const connName = (config.DBNAME != 'heroku') ? config.DBNAME : null
+
+typeorm.createConnection(connName).then( (conn) => {
     usersRouter = require('./routes/users')  
     loginRouter = require('./routes/login')
     categoriesRouter = require('./routes/categories')

@@ -30,4 +30,5 @@ jobs:
         cache-dependency-path: |
           ./front/package-lock.json
           ./api/package-lock.json
-    - run: ls -a && npm ci 
+    - run: npm ci 
+    - run: npm run build && mv build ../api/ 
