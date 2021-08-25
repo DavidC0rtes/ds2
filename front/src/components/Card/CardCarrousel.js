@@ -1,12 +1,8 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import Card from '@material-ui/core/Card'
-import CardActionArea from '@material-ui/core/CardActionArea'
-import CardMedia from '@material-ui/core/CardMedia'
-import CardContent from '@material-ui/core/CardContent'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
+import CustomCard from './CustomCard'
 
 
 const useGridStyles = makeStyles(( {breakpoints }) => ({
@@ -53,22 +49,6 @@ const useStyles = makeStyles(() => ({
     }
 }))
 
-const CustomCard = ({ classes, image, title, subtitle }) => {
-    return (
-        <CardActionArea className={classes.actionArea}>
-            <Card className={classes.card}>
-                <CardMedia className={classes.media} image={image}/>
-                <CardContent className={classes.content}>
-                    <Typography className={classes.title} variant={'h2'}>
-                        {title}
-                    </Typography>
-                    <Typography className={classes.subtitle}>{subtitle}</Typography>
-                </CardContent>
-            </Card>
-        </CardActionArea> 
-    )
-}
-
 const CardCarrousel = () => {
     const gridStyles = useGridStyles()
     const styles = useStyles({ color: '#ff5917' });
@@ -83,8 +63,8 @@ const CardCarrousel = () => {
             <Grid item xs={12}>
                 <CustomCard
                     classes={styles}
-                    title={'Alitas BBQ'}
-                    subtitle={'sdfjkdskjsdalk'}
+                    title={'Alitas'}
+                    subtitle={'Para los amantes de las alitas'}
                     image={'https://dinnerthendessert.com/wp-content/uploads/2019/11/BBQ-Chicken-Wings-4x3.jpg'}
                 />
             </Grid>
@@ -92,31 +72,31 @@ const CardCarrousel = () => {
                 <CustomCard
                     classes={styles2}
                     title={'Chicken burger'}
-                    subtitle={'djfksdajfksjalñ'}
+                    subtitle={'150 gramos de puro pollo'}
                     image={'https://i.imgur.com/wiuFd00.jpeg'}
                 />
             </Grid>
             <Grid item sm={6} xs={12}>
                 <CustomCard
                     classes={styles3}
-                    title={'Alitas BBQ'}
-                    subtitle={'sadkfjkdslsa'}
+                    title={'Chicken Box'}
+                    subtitle={'Saborealos uno a la vez'}
                     image={'https://www.vhv.rs/dpng/d/414-4140579_fried-chicken-bucket-png-chicken-tenders-in-a.png'}
                 />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
                 <CustomCard
                     classes={styles4}
                     title={'Ensaladas'}
-                    subtitle={'daskfdsajfsadñl'}
+                    subtitle={'Frescas, completas y saludables'}
                     image={'https://www.comedera.com/wp-content/uploads/2015/10/ensalada-de-pollo.jpg'}
                 />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6}>
                 <CustomCard
-                    classes={styles4}
+                    classes={styles}
                     title={'Teriyaki'}
-                    subtitle={'kdfsjkfjlsa'}
+                    subtitle={'Prueba nuestras recetas con pollo teriyaki'}
                     image={'https://www.splenda.com/wp-content/themes/bistrotheme/assets/recipe-images/baked-teriyaki-chicken.jpg'}
                 />
             </Grid>
