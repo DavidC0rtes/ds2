@@ -22,7 +22,7 @@ typeorm.createConnection(connName).then( (conn) => {
     categoriesRouter = require('./routes/categories')
     productsRouter = require('./routes/products')
 
-    if (config.ENV === 'production') app.use(express.static('build'))
+    if (config.ENV === 'production' || config.ENV === 'cd') app.use(express.static('build'))
 
     app.use(cors())
     app.use(express.json())
