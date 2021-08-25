@@ -8,13 +8,13 @@ on:
     branches: [ develop ]
 
 jobs:
-  build:
+  build-front:
 
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
+        node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -24,6 +24,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: cd front && npm ci && npm run build && mv build ../api/
-    - run: cd ../api
-    - run: npm ci
+        cache-dependency-path: front/
+    - run: npm ci 
+    - run: npm run build
+    - run: mv build ../api/
