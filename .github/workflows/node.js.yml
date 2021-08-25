@@ -31,4 +31,3 @@ jobs:
           ./front/package-lock.json
           ./api/package-lock.json
     - run: npm ci 
-    - run: npm run build && mv build ../api/ 

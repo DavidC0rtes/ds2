@@ -15,9 +15,8 @@ const PORT = process.env.PORT
 
 const ConnectionNameHash = {
     'test': 'local', // npm test
-    'production': 'produccion', // si se quiere usar una conexión local cuando hagan npm start, reemplacen por local. 
-    'development': 'local', // npm run dev
-    'cd': 'heroku' // npm run heroku
+    'production': 'heroku', // npm start 
+    'development': 'local', // npm run dev, si quieren usar la db en heroku, cambiar local por produccion
 }
 const DBNAME = ConnectionNameHash[process.env.NODE_ENV]
 
