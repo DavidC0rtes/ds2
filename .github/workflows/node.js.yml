@@ -25,6 +25,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: |
-          front/package-lock.json
-          api/package-lock.json
+          ./front/package-lock.json
+          ./api/package-lock.json
+    - run: pwd && ls -a
     - run: npm install 
