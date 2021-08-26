@@ -1,7 +1,6 @@
 import React from "react";
 import { ProvideAuth } from './misc/useAuth'
 import Navbar from './components/Navbars/NavbarV2'
-import Container from '@material-ui/core/Container'
 import { createBrowserHistory } from "history";
 import { 
   Router,

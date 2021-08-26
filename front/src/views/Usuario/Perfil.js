@@ -77,7 +77,9 @@ const Perfil = () => {
 
 					<Grid item xs={3} className={classes.profile}>
 						<Paper elevation={3} className={classes.profileCard}>
-							<Avatar children={userData.primer_nombre} className={classes.avatar}/>
+							<Avatar className={classes.avatar}>
+                                {userData.primer_nombre}
+                            </Avatar>
 							<Chip
 								size="small" 
 								label={user.rol} 
@@ -91,8 +93,10 @@ const Perfil = () => {
 								icon = { user.rol == 'Gerente' ? (<GradeIcon />) : null }
 								
 								/>
-							<Grid item xs={12} children={userData.primer_nombre + ' ' + userData.primer_apellido} />
-							<Grid item xs={12} children={user.email} />
+							<Grid item xs={12}>
+								{userData.primer_nombre + ' ' + userData.primer_apellido}
+							</Grid>
+							<Grid item xs={12}>{user.email}</Grid>
 						</Paper>
 					</Grid>
 				</Grid>
