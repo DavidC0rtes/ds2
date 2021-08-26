@@ -137,7 +137,7 @@ const info2 = {
     segundo_apellido: "Mous",
     direccion: "Unknown",
     password: "???",
-    num_documento: 000,
+    num_documento: '000',
     tipo_documento: 1
 }
 const info3 ={
@@ -159,7 +159,7 @@ const info4 = {
     segundo_apellido: "Joestar",
     direccion: "America",
     password: "Jojo",
-    num_documento: 02,
+    num_documento: '02',
     tipo_documento: 1
 }
 const user1 = {
