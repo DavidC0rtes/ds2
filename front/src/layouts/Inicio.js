@@ -69,12 +69,6 @@ function Inicio() {
             <h2>¡Prueba nuestras deliciosas recetas!</h2>
         </Container>
         <CardCarrousel />
-        <Container maxWidth="md" style={styleGif.container}>
-          <div style={styleGif.imgText}>
-            y mucho más...
-          </div>
-
-        </Container>
       </div>
   );
 }
