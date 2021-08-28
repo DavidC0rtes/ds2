@@ -43,7 +43,7 @@ export default function CreateUser() {
     event.preventDefault()
     // Verificación todo está lleno
     if (Object.keys(state).length === 5) {
-      const emailInUse = await userService.getByEmail(email)
+      const emailInUse = await userService.getByEmail(state.email)
       
       if (emailInUse) {
         const _copyState = JSON.parse(JSON.stringify(state))
