@@ -22,7 +22,9 @@ const errorHandler = (error, request, response, next) => {
         logger.error(error)
         return response.status(400).send({ error: error.message })
     } else if(error.message === 'contraseña demasiado corta') {
-        return response.status(400).send({ error: 'La contraseña debe contener al menos tres caracteres' })
+        return response.status(400).send(
+            { error: 'La contraseña debe contener al menos tres caracteres' }
+        )
     
     } else {
         logger.error(error)
