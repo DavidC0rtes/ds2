@@ -17,7 +17,6 @@ import Toast from '../../components/Toast'
 
 import ModalNewCategory from '../../components/modalNewCategory'
 import ModalNewProduct from '../../components/modalNewProduct'
-import ProductAccordion from '../../components/productAccordion'
 import FormHandler from '../../variables/formHandler'
 import CategoryModalHandler from '../../variables/categoryModalHandler'
 import ProductModalHandler from '../../variables/productModalHandler'
@@ -193,7 +192,7 @@ export default function Categories() {
   };
     return (
     <div className={classes.root}>
-      <header>"Listado de categorias y productos"</header>
+      <header>Listado de categorias y productos</header>
       <ModalNewCategory
         handleFieldChange={(event) => CategoryModalHandler(state, setState, event)}
         state={state}

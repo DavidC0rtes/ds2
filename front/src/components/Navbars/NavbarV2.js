@@ -15,10 +15,11 @@ import { useAuth } from '../../misc/useAuth'
 
 const StyledBreadcrumb = withStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.grey[100],
+    backgroundColor: '#b30000',
     height: theme.spacing(3),
-    color: theme.palette.grey[800],
-    fontWeight: theme.typography.fontWeightRegular,
+    color: '#fff',
+    fontWeight: theme.typography.fontWeightMedium,
+    fontSize: 14,
     '&:hover, &:focus': {
       backgroundColor: theme.palette.grey[300],
     },
@@ -36,7 +37,7 @@ function handleClick(event) {
 const breadCrumbStyle = {
     display: 'flex',
     justifyContent: 'center',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
 }
 
 const NavBar = () => {
@@ -51,7 +52,6 @@ const NavBar = () => {
         label="Inicio"
         icon={<HomeIcon fontSize="small" />}
       />
-      <StyledBreadcrumb component={Link} to="/menu" label="Menú" onClick={handleClick} />
       <StyledBreadcrumb component={Link} to="/categorias" label="Categorias" />
       <StyledBreadcrumb component={Link} to="/menu" label="Menú"/>
       <StyledBreadcrumb component={Link} to="/sedes" label="Sedes" onClick={handleClick} />

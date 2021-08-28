@@ -14,11 +14,11 @@ const config = require('./utils/config')
 
 let usersRouter = null
 
-typeorm.createConnection(config.DBNAME).then( (conn) => {
-    usersRouter = require('./routes/users')  
-    loginRouter = require('./routes/login')
-    categoriesRouter = require('./routes/categories')
-    productsRouter = require('./routes/products')
+typeorm.createConnection(config.DBNAME).then( () => {
+    const usersRouter = require('./routes/users')  
+    const loginRouter = require('./routes/login')
+    const categoriesRouter = require('./routes/categories')
+    const productsRouter = require('./routes/products')
 
     if (config.ENV === 'production') app.use(express.static('build'))
 
