@@ -44,8 +44,19 @@ const getByName = async (name) => {
     return request.then(response => response.data)
 }
 
+const update = async (obj, id) => {
+    try {
+        const response = await axios.put(`${baseUrl}/${id}`, obj)
+        return response
+    } catch (err) {
+        console.error(err)
+        return err
+    }
+}
+
 export default {
     getAll,
     getByName,
-    create
+    create,
+    update
 }

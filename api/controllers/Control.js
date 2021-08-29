@@ -57,7 +57,7 @@ async function getBy(entity, field, value) {
     const criteria = {}
     criteria[`${field}`] = value
     
-    const result = await manager.find(entity, criteria) // Retorna un arreglo de un elemento.
+    const result = await manager.find(entity, criteria) // Retorna un arreglo 
     
     return result
 }

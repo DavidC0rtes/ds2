@@ -37,4 +37,19 @@ categoriesRouter.post('/', async (request, response) => {
 
 })
 
+categoriesRouter.put('/:id', async (request, response) => {
+    const body = request.body
+    const editedCategory = {}
+
+    Object.keys(body).forEach((key) => {
+        editedCategory[key] = body[key]
+    })
+
+        await control.update(category, {id: request.params.id}, editedCategory) 
+
+
+    response.status(200).end()
+})
+
+
 module.exports = categoriesRouter
