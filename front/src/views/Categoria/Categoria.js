@@ -50,16 +50,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-/* Añadir un producto TODO
-*/
-
-
 //Eliminar categoria TODO
 
 //Editar categoria TODO
 
 /*obtener todas las categorias
 * Usamos esta variable
+* La api tiene que estar corriendo
 */
 var categorias = categoryService.getAll().then(function(cats) {categorias = cats})
 
