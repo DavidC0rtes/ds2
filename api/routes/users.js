@@ -96,7 +96,7 @@ usersRouter.put('/:id', async (request, response) => {
     } 
 
     Object.keys(body).forEach((key) => {
-        if (key === 'email') {
+        if (key === 'email' || key === 'activo') {
             user[key] = body[key]
         } else {
             userInfo[key] = body[key]

@@ -19,9 +19,9 @@
     "material-ui": "^0.20.2",
     "perfect-scrollbar": "^1.5.0",
     "prop-types": "^15.7.2",
-    "react": "^17.0.2",
+    "react": "^17.0.0",
     "react-chartist": "^0.14.4",
-    "react-dom": "^17.0.2",
+    "react-dom": "^17.0.0",
     "react-google-maps": "^9.4.5",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
@@ -33,9 +33,9 @@
     "react-router-dom": "^5.2.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "start": "CI=false react-scripts start",
+    "build": "CI=false react-scripts build",
+    "test": "CI=false react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
     "lint:check": "eslint . --ext=js,jsx;  exit 0",
@@ -50,5 +50,44 @@
       "not op_mini all"
     ],
     "development": []
-  }
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0"
+  },
+  "settings": {
+    "react": {
+      "version": "17.0.0"
+    }
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true,
+      "browser": true,
+      "es2020": true,
+      "amd": true,
+      "jest": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true,
+        "experimentalObjectSpread": true
+      }
+    },
+    "rules": {
+      "no-console": "off",
+      "no-trailing-spaces": "off",
+      "max-len": "off",
+      "no-tabs": "off",
+      "no-mixed-spaces-and-tabs": "off",
+      "no-unused-vars": "warn",
+      "react/prop-types": "off",
+      "react/display-names": "off"
+    }
+  },
+  "eslintIgnore": ["build", "public", "assets"]
 }

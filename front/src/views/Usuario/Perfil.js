@@ -9,7 +9,7 @@ import Chip from '@material-ui/core/Chip'
 import GradeIcon from '@material-ui/icons/Grade'
 
 import ProfileForm from '../../components/Forms/ProfileForm'
-import { useAuth } from '../../misc/useAuth'
+import { useLocation } from 'react-router-dom'
 import users from '../../services/users'
 
 const useStyles = makeStyles((theme) => ({
@@ -38,10 +38,14 @@ const useStyles = makeStyles((theme) => ({
 	}
 }))
 
+// A custom hook that builds on useLocation to parse
+// the query string for you. https://reactrouter.com/web/example/query-parameters
+const useQuery = () => new URLSearchParams(useLocation().search)
+
 const Perfil = () => {
+	
 	const classes = useStyles()
-	const auth = useAuth()
-	const user = auth.user
+	const query = useQuery()
 
 	const [userData, setUserData] = useState({})
 	/**
@@ -50,11 +54,21 @@ const Perfil = () => {
 	 */
 	useEffect(() => {
 		const fetchUser = async () => {
-			const result = await users.getByEmail(user.email, 'get')
-			result.id_info.email = user.email
-			result.id_info.id_rol = result.id_rol.id
-			delete result.id_info.id
-			setUserData(result.id_info)
+			const result = await users.getByEmail(query.get('mail'), 'get')
+
+			let user = result[0].id_info
+				? Object.assign(result[0].id_info)
+				: {}
+			
+			user.rol = result[0].id_rol.nombre_rol
+			user.password = result[0].password
+			user.email = result[0].email
+			user.activo = result[0].activo
+
+			user.id = user.id_user
+			delete user.id_user
+
+			setUserData(user)
 		}
 		fetchUser()
 	}, [])
@@ -77,22 +91,26 @@ const Perfil = () => {
 
 					<Grid item xs={3} className={classes.profile}>
 						<Paper elevation={3} className={classes.profileCard}>
-							<Avatar children={userData.primer_nombre} className={classes.avatar}/>
+							<Avatar className={classes.avatar}>
+                                {userData.primer_nombre}
+                            </Avatar>
 							<Chip
 								size="small" 
-								label={user.rol} 
+								label={userData.rol} 
 								style={{marginBottom: '1em', fontWeight: 'bold'}}
 								color=
 									{ 
-										(user.rol == 'Administrador' || user.rol == 'Gerente')
+										(userData.rol == 'Administrador' || userData.rol == 'Gerente')
 										? ('primary')
 										: ('default')
 									}
-								icon = { user.rol == 'Gerente' ? (<GradeIcon />) : null }
+								icon = { userData.rol == 'Gerente' ? (<GradeIcon />) : null }
 								
 								/>
-							<Grid item xs={12} children={userData.primer_nombre + ' ' + userData.primer_apellido} />
-							<Grid item xs={12} children={user.email} />
+							<Grid item xs={12}>
+								{userData.primer_nombre + ' ' + userData.primer_apellido}
+							</Grid>
+							<Grid item xs={12}><strong>{userData.email}</strong></Grid>
 						</Paper>
 					</Grid>
 				</Grid>
