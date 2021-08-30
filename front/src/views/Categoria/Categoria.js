@@ -186,7 +186,10 @@ export default function Categories() {
 
 //Toggle button de activar desactivar categoria
 
-const [activo, setActivo] =
+const [activo, setActivo] = react.useState(true);
+const handleActivo = (event, newActivo) => {
+  if (newActivo !==)
+}
 
   const productHandleChange = panel => (event, isExpanded) => {
     var x = document.getElementById("secondheader");
