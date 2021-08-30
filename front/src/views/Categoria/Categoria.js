@@ -184,11 +184,13 @@ export default function Categories() {
   };
 
 
+//label for the toggle buttons
+
 //Toggle button de activar desactivar categoria
 
-const [activo, setActivo] = react.useState(true);
-const handleActivo = (event, newActivo) => {
-  if (newActivo !==)
+const [activo, setActivo] = useState(true);
+const handleActivo = () => {
+  setActivo((prev) => !prev)  
 }
 
   const productHandleChange = panel => (event, isExpanded) => {
@@ -227,10 +229,14 @@ const handleActivo = (event, newActivo) => {
                 {descripcion} 
               </Typography>
               <ToggleButtonGroup
-                value={}
+                value={activo}
                 exclusive
-                onChange={handleActive}  
+                onChange={handleActivo}  
+                aria-label='categoria activar desactivar'
                 >
+                  <ToggleButton   >
+                    
+                  </ToggleButton>
 
               </ToggleButtonGroup>
             </AccordionSummary>
