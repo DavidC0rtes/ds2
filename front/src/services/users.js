@@ -31,7 +31,7 @@ const create = (newObject) => {
  * Consulta un usuario especifico por email. Útil para
  * verificar si un usuario ya existe o para acceder al pérfil.
  * @param {string} email 
- * @returns 
+ * @returns {object}
  */
 const getByEmail = async (email, method) => {
     try {

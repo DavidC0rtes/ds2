@@ -85,7 +85,8 @@
       "no-tabs": "off",
       "no-mixed-spaces-and-tabs": "off",
       "no-unused-vars": "warn",
-      "react/prop-types": "off"
+      "react/prop-types": "off",
+      "react/display-names": "off"
     }
   },
   "eslintIgnore": ["build", "public", "assets"]
