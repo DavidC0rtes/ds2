@@ -22,11 +22,11 @@ const useStyles = makeStyles(() => ({
             transform: "scale3d(1.05, 1.05, 1)"
         },
     },
-    card: ({ color }) => ({
+    card: {
         minWidth: 240,
         boxShadow: 'none',
 
-    }),
+    },
     content: ({ color }) => {
         return {
             background: color,
