@@ -13,7 +13,9 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Toast from '../../components/Toast'
+import Toast from '../../components/Toast';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
 import ModalNewCategory from '../../components/modalNewCategory'
 import ModalNewProduct from '../../components/modalNewProduct'
@@ -47,8 +49,13 @@ const useStyles = makeStyles(theme => ({
     fontSize: theme.typography.pxToRem(15),
     display: 'inline-block',
     color: theme.palette.text.secondary
-  }
+  },
+  toggleContainer: {
+    margin: theme.spacing(2, 0),
+  },
 }));
+
+
 
 //Eliminar categoria TODO
 
@@ -56,7 +63,6 @@ const useStyles = makeStyles(theme => ({
 
 /*obtener todas las categorias
 * Usamos esta variable
-* La api tiene que estar corriendo
 */
 var categorias = categoryService.getAll().then(function(cats) {categorias = cats})
 
@@ -178,6 +184,9 @@ export default function Categories() {
   };
 
 
+//Toggle button de activar desactivar categoria
+
+const [activo, setActivo] =
 
   const productHandleChange = panel => (event, isExpanded) => {
     var x = document.getElementById("secondheader");
@@ -214,6 +223,13 @@ export default function Categories() {
               <Typography className={classes.secondaryHeading}>
                 {descripcion} 
               </Typography>
+              <ToggleButtonGroup
+                value={}
+                exclusive
+                onChange={handleActive}  
+                >
+
+              </ToggleButtonGroup>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <ModalNewProduct
