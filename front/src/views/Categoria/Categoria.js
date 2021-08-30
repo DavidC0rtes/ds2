@@ -14,8 +14,8 @@ import AccordionActions from '@material-ui/core/AccordionActions';
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Toast from '../../components/Toast';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import IconButton from '@material-ui/core/IconButton';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import ModalNewCategory from '../../components/modalNewCategory'
 import ModalNewProduct from '../../components/modalNewProduct'
@@ -184,7 +184,6 @@ export default function Categories() {
   };
 
 
-//label for the toggle buttons
 
 //Toggle button de activar desactivar categoria
 
@@ -226,19 +225,13 @@ const handleActivo = () => {
             >
               <Typography className={classes.heading}>{nombre}</Typography>
               <Typography className={classes.secondaryHeading}>
-                {descripcion} 
-              </Typography>
-              <ToggleButtonGroup
-                value={activo}
-                exclusive
-                onChange={handleActivo}  
-                aria-label='categoria activar desactivar'
-                >
-                  <ToggleButton   >
-                    
-                  </ToggleButton>
 
-              </ToggleButtonGroup>
+                {descripcion} 
+                <IconButton aria-label ="menu">
+                <moreVertIcon />
+              </IconButton>
+              </Typography>
+
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <ModalNewProduct
