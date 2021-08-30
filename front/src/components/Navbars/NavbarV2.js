@@ -6,7 +6,6 @@ import Chip from '@material-ui/core/Chip'
 import HomeIcon from '@material-ui/icons/Home'
 import UserIcon from '@material-ui/icons/Person'
 import AssessmentIcon from '@material-ui/icons/Assessment';
-import Grid from '@material-ui/core/Grid'
 import { Typography } from '@material-ui/core'
 
 // Sesión del usuario
@@ -70,7 +69,7 @@ const NavBar = () => {
           }
           <StyledBreadcrumb 
             component={Link} 
-            to="/perfil" 
+            to={`/perfil?mail=${auth.user.email}`}
             label="Pérfil" 
             icon={<UserIcon fontSize="small"/>}
           />

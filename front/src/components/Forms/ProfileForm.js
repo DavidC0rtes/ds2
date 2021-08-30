@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import { Typography } from '@material-ui/core'
 
 import FormHandler from '../../variables/formHandler'
 import userService from '../../services/users'
 import Toast from '../Toast'
+import AlertDialog from '../Dialog/AlertDialog'
 
 import { makeStyles } from '@material-ui/core/styles';
-
 
 /**
  * Estilos del formulario
@@ -24,21 +25,24 @@ const useStyles = makeStyles({
 			}
 		},
 		padding: '1%',
+
+		Button : {
+			fontSize: '1rem'
+		}
 	},
 	helperText: {
 		color: 'red',
 		fontWeight: 'bolder'
 	}
-	
 })
 /**
  * Se encarga de construir y manejar el formulario que se le presenta al usuario
  * en /perfil
  * 
- * @param {props} user, recibe como props un objeto con la información del usuario 
+ * @param {props} user, recibe como props un objeto con toda la información del usuario.
  * @returns formulario del pérfil del usuario
  */
-const ProfileForm = ({user}) => {
+const ProfileForm = ({ user }) => {
 	/**
 	 * state se encarga de guardar la información
 	 * insertada en el formulario. Su valor inicial
@@ -96,6 +100,41 @@ const ProfileForm = ({user}) => {
 		}
 	}
 
+	
+	const toggleAccount = async (event) => {
+		event.preventDefault()
+				
+		if (getState('activo') !== '') {
+
+			const toSend = {
+				activo: !user.activo
+			}
+			const result = await userService.update(toSend, user.id)
+			if (result.status === 200) {
+				setMessage('¡Actualizado con exito!')
+			} else {
+				setMessage('Ha ocurrido un error')
+			}
+			setTimeout(() => {
+				setMessage(null)
+			}, 4000)
+		}
+	}
+
+	/**
+	 * Retorna atributos del estado, debido a que el estado
+	 * se popula con promesas asincronas hay momentos donde este estado
+	 * puede ser undefined y tirar TypeError, por ende primero se hace la validación.
+	 * @param {string} key 
+	 * @returns 
+	 */
+	const getState = (key) => {
+		if (state) {
+			return state[key]
+		}
+		return ''
+	}
+
 	const handleFieldChange = (event) => FormHandler(state, setState, event) 
 	const classes = useStyles()
 	return (
@@ -107,8 +146,8 @@ const ProfileForm = ({user}) => {
 						name="primer_nombre"
 						label="Primer nombre"
 						InputLabelProps={{ shrink: true }}
-						error={state.errorFirstname && true}
-						value={state.primer_nombre || ''}
+						error={ getState('errorFirstname') }
+						value={ getState('primer_nombre') }
 						disabled={disable}
 						variant="filled"
 						fullWidth
@@ -120,8 +159,8 @@ const ProfileForm = ({user}) => {
 						name="segundo_nombre"
 						label="Segundo nombre"
 						InputLabelProps={{ shrink: true }}
-						error={state.errorMiddlename && true}
-						value={state.segundo_nombre || ''}
+						error={ getState('errorMiddlename') }
+						value={ getState('segundo_nombre') }
 						disabled={disable}
 						variant="filled"
 						fullWidth
@@ -133,9 +172,9 @@ const ProfileForm = ({user}) => {
 						name="primer_apellido"
 						label="Primer apellido"
 						InputLabelProps={{ shrink: true }}
-						error={state.errorLastname && true}
+						error={ getState('errorLastname') }
 						variant="filled"
-						value={state.primer_apellido || ''}
+						value={ getState('primer_apellido') }
 						disabled={disable}
 						onChange={handleFieldChange}
 						fullWidth
@@ -146,8 +185,8 @@ const ProfileForm = ({user}) => {
 						name="segundo_apellido"
 						label="Segundo apellido"
 						InputLabelProps={{ shrink: true }}
-						error={state.errorSA && true}
-						value={state.segundo_apellido || ''}
+						error={ getState('errorSA') }
+						value={ getState('segundo_apellido') }
 						disabled={disable}
 						variant="filled"
 						fullWidth
@@ -159,8 +198,8 @@ const ProfileForm = ({user}) => {
 						name="email"
 						label="Correo electrónico"
 						InputLabelProps={{ shrink: true }}
-						error={state.errorEmail && true}
-						value={state.email || ''}
+						error={ getState('errorEmail') }
+						value={ getState('email') }
 						disabled={disable}
 						variant="filled"
 						fullWidth
@@ -173,7 +212,7 @@ const ProfileForm = ({user}) => {
 						name="num_documento"
 						label="Cédula de ciudadanía"
 						type="tel"
-						value={state.num_documento || ''}
+						value={ getState('num_documento') }
 						disabled={disable}
 						variant="filled"
 						fullWidth
@@ -186,7 +225,7 @@ const ProfileForm = ({user}) => {
 						name="birthday"
 						label="Fecha de cumpleaños"
 						type="date"
-						value={state.birthday || '2000-01-01'}
+						value={ getState('birthday') }
 						disabled={disable}
 						variant="filled"
 						fullWidth
@@ -199,7 +238,7 @@ const ProfileForm = ({user}) => {
 						name="direccion"
 						label="Residencia"
 						disabled={disable}
-						value={state.direccion || ''}
+						value={ getState('direccion') }
 						fullWidth
 						variant="filled"
 						onChange={handleFieldChange}
@@ -212,7 +251,7 @@ const ProfileForm = ({user}) => {
 						name="telefono"
 						label="Teléfono"
 						disabled={disable}
-						value={state.telefono || ''}
+						value={ getState('telefono') }
 						fullWidth
 						variant="filled"
 						onChange={handleFieldChange}
@@ -225,9 +264,9 @@ const ProfileForm = ({user}) => {
 						type="password"
 						label="Contraseña"
 						InputLabelProps={{ shrink: true }}
-						error={state.errorPassword && true}
+						error={ getState('errorPassword') }
 						helperText="Llena este campo sólo si deseas cambiar tu contraseña"
-						value={state.password || ''}
+						value={ getState('password') }
 						disabled={disable}
 						variant="filled"
 						fullWidth
@@ -236,6 +275,20 @@ const ProfileForm = ({user}) => {
 							className: classes.helperText
 						}}
 					/>
+				</Grid>
+				<Grid item xs={6} md={2}>
+					<AlertDialog
+						message="¿Estas seguro?"
+						agreeTxt="Sí"
+						disagreeTxt="No"
+						btnTxt={ getState('activo') ? 
+						'Desactivar cuenta' 
+						:'Activar cuenta'
+						}
+						doAction={toggleAccount}
+					>
+
+					</AlertDialog>
 				</Grid>
 				<Grid item xs={6} md={2}>
 					<Button variant="contained" color="secondary" onClick={toggleEdit}>
