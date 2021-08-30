@@ -72,7 +72,7 @@ const Perfil = () => {
 		}
 		fetchUser()
 	}, [])
-	console.log(userData)
+
 	return (
 		<div>
 			<Container maxWidth="md">

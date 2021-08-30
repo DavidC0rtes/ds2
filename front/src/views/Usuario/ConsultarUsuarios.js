@@ -101,7 +101,7 @@ export default function UsersTable() {
     )
     : users
 
-  console.log(usersToShow)
+
   return (
     <React.Fragment>
       <Grid container >
