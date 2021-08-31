@@ -224,13 +224,12 @@ const handleActivo = () => {
             >
               <Typography className={classes.heading}>{nombre}</Typography>
               <Typography className={classes.secondaryHeading}>
-
                 {descripcion} 
-                <IconButton aria-label ="menu">
-                <moreVertIcon />
-              </IconButton>
               </Typography>
 
+              <IconButton aria-label ="activa">
+                <moreVertIcon />
+              </IconButton>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <ModalNewProduct

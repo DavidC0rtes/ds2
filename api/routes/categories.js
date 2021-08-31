@@ -44,8 +44,8 @@ categoriesRouter.put('/:id', async (request, response) => {
     Object.keys(body).forEach((key) => {
         editedCategory[key] = body[key]
     })
-
-        await control.update(category, {id: request.params.id}, editedCategory) 
+        
+    await control.update(category, {id: request.params.id}, editedCategory) 
 
 
     response.status(200).end()
