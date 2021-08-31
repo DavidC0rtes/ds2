@@ -15,6 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Toast from '../../components/Toast';
 import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import ModalNewCategory from '../../components/modalNewCategory'
@@ -222,21 +223,13 @@ const handleActivo = () => {
               aria-controls="category_panel1bh-content"
               id="category_panel1bh-header"
             >
-              <IconButton aria-label ="menu">
-                <moreVertIcon />
-              </IconButton>
-              <Typography className={classes.heading}>{nombre}              <IconButton aria-label ="menu">
-                <moreVertIcon />
-              </IconButton></Typography>
+              <Typography className={classes.heading}>{nombre}</Typography>
               <Typography className={classes.secondaryHeading}>
                 {descripcion} 
               </Typography>
-              <IconButton aria-label ="menu">
-                <moreVertIcon />
+              <IconButton aria-label="category_menu">
+                <MoreVertIcon />
               </IconButton>
-              <Button variant="contained" color="primary">
-  Primary
-</Button>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <ModalNewProduct
@@ -259,7 +252,7 @@ const handleActivo = () => {
             >
               <Typography className={classes.heading}>{nombre}</Typography>
               <Typography className={classes.secondaryHeading} id="secondheader">
-                {descripcion}
+                {descripcion} 
               </Typography>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
