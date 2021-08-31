@@ -222,14 +222,21 @@ const handleActivo = () => {
               aria-controls="category_panel1bh-content"
               id="category_panel1bh-header"
             >
-              <Typography className={classes.heading}>{nombre}</Typography>
+              <IconButton aria-label ="menu">
+                <moreVertIcon />
+              </IconButton>
+              <Typography className={classes.heading}>{nombre}              <IconButton aria-label ="menu">
+                <moreVertIcon />
+              </IconButton></Typography>
               <Typography className={classes.secondaryHeading}>
                 {descripcion} 
               </Typography>
-
-              <IconButton aria-label ="activa">
+              <IconButton aria-label ="menu">
                 <moreVertIcon />
               </IconButton>
+              <Button variant="contained" color="primary">
+  Primary
+</Button>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <ModalNewProduct
@@ -252,7 +259,7 @@ const handleActivo = () => {
             >
               <Typography className={classes.heading}>{nombre}</Typography>
               <Typography className={classes.secondaryHeading} id="secondheader">
-                {descripcion} 
+                {descripcion}
               </Typography>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
