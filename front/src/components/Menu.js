@@ -24,8 +24,15 @@ const useStyles = makeStyles((theme) => ({
  */
 const simpleMenu = ( props ) => {
     const classes = useStyles()
-    const [open, setOpen] = React.useState(false)
-
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    
     const {values, errors, handleChange, state, label, name, disable} = props
     
     const toggleSelect = () => {

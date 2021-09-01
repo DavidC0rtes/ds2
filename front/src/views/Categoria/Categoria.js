@@ -236,12 +236,11 @@ const handleActivo = () => {
                 <moreVertIcon />
               </IconButton>
               <simpleMenu
-                values={['Cliente', 'Administrador', 'Gerente']}
+                values={['Editar', 'Eliminar']}
                 errors={state.error}
-                handleChange={props.handleFieldChange}
                 state={state.rol || ''}
                 label='Rol'
-                name='rol'
+                name='m'
               />
               <Button variant="contained" color="primary">
   Primary
