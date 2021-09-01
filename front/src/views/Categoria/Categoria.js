@@ -15,12 +15,12 @@ import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Toast from '../../components/Toast';
 import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import simpleMenu from '../../components/Menu';
+
 
 import ModalNewCategory from '../../components/modalNewCategory'
 import ModalNewProduct from '../../components/modalNewProduct'
-import FormHandler from '../../variables/formHandler'
 import CategoryModalHandler from '../../variables/categoryModalHandler'
 import ProductModalHandler from '../../variables/productModalHandler'
 
@@ -223,13 +223,29 @@ const handleActivo = () => {
               aria-controls="category_panel1bh-content"
               id="category_panel1bh-header"
             >
-              <Typography className={classes.heading}>{nombre}</Typography>
+              <IconButton aria-label ="menu">
+                <moreVertIcon />
+              </IconButton>
+              <Typography className={classes.heading}>{nombre}              <IconButton aria-label ="menu">
+                <moreVertIcon />
+              </IconButton></Typography>
               <Typography className={classes.secondaryHeading}>
                 {descripcion} 
               </Typography>
-              <IconButton aria-label="category_menu">
-                <MoreVertIcon />
+              <IconButton aria-label ="menu">
+                <moreVertIcon />
               </IconButton>
+              <simpleMenu
+                values={['Cliente', 'Administrador', 'Gerente']}
+                errors={state.error}
+                handleChange={props.handleFieldChange}
+                state={state.rol || ''}
+                label='Rol'
+                name='rol'
+              />
+              <Button variant="contained" color="primary">
+  Primary
+</Button>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <ModalNewProduct
@@ -252,7 +268,7 @@ const handleActivo = () => {
             >
               <Typography className={classes.heading}>{nombre}</Typography>
               <Typography className={classes.secondaryHeading} id="secondheader">
-                {descripcion} 
+                {descripcion}
               </Typography>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
