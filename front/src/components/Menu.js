@@ -34,31 +34,32 @@ const simpleMenu = ( props ) => {
     };
     
     const {values, errors, handleChange, state, label, name, disable} = props
-    
-    const toggleSelect = () => {
-        open ? setOpen(false) : setOpen(true)
-    }
 
     return (
         <div>
             <FormControl className={classes.formControl}>
-
+            <IconButton
+            aria-label="more"
+            aria-controls="long-menu"
+            aria-haspopup="true"
+            onClick={handleClick}
+      >
+            <MoreVertIcon />
+            </IconButton>
                 <Menu
                     labelId="label-menu"
                     id={name}
                     name={name}
                     open={open}
+                    anchorEl={anchorEl}
+                    keepMounted
                     value={state}
-                    required
-                    error={errors && 'Campo obligatorio'}
-                    onClose={toggleSelect}
-                    onOpen={toggleSelect}
-                    onChange={handleChange}
+                    onClose={handleClose}
                     style={{width:'60%', height:'100%'}}
                     disabled={disable}
                     >
                     {values.map((value, index) => 
-                        <MenuItem key={index} value={value} > {value} </MenuItem>
+                        <MenuItem key={index} value={value} onClick={handleClose} > {value} </MenuItem>
                      )}
                 </Menu>
                 

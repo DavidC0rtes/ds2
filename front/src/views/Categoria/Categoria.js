@@ -223,28 +223,22 @@ const handleActivo = () => {
               aria-controls="category_panel1bh-content"
               id="category_panel1bh-header"
             >
-              <IconButton aria-label ="menu">
-                <moreVertIcon />
-              </IconButton>
-              <Typography className={classes.heading}>{nombre}              <IconButton aria-label ="menu">
-                <moreVertIcon />
-              </IconButton></Typography>
+                          <IconButton
+            aria-label="more"
+
+      >
+            <MoreVertIcon />
+            </IconButton>
+              <Typography className={classes.heading}>{nombre}              
+              </Typography>
               <Typography className={classes.secondaryHeading}>
                 {descripcion} 
               </Typography>
-              <IconButton aria-label ="menu">
-                <moreVertIcon />
-              </IconButton>
               <simpleMenu
                 values={['Editar', 'Eliminar']}
-                errors={state.error}
-                state={state.rol || ''}
-                label='Rol'
-                name='m'
+
               />
-              <Button variant="contained" color="primary">
-  Primary
-</Button>
+
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <ModalNewProduct
