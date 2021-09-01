@@ -53,7 +53,7 @@ const simpleMenu = ( props ) => {
                     {values.map((value, index) => 
                         <MenuItem key={index} value={value} > {value} </MenuItem>
                      )}
-                </Select>
+                </Menu>
                 
             </FormControl>
         </div>
@@ -61,4 +61,3 @@ const simpleMenu = ( props ) => {
 }
 
 export default simpleMenu
-}
