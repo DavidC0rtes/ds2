@@ -29,7 +29,7 @@ function Inicio() {
             <NavBar />
             <Switch>  {/*<-- acá se definen todas las rutas y hacia que componente redirigen*/}
                 <Route exact path="/"/>
-                <Route exact path="/login" component={Login} />
+                <Route exact path="/login" render={(props) => (<Login user={user} setUser={setUser} />)}/>
                 <Route exact path="/registrarse" component={SignUp} />
                 <Route exact path = "/admin/dashboard"/>
             </Switch>

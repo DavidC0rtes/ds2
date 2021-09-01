@@ -39,7 +39,13 @@ import CrearProducto from "views/Producto/CrearProducto.js";
 import ModificarProducto from "views/Producto/ModificarProducto";
 import ConsultarProducto from "views/Producto/ConsultarProducto";
 
-const dashboardRoutes = [
+//Components for clients
+import DashboardClient from "views/Cliente/Inicio.js";
+import PedidoClient from "views/Cliente/Pedido.js";
+import CartClient from "views/Cliente/Cart.js";
+import CheckoutClient from "views/Cliente/Checkout.js";
+
+const adminRoutes = [
   {
     path: "/dashboard",
     name: "Dashboard",
@@ -84,7 +90,7 @@ const dashboardRoutes = [
   }
 ];
 
-const subRoutes = [
+const adminsubRoutes = [
   {
     path: "/createuser",
     component: CrearUsuarios,
@@ -118,8 +124,40 @@ const subRoutes = [
 
 ];
 
+const clienteRoutes = [
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    icon: Dashboard,
+    component: DashboardClient,
+    layout: "/cliente"
+  },
+  {
+    path: "/pedido",
+    name: "Pedido",
+    icon: Person,
+    component: PedidoClient,
+    layout: "/cliente"
+  },
+];
+
+const clientesubRoutes = [
+  {
+    path: "/cart",
+    component: CartClient,
+    layout: "/cliente"
+  },
+  {
+    path: "/checkout",
+    component: CheckoutClient,
+    layout: "/cliente"
+  }
+
+
+];
+
 const dashRoutes = [
-  dashboardRoutes, subRoutes
+  adminRoutes, adminsubRoutes, clienteRoutes, clientesubRoutes
 ];
 
 export default dashRoutes;

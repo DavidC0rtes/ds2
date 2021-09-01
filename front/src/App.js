@@ -1,7 +1,4 @@
 import React, {useState, useEffect} from "react";
-import ReactDOM from "react-dom";
-import Navbar from './components/Navbars/NavbarV2'
-import Container from '@material-ui/core/Container'
 import { createBrowserHistory } from "history";
 import { 
   Router,
@@ -12,30 +9,22 @@ import {
 
 // Layouts
 import Admin from "layouts/Admin.js";
-import Login from './views/Login/Login'
-import SignUp from './views/Login/SignUp'
+import Inicio from 'layouts/Inicio.js';
+import Cliente from "layouts/Cliente.js";
 
 import "assets/css/material-dashboard-react.css?v=1.9.0";
 const hist = createBrowserHistory()
 
-const App = () => {
-    const [user, setUser] = useState([])    
-   
-    useEffect(() => {
-        setUser(JSON.parse(window.localStorage.getItem('usuarioLogueado')))
-    }, [])
-
-    console.log(user)
-   
+const App = () => {   
         return (
             <Router history={hist}>
-                <Navbar user={user} setUser={setUser}/>
                 <Switch>
-                    <Route exact path="/" />
-                    <Route exact path="/admin" component={Admin} />
-                    <Route exact path="/login" render={(props) => (<Login user={user} setUser={setUser} />)}/>
-                    <Route exact path="/registrarse" component={SignUp} />
-                    <Redirect exact from = "/admin" to= "/admin/dashboard"/>
+                <Route path="/inicio" component={Inicio} />
+                <Route path="/admin" component={Admin} />
+                <Route path="/cliente" component={Cliente} />
+                <Redirect from="/" to="/inicio" />
+                <Redirect from = "/admin" to= "/admin/dashboard"/>
+                <Redirect from = "/cliente" to= "/cliente/dashboard"/>
                 </Switch>
             </Router>
         );
