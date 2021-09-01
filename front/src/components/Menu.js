@@ -35,9 +35,9 @@ const simpleMenu = ( props ) => {
     return (
         <div>
             <FormControl className={classes.formControl}>
-                <InputLabel id="label-select">{label}</InputLabel>
+                <InputLabel id="label-menu">{label}</InputLabel>
                 <Menu
-                    labelId="label-select"
+                    labelId="label-menu"
                     id={name}
                     name={name}
                     open={open}
