@@ -58,11 +58,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-
-//Eliminar categoria TODO
-
-
-
 /*obtener todas las categorias
 * Usamos esta variable
 */
