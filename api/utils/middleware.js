@@ -14,6 +14,7 @@ const requestLogger = (request, response, next) => {
 }
 
 const unknownEndpoint = (request, response) => {
+    logger.error(request)
     response.status(404).send({ error: 'unknown endpoint'})
 }
 
