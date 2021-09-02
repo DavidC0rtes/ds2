@@ -24,19 +24,23 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-  const modalNewCategory = (props) => {
+  const modalEditCategory = (props) => {
       const { state } = props
-      const [open, setOpen] = useState(false);
+      const { open, onClose } = props
       const [checked, setChecked] = useState(true);
+      const handleClose = () => {
+        //setOpen(false);
+        props.handleCloseDialog(false);
+      };
 
       const classes = useStyles()
-
+      console.log(13)
       //Hay diferentes comportamientos si se llama al modal para editar or para crear categorias.
       const editModalSetUp = () => {}
 
       const editModalBehaviour = () => {
           if (props.edit == true) {
-              setOpen(true);
+              console.log('lol')
           }
 
       }
@@ -46,24 +50,13 @@ const useStyles = makeStyles((theme) => ({
           props.handleFieldChange(checked)
       }
 
-      const handleClickOpen = () => {
-          setOpen(true);
-      };
-
-      const handleClose = () => {
-          setOpen(false);
-      };
-
       const submitAndClose = () => {
           props.handleSubmit;
       };
 
       return (
           <div>
-              {(<Button variant="outlined" color="primary" fullWidth onClick ={handleClickOpen}>
-                  Nueva Categoria
-              </Button>)}
-              <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+              <Dialog open={true} onClose={handleClose} aria-labelledby="form-dialog-title">
                   <DialogTitle id="form-dialog-title">Nueva Categoria</DialogTitle>
                   <DialogContent>
                       <DialogContentText>
@@ -105,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
                         <Grid item>Activa</Grid>
                       </Grid>)}
                       </Grid>
-                      <Button onClick ={handleClose} color="primary">
+                      <Button onClick ={onClose} color="primary">
                           Cancelar
                       </Button>
                       <Button  type="submit" onClick={submitAndClose} color ="primary">
@@ -121,4 +114,4 @@ const useStyles = makeStyles((theme) => ({
       )
   }
 
-  export default modalNewCategory
+  export default modalEditCategory

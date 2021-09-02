@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -21,6 +21,7 @@ import SimpleMenu from '../../components/Menu';
 
 import ModalNewCategory from '../../components/modalNewCategory'
 import ModalNewProduct from '../../components/modalNewProduct'
+import ModalEditCategory from '../../components/modalEditCategory'
 import CategoryModalHandler from '../../variables/categoryModalHandler'
 import ProductModalHandler from '../../variables/productModalHandler'
 
@@ -66,9 +67,6 @@ const useStyles = makeStyles(theme => ({
 */
 var categorias = categoryService.getAll().then(function(cats) {categorias = cats})
 
-
-
-
 export default function Categories() {
   const [state, setState] = useState({})
   const [products, setProducts] = useState({})
@@ -80,9 +78,6 @@ export default function Categories() {
     productService.getByCat(id).then(function(prods) {setProducts(prods)})
   }
   
-
-  
-
  
   //Añadir categoria
   const addCategory = async (event) => {
@@ -125,6 +120,8 @@ export default function Categories() {
     }
 
   }
+
+  //Editar Categoria
 
   //Añadir producto
   const addProduct = async (event) => {
@@ -170,9 +167,12 @@ export default function Categories() {
 
 
   const classes = useStyles();
-  const [expanded, setExpanded] = useState(false);
-  const [productExpanded, setProductExpanded] = useState(false);
-  
+  const [expanded, setExpanded] = useState(false); //Para el acordion de categorias
+  const [productExpanded, setProductExpanded] = useState(false); //Para el acordionde productos
+  const [modalIsOpen, setModalOpen] =useState(false);
+  const toggleModal = useCallback(() => {
+    setModalOpen(!modalIsOpen);
+  }, [modalIsOpen]);  
   const handleChange = panel => (event, isExpanded) => {
     if(isExpanded){
       getProducts(panel)
@@ -183,7 +183,9 @@ export default function Categories() {
        
   };
 
-  const editOrDelete (event)
+  //Se definen los eventos al hacer click a cada elemento del menu
+
+
 
   const productHandleChange = panel => (event, isExpanded) => {
     var x = document.getElementById("secondheader");
@@ -204,6 +206,22 @@ export default function Categories() {
         
       {Object.values(categorias).map(accordion => {
         const { id, nombre, descripcion } = accordion;
+        const editOrDelete = (value, event) => {
+          event.stopPropagation();
+          switch (value) {
+            case 'Editar':
+              <ModalNewCategory
+              handleFieldChange={(event) => CategoryModalHandler(state, setState, event)}
+              state={state}
+              isDialogOpen={modalIsOpen}
+              handleCloseDialog={() => setModalOpen(false)}
+              onClose={toggleModal}
+              handleSubmit={addCategory}/>
+              break;
+            case 'Eliminar':
+              console.log(nombre);  
+          }
+        };
         return (
           <Accordion
             //TransitionProps={{ unmountOnExit: true }} 
@@ -216,12 +234,6 @@ export default function Categories() {
               aria-controls="category_panel1bh-content"
               id="category_panel1bh-header"
             >
-                          <IconButton
-            aria-label="more"
-
-      >
-            <MoreVertIcon />
-            </IconButton>
               <Typography className={classes.heading}>{nombre}              
               </Typography>
               <Typography className={classes.secondaryHeading}>
@@ -229,9 +241,10 @@ export default function Categories() {
               </Typography>
               <SimpleMenu
                 values={['Editar', 'Eliminar']}
-                handleItemClick={console.log(1), console.log(2)}
+                handleItemClick={(editOrDelete)}
 
               />
+              
 
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>

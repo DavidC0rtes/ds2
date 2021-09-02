@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme) => ({
   }));
 
   /**
- * Se define el menu
+ * Se define el menu, un menu simple que toma los elementos y cuyo event handlers tienen que definirse donde se use
+ * I.E Categoria.js define un menu de dos elementos donde un elemento abre un modal y el otro borra la categoria.
  * @param {array} values : valores del menu
  * @returns 
  */
@@ -62,7 +63,7 @@ const SimpleMenu = ( props ) => {
                     disabled={disable}
                     >
                     {values.map((value, index) => 
-                        <MenuItem key={index} value={value} onClick={handleItemClick(key)} > {value} </MenuItem>
+                        <MenuItem key={index} value={value} onClick={(event) => handleItemClick(value, event)} > {value} </MenuItem>
                      )}
                 </Menu>
                 
