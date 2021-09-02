@@ -246,7 +246,7 @@ export default function Categories() {
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               {
-                auth.user && auth.user.rol == 'Adminstrador' &&
+                auth.user && auth.user.rol == 'Administrador' &&
                 <ModalNewProduct
                 handleFieldChange={(event) => ProductModalHandler(state, setState, event, id)}
                 state={state}
