@@ -31,16 +31,6 @@ const useStyles = makeStyles((theme) => ({
 
       const classes = useStyles()
 
-      //Hay diferentes comportamientos si se llama al modal para editar or para crear categorias.
-      const editModalSetUp = () => {}
-
-      const editModalBehaviour = () => {
-          if (props.edit == true) {
-              setOpen(true);
-          }
-
-      }
-
       const setAndCheck = () => {
           setChecked((prev) => !prev);
           props.handleFieldChange(checked)
@@ -97,13 +87,13 @@ const useStyles = makeStyles((theme) => ({
                           onChange={props.handleFieldChange}
                           value={state.descripcion || ''}/>
                       </Grid>
-                        {false &&(<Grid component="label" container alignItems="center" spacing={1}>
+                        <Grid component="label" container alignItems="center" spacing={1}>
                         <Grid item>Inactiva</Grid>
                         <Grid item>
                             <Switch checked={checked} onChange={setAndCheck} name="checked"/>
                         </Grid>
                         <Grid item>Activa</Grid>
-                      </Grid>)}
+                      </Grid>
                       </Grid>
                       <Button onClick ={handleClose} color="primary">
                           Cancelar

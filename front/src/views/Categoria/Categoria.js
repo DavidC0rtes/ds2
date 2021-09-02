@@ -16,12 +16,13 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Toast from '../../components/Toast';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import SimpleMenu from '../../components/Menu';
+
 
 
 import ModalNewCategory from '../../components/modalNewCategory'
 import ModalNewProduct from '../../components/modalNewProduct'
 import ModalEditCategory from '../../components/modalEditCategory'
+import ModalEditProduct from '../../components/modalEditProduct'
 import CategoryModalHandler from '../../variables/categoryModalHandler'
 import ProductModalHandler from '../../variables/productModalHandler'
 
@@ -169,10 +170,7 @@ export default function Categories() {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false); //Para el acordion de categorias
   const [productExpanded, setProductExpanded] = useState(false); //Para el acordionde productos
-  const [modalIsOpen, setModalOpen] =useState(false);
-  const toggleModal = useCallback(() => {
-    setModalOpen(!modalIsOpen);
-  }, [modalIsOpen]);  
+
   const handleChange = panel => (event, isExpanded) => {
     if(isExpanded){
       getProducts(panel)
@@ -183,7 +181,6 @@ export default function Categories() {
        
   };
 
-  //Se definen los eventos al hacer click a cada elemento del menu
 
 
 
@@ -205,23 +202,7 @@ export default function Categories() {
         handleSubmit={addCategory}/>
         
       {Object.values(categorias).map(accordion => {
-        const { id, nombre, descripcion } = accordion;
-        const editOrDelete = (value, event) => {
-          event.stopPropagation();
-          switch (value) {
-            case 'Editar':
-              <ModalNewCategory
-              handleFieldChange={(event) => CategoryModalHandler(state, setState, event)}
-              state={state}
-              isDialogOpen={modalIsOpen}
-              handleCloseDialog={() => setModalOpen(false)}
-              onClose={toggleModal}
-              handleSubmit={addCategory}/>
-              break;
-            case 'Eliminar':
-              console.log(nombre);  
-          }
-        };
+        const { id, nombre, descripcion, activo } = accordion;
         return (
           <Accordion
             //TransitionProps={{ unmountOnExit: true }} 
@@ -239,13 +220,13 @@ export default function Categories() {
               <Typography className={classes.secondaryHeading}>
                 {descripcion} 
               </Typography>
-              <SimpleMenu
-                values={['Editar', 'Eliminar']}
-                handleItemClick={(editOrDelete)}
-
-              />
-              
-
+              <ModalEditCategory
+                handleFieldChange={(event) => CategoryModalHandler(state, setState, event)}
+                state={state}
+                nombre={nombre}
+                descripcion={descripcion}
+                activo={activo}
+                categoryId={id}/>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <ModalNewProduct
@@ -254,7 +235,7 @@ export default function Categories() {
               handleSubmit={addProduct}  
               />
             {products ? Object.values(products).map(accordion => {
-        const { id, nombre, descripcion } = accordion;
+        const { id, nombre, descripcion, cantidad, precio, iva } = accordion;
         return (
           <Accordion
             expanded={productExpanded === id}
@@ -270,6 +251,16 @@ export default function Categories() {
               <Typography className={classes.secondaryHeading} id="secondheader">
                 {descripcion}
               </Typography>
+              <ModalEditProduct
+                handleFieldChange={(event) => CategoryModalHandler(state, setState, event)}
+                id={id}
+                state={state}
+                nombre={nombre}
+                descripcion={descripcion}
+                cantidad={cantidad}
+                precio={precio}
+                iva={iva}
+                />
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <Typography width = "100%">

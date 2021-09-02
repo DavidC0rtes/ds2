@@ -22,9 +22,19 @@ const getByCat = async (categoria) => {
         const request = axios.get(`${baseUrl}/${categoria}`)
         return request.then(response => response.data).catch(error => console.log(error))    
 }
+const update = async (obj, id) => {
+    try {
+        const response = await axios.put(`${baseUrl}/${id}`, obj)
+        return response
+    } catch (err) {
+        console.error(err)
+        return err
+    }
+}
 
 export default {
     create,
     getByCat,
-    getAll
+    getAll,
+    update
 }
