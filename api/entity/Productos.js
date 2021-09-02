@@ -29,7 +29,7 @@ module.exports = new EntitySchema({
         },
         imagen: {
             type: "text",
-            nullable: false
+            nullable: true
         }
     },
     relations: {
