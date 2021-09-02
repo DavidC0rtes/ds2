@@ -27,7 +27,6 @@ import categoryService from '../../services/categories'
 import productService from '../../services/products'
 
 
-
 const styles = {
   AppBarClass: {
     marginTop: "-80px",
@@ -303,6 +302,5 @@ export default function Categories() {
         </Typography>
       </footer>
     </div>
-    
   );
 }
