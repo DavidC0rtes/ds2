@@ -26,6 +26,9 @@ import Paper from '@material-ui/core/Paper';
 import categoryService from '../../services/categories'
 import productService from '../../services/products'
 
+// Sesión del usuario
+import { useAuth } from '../../misc/useAuth'
+
 
 const styles = {
   AppBarClass: {
@@ -81,6 +84,8 @@ export default function Categories() {
   const [state, setState] = useState({})
   const [products, setProducts] = useState({})
   const [message, setNewMessage] = useState(null)
+
+  const auth = useAuth()
 
   //Obtener los productos de una categoria dada
   //Se haca la petición y se cambia el estado.
@@ -212,10 +217,14 @@ export default function Categories() {
           Disponibilidad puede variar dependiendo de la sede
         </Typography>
       </Container>
-      <ModalNewCategory
+      {
+        auth.user && auth.user.rol == 'Administrador' &&
+        <ModalNewCategory
         handleFieldChange={(event) => CategoryModalHandler(state, setState, event)}
         state={state}
-        handleSubmit={addCategory}/>       
+        handleSubmit={addCategory}/>  
+      }
+           
       {Object.values(categorias).map(accordion => {
         const { id, nombre, descripcion } = accordion;
         return (
@@ -236,11 +245,15 @@ export default function Categories() {
               </Typography>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
-              <ModalNewProduct
-              handleFieldChange={(event) => ProductModalHandler(state, setState, event, id)}
-              state={state}
-              handleSubmit={addProduct}  
-              />
+              {
+                auth.user && auth.user.rol == 'Adminstrador' &&
+                <ModalNewProduct
+                handleFieldChange={(event) => ProductModalHandler(state, setState, event, id)}
+                state={state}
+                handleSubmit={addProduct}  
+                />
+              }
+             
               
             {products ? Object.values(products).map(paper => {
             //Productos lista desplegable
