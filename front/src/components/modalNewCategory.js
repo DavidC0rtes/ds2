@@ -81,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
                           name="descripcion"
                           variant="outlined"
                           fullWidth
+                          required
                           id="descripcion"
                           label="Descripción"
                           autoFocus

@@ -69,4 +69,10 @@ productsRouter.put('/:id', async (request, response) => {
     response.status(200).end()
 })
 
+productsRouter.delete('/:id', async (request, response) =>  {
+    const body = request.body
+
+    await control.borrar(product,{id: request.params.id})
+})
+
 module.exports = productsRouter

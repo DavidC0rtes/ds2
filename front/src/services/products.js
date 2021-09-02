@@ -30,11 +30,22 @@ const update = async (obj, id) => {
         console.error(err)
         return err
     }
+};
+
+const eliminate = async(id)=> {
+    try {
+        const response = await axios.delete(`${baseUrl}/${id}`)
+        return response
+    } catch (err) {
+        console.error(err)
+        return err
+    }
 }
 
 export default {
     create,
     getByCat,
     getAll,
-    update
+    update,
+    eliminate
 }
