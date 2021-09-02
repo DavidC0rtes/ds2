@@ -183,14 +183,7 @@ export default function Categories() {
        
   };
 
-
-
-//Toggle button de activar desactivar categoria
-
-const [activo, setActivo] = useState(true);
-const handleActivo = () => {
-  setActivo((prev) => !prev)  
-}
+  const editOrDelete (event)
 
   const productHandleChange = panel => (event, isExpanded) => {
     var x = document.getElementById("secondheader");
@@ -236,6 +229,7 @@ const handleActivo = () => {
               </Typography>
               <SimpleMenu
                 values={['Editar', 'Eliminar']}
+                handleItemClick={console.log(1), console.log(2)}
 
               />
 

@@ -37,7 +37,7 @@ const SimpleMenu = ( props ) => {
 
     };
     
-    const {values, errors, handleChange, state, label, name, disable} = props
+    const {values, errors, handleItemClick, state, label, name, disable} = props
 
     return (
         <div>
@@ -51,7 +51,6 @@ const SimpleMenu = ( props ) => {
             <MoreVertIcon />
             </IconButton>
                 <Menu
-                    labelId="label-menu"
                     id={name}
                     name={name}
                     open={open}
@@ -63,7 +62,7 @@ const SimpleMenu = ( props ) => {
                     disabled={disable}
                     >
                     {values.map((value, index) => 
-                        <MenuItem key={index} value={value} onClick={handleClose} > {value} </MenuItem>
+                        <MenuItem key={index} value={value} onClick={handleItemClick(key)} > {value} </MenuItem>
                      )}
                 </Menu>
                 
