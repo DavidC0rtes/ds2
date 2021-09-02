@@ -15,6 +15,8 @@
     "axios": "^0.21.1",
     "chartist": "^0.10.1",
     "classnames": "^2.3.1",
+    "cross-env": "^7.0.3",
+    "dotenv": "^10.0.0",
     "history": "^4.10.1",
     "material-ui": "^0.20.2",
     "perfect-scrollbar": "^1.5.0",
@@ -33,9 +35,9 @@
     "react-router-dom": "^5.2.0"
   },
   "scripts": {
-    "start": "CI=false react-scripts start",
-    "build": "CI=false react-scripts build",
-    "test": "CI=false react-scripts test --env=jsdom",
+    "start": "cross-env CI=false react-scripts start",
+    "build": "cross-env CI=false react-scripts build",
+    "test": "cross-env CI=false react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
     "lint:check": "eslint . --ext=js,jsx;  exit 0",
@@ -88,5 +90,9 @@
       "react/prop-types": "off"
     }
   },
-  "eslintIgnore": ["build", "public", "assets"]
+  "eslintIgnore": [
+    "build",
+    "public",
+    "assets"
+  ]
 }
