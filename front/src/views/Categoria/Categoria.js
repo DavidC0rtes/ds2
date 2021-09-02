@@ -17,7 +17,7 @@ import Toast from '../../components/Toast';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-
+import AlertDialog from '../../components/Dialog/AlertDialog';
 
 import ModalNewCategory from '../../components/modalNewCategory'
 import ModalNewProduct from '../../components/modalNewProduct'
@@ -90,7 +90,21 @@ export default function Categories() {
 			setNewMessage(null)
 		}, 5000)
   }
-
+  //Eliminar producto
+  const deleteProduct = async (event, id) => {
+    event.stopPropagation();
+    event.preventDefault();
+    const result= await productService.eliminate(id)
+    if (result.status === 200) {
+			setNewMessage('¡Actualizado con éxito!')
+		} else {
+			setNewMessage('Ha ocurrido un error')
+			console.error(result)
+		}
+		setTimeout(() => {
+			setNewMessage(null)
+		}, 5000)
+  }
  
   //Añadir categoria
   const addCategory = async (event) => {
@@ -239,9 +253,16 @@ export default function Categories() {
                 descripcion={descripcion}
                 activo={activo}
                 categoryId={id}/>
-                <IconButton onClick={(event) => deleteCategory(event, id)}>
-                  <DeleteForeverIcon/>
-                </IconButton>
+                  <AlertDialog
+						        message="¿Estas seguro? Esta acción no se puede deshacer."
+						        agreeTxt="Sí"
+						        disagreeTxt="No"
+						        btnTxt={'Eliminar'}
+						        doAction={(event) =>deleteCategory(event, id)}
+					>
+
+					</AlertDialog>
+
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <ModalNewProduct
@@ -276,6 +297,13 @@ export default function Categories() {
                 precio={precio}
                 iva={iva}
                 />
+                <AlertDialog
+						        message="¿Estas seguro? Esta acción no se puede deshacer."
+						        agreeTxt="Sí"
+						        disagreeTxt="No"
+						        btnTxt={'Eliminar'}
+						        doAction={(event) =>deleteProduct(event, id)}
+					></AlertDialog>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <Typography width = "100%">
