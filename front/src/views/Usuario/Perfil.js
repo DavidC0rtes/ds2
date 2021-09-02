@@ -110,6 +110,7 @@ const Perfil = () => {
 							<Grid item xs={12}>
 								{userData.primer_nombre + ' ' + userData.primer_apellido}
 							</Grid>
+
 							<Grid item xs={12}><strong>{userData.email}</strong></Grid>
 						</Paper>
 					</Grid>

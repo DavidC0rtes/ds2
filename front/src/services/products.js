@@ -1,5 +1,6 @@
+ require('dotenv').config()
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/products'
+ const baseUrl = process.env.REACT_APP_CI ? '/api/products' : 'http://localhost:3001/api/products'
 
 /**
  * Manda una petición POST con su cuerpo al servidor. Esta función se usa para crear un usuario.

@@ -2,8 +2,9 @@
  * Este archivo manda todas las peticiones que tienen que ver con los usuarios
  */
 
+ require('dotenv').config()
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/users'
+ const baseUrl = process.env.REACT_APP_CI ? '/api/users' : 'http://localhost:3001/api/users'
 
 /**
  * Obtiene todos los usuarios del proyecto, i.e: manda una petición

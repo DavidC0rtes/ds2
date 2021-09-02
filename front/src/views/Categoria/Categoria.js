@@ -21,6 +21,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import ModalNewCategory from '../../components/modalNewCategory'
 import ModalNewProduct from '../../components/modalNewProduct'
+import FormHandler from '../../variables/formHandler'
 import ModalEditCategory from '../../components/modalEditCategory'
 import ModalEditProduct from '../../components/modalEditProduct'
 import CategoryModalHandler from '../../variables/categoryModalHandler'
