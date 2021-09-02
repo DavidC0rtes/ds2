@@ -306,6 +306,7 @@ export default function Categories() {
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <Typography width = "100%">
+                *PLACEHOLDER* Existencias={cantidad}, Precio={precio}, Impuesto={iva}
               </Typography>
               
             </AccordionDetails>
