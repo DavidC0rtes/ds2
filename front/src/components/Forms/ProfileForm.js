@@ -70,7 +70,7 @@ const ProfileForm = ({ user }) => {
 			toSend.birthday = new Date(...date)
 		}
 
-		const result = await userService.update(toSend, user.id_user)
+		const result = await userService.update(toSend, user.id)
 		if (result.status === 200) {
 			setMessage('¡Actualizado con éxito!')
 		} else {
