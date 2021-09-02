@@ -89,6 +89,7 @@ usersRouter.put('/:id', async (request, response) => {
     const body = request.body
     const user = {}
     const userInfo = {}
+    console.log(body)
     
     if (body.password && body.password.length > 3) {
         user.password = await bcrypt.hash(body.password, 10)
