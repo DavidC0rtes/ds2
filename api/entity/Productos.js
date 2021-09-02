@@ -26,6 +26,10 @@ module.exports = new EntitySchema({
         precio: {
             type: "int",
             nullable: false
+        },
+        imagen: {
+            type: "text",
+            nullable: false
         }
     },
     relations: {

@@ -48,7 +48,8 @@ productsRouter.post('/', async (request, response) => {
         cantidad: body.cantidad,
         iva: body.iva,
         precio: body.precio,
-        categoria: body.categoria
+        categoria: body.categoria,
+        imagen: body.imagen
     } 
     const insertedProduct = await control.insert(product, newProduct)
     
