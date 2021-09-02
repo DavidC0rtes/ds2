@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -50,9 +50,9 @@ const useStyles = makeStyles((theme) => ({
 
       return (
           <div>
-              <Button variant="outlined" color="primary" fullWidth onClick ={handleClickOpen}>
+              {(<Button variant="outlined" color="primary" fullWidth onClick ={handleClickOpen}>
                   Nueva Categoria
-              </Button>
+              </Button>)}
               <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
                   <DialogTitle id="form-dialog-title">Nueva Categoria</DialogTitle>
                   <DialogContent>
@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
                           onChange={props.handleFieldChange}
                           value={state.descripcion || ''}/>
                       </Grid>
-                      <Grid component="label" container alignItems="center" spacing={1}>
+                        <Grid component="label" container alignItems="center" spacing={1}>
                         <Grid item>Inactiva</Grid>
                         <Grid item>
                             <Switch checked={checked} onChange={setAndCheck} name="checked"/>

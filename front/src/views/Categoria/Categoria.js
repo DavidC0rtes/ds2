@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -13,11 +13,16 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Toast from '../../components/Toast'
+import Toast from '../../components/Toast';
+import IconButton from '@material-ui/core/IconButton';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+
 
 import ModalNewCategory from '../../components/modalNewCategory'
 import ModalNewProduct from '../../components/modalNewProduct'
-import FormHandler from '../../variables/formHandler'
+import ModalEditCategory from '../../components/modalEditCategory'
+import ModalEditProduct from '../../components/modalEditProduct'
 import CategoryModalHandler from '../../variables/categoryModalHandler'
 import ProductModalHandler from '../../variables/productModalHandler'
 
@@ -46,24 +51,17 @@ const useStyles = makeStyles(theme => ({
     fontSize: theme.typography.pxToRem(15),
     display: 'inline-block',
     color: theme.palette.text.secondary
-  }
+  },
+  toggleContainer: {
+    margin: theme.spacing(2, 0),
+  },
 }));
 
-/* Añadir un producto TODO
-*/
-
-
-//Eliminar categoria TODO
-
-//Editar categoria TODO
 
 /*obtener todas las categorias
 * Usamos esta variable
 */
 var categorias = categoryService.getAll().then(function(cats) {categorias = cats})
-
-
-
 
 export default function Categories() {
   const [state, setState] = useState({})
@@ -76,8 +74,21 @@ export default function Categories() {
     productService.getByCat(id).then(function(prods) {setProducts(prods)})
   }
   
-
-  
+  //Eliminar categoria
+  const deleteCategory = async (event, id) => {
+    event.stopPropagation();
+    event.preventDefault();
+    const result= await categoryService.eliminate(id)
+    if (result.status === 200) {
+			setNewMessage('¡Actualizado con éxito!')
+		} else {
+			setNewMessage('Ha ocurrido un error')
+			console.error(result)
+		}
+		setTimeout(() => {
+			setNewMessage(null)
+		}, 5000)
+  }
 
  
   //Añadir categoria
@@ -121,6 +132,8 @@ export default function Categories() {
     }
 
   }
+
+  //Editar Categoria DONE
 
   //Añadir producto
   const addProduct = async (event) => {
@@ -166,9 +179,9 @@ export default function Categories() {
 
 
   const classes = useStyles();
-  const [expanded, setExpanded] = useState(false);
-  const [productExpanded, setProductExpanded] = useState(false);
-  
+  const [expanded, setExpanded] = useState(false); //Para el acordion de categorias
+  const [productExpanded, setProductExpanded] = useState(false); //Para el acordionde productos
+
   const handleChange = panel => (event, isExpanded) => {
     if(isExpanded){
       getProducts(panel)
@@ -178,6 +191,7 @@ export default function Categories() {
     }
        
   };
+
 
 
 
@@ -199,7 +213,7 @@ export default function Categories() {
         handleSubmit={addCategory}/>
         
       {Object.values(categorias).map(accordion => {
-        const { id, nombre, descripcion } = accordion;
+        const { id, nombre, descripcion, activo } = accordion;
         return (
           <Accordion
             //TransitionProps={{ unmountOnExit: true }} 
@@ -212,10 +226,21 @@ export default function Categories() {
               aria-controls="category_panel1bh-content"
               id="category_panel1bh-header"
             >
-              <Typography className={classes.heading}>{nombre}</Typography>
+              <Typography className={classes.heading}>{nombre}              
+              </Typography>
               <Typography className={classes.secondaryHeading}>
                 {descripcion} 
               </Typography>
+              <ModalEditCategory
+                handleFieldChange={(event) => CategoryModalHandler(state, setState, event)}
+                state={state}
+                nombre={nombre}
+                descripcion={descripcion}
+                activo={activo}
+                categoryId={id}/>
+                <IconButton onClick={(event) => deleteCategory(event, id)}>
+                  <DeleteForeverIcon/>
+                </IconButton>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <ModalNewProduct
@@ -224,7 +249,7 @@ export default function Categories() {
               handleSubmit={addProduct}  
               />
             {products ? Object.values(products).map(accordion => {
-        const { id, nombre, descripcion } = accordion;
+        const { id, nombre, descripcion, cantidad, precio, iva } = accordion;
         return (
           <Accordion
             expanded={productExpanded === id}
@@ -238,8 +263,18 @@ export default function Categories() {
             >
               <Typography className={classes.heading}>{nombre}</Typography>
               <Typography className={classes.secondaryHeading} id="secondheader">
-                {descripcion} 
+                {descripcion}
               </Typography>
+              <ModalEditProduct
+                handleFieldChange={(event) => CategoryModalHandler(state, setState, event)}
+                id={id}
+                state={state}
+                nombre={nombre}
+                descripcion={descripcion}
+                cantidad={cantidad}
+                precio={precio}
+                iva={iva}
+                />
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <Typography width = "100%">
