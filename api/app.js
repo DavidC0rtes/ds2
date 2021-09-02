@@ -4,51 +4,38 @@
  * no podría funcionar
  */
 const typeorm = require('typeorm')
-const tipoDoc = require('./entity/TipoDoc')
 const express = require('express')
+require('express-async-errors')
 const app = express()
+const cors = require('cors')
+const logger = require('./utils/logger')
+const middleware = require('./utils/middleware')
+const config = require('./utils/config')
 
-// Esta función se ejecuta inmediatamente.
-const foo = (async () => {
-    // Se crea la conexión 
-    const conn = await typeorm.createConnection()
-    // Solo después de crear la conexión se puede importar 
-    // el control de las entidades
-    const control = require('./controllers/Control')
+let usersRouter = null
+
+typeorm.createConnection(config.DBNAME).then( () => {
+    const usersRouter = require('./routes/users')  
+    const loginRouter = require('./routes/login')
+    const categoriesRouter = require('./routes/categories')
+    const productsRouter = require('./routes/products')
+
+    if (config.ENV === 'production') app.use(express.static('build'))
+
+    app.use(cors())
+    app.use(express.json())
+    app.use(middleware.requestLogger)
     
-    /*
-     * Ejemplos del uso de control
-     */
+    // Aquí se especifica al servidor que rutas va a escuchar
+    app.use('/api/users', usersRouter)
+    app.use('/api/login', loginRouter)
+    app.use('/api/categories', categoriesRouter)
+    app.use('/api/products', productsRouter)
+    // Fin especificaciones
+    app.use(middleware.unknownEndpoint)
+    app.use(middleware.errorHandler)
 
-    // Traer todos los registros de la entidad tipoDoc
-    const result = await control.getAll(tipoDoc)
-    console.log(result)
-
-    // Insertar registro nuevo
-    //const nuevoDoc = {
-    //    name: 'Libreta militar'
-    //}
-    //const insertResult = await control.insert(tipoDoc, nuevoDoc)
-    console.log(insertResult)
-
-    
-    const todos = await control.getField(tipoDoc, "name") 
-
-    console.log(todos)
-
-    const Like = typeorm.Like
-    const nombreEmpiezaConC = await typeorm.getRepository(tipoDoc)
-        .find({ name: Like('C%')})
-
-    console.log(nombreEmpiezaConC)
-
-    const primerRegistro = await typeorm.getRepository(tipoDoc)
-        .findOne(1)
-
-    console.log(primerRegistro)
-
-    await conn.close()
-    console.log('Conexión terminada')
-})()
+})
+.catch( err => console.log(err))
 
 module.exports = app

@@ -1,70 +1,18 @@
-# Getting Started with Create React App
+# Funcionamiento del front-end
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Instalacion
+Para instalar la aplicacion se debe inicializar el comando `npm install --force`
 
-## Available Scripts
+## Uso
+Para iniciar la aplicacion se debe utilizar el comando `npm start`
 
-In the project directory, you can run:
+## Estructura de carpetas
+En la carpeta src se encuentran 5 distintas carpetas, cada una con una funcion especifica:
+- `src/assets` es donde van todos los scripts y archivos de diseño (CSS, imgs, y JSS)
+- `src/components` carpeta donde van todos los componentes de una pagina, cuando hablamos de componentes nos referimos a las distintas partes que forman la pagina, por ejemplo links estilizados, navbars, tablas, tipografias.
+- `src/layouts` corresponde a la carpeta de "plantillas", cada distinta pagina o view es una ventana que se renderiza encima de una plantilla, esto basandose en las similitudes que tiene con otras disintas paginas, en el caso de este proyecto se tiene el layout inicio, que inicialmente solo posee un navbar con todo lo que deberia contener la pagina inicio, en esta se renderizan los views de Login y Signup (por ahora).
+- `src/variables` por el momento no se utiliza, pero aqui deberian ir todo lo que se refiere a datos que se usan como variables para una funcion o tabla (por ejemplo)
+- `src/views` aqui van las distintas paginas que tiene la aplicacion, cada una divida en una subcarpeta dependiendo de la categoria que corresponda, por ejemplo en la subcarpeta `src/views/Usuario` van todas las paginas que tiene que ver con la categoria de usuarios (en este caso, la pagina para crear usuarios, para modificarlos, etc)
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Utilidad de algunos archivos
+- `routes.js` es el encargado de los redireccionamientos.
