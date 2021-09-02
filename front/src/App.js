@@ -14,7 +14,7 @@ import Admin from "./layouts/Admin";
 import Login from './views/Login/Login'
 import SignUp from './views/Login/SignUp'
 import Categories from './views/Categoria/Categoria'
-import ConsultarProducto from './views/Producto/ConsultarProducto'
+import Productos from './views/Producto/Productos'
 import Perfil from './views/Usuario/Perfil.js'
 import Inicio from './layouts/Inicio'
 
@@ -35,7 +35,7 @@ const App = () => {
                     <Route exact path="/registrarse" component={SignUp} />
                     <Route exact path="/categorias" component={Categories} />
                     <Redirect exact from = "/admin" to= "/admin/dashboard"/>
-                    <Route exact path="/menu" component={ConsultarProducto} />
+                    <Route exact path="/menu" component={Productos} />
                     <Redirect from="/admin" to="/admin/dashboard" />
 
                 </Switch>

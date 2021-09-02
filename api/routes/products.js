@@ -48,11 +48,26 @@ productsRouter.post('/', async (request, response) => {
         cantidad: body.cantidad,
         iva: body.iva,
         precio: body.precio,
-        categoria: body.categoria
+        categoria: body.categoria,
+        imagen: body.imagen
     } 
     const insertedProduct = await control.insert(product, newProduct)
     
     response.json(insertedProduct)
+})
+
+productsRouter.put('/:id', async (request, response) => {
+    const body = request.body
+    const editedProduct = {}
+
+    Object.keys(body).forEach((key) => {
+        editedProduct[key] = body[key]
+    })
+        
+    await control.update(product, {id: request.params.id}, editedProduct) 
+
+
+    response.status(200).end()
 })
 
 module.exports = productsRouter

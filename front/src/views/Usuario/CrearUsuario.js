@@ -5,19 +5,12 @@
  */
 import React from "react";
 // @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
 import userService from '../../services/users'
 
 import FormNewUser from '../../components/FormNewUser'
 import Toast from '../../components/Toast'
 import FormHandler from '../../variables/formHandler'
 
-const styles = {
-  AppBarClass: {
-    marginTop: "-80px",
-    backgroundColor: "#00acc1"
-  }
-};
 
 const getIdRol = (rol) => {
   switch(rol) {
@@ -32,10 +25,7 @@ const getIdRol = (rol) => {
   }
 }
 
-const useStyles = makeStyles(styles);
-
 export default function CreateUser() {
-  const classes = useStyles();
   const [state, setState] = React.useState({})
   const [message, setMessage] = React.useState(null)
   
