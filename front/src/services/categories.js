@@ -54,9 +54,20 @@ const update = async (obj, id) => {
     }
 }
 
+const eliminate = async(id)=> {
+    try {
+        const response = await axios.delete(`${baseUrl}/${id}`)
+        return response
+    } catch (err) {
+        console.error(err)
+        return err
+    }
+}
+
 export default {
     getAll,
     getByName,
     create,
-    update
+    update,
+    eliminate
 }

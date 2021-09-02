@@ -16,7 +16,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Toast from '../../components/Toast';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 
 import ModalNewCategory from '../../components/modalNewCategory'
@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
 
 //Eliminar categoria TODO
 
-//Editar categoria TODO
+
 
 /*obtener todas las categorias
 * Usamos esta variable
@@ -79,6 +79,22 @@ export default function Categories() {
     productService.getByCat(id).then(function(prods) {setProducts(prods)})
   }
   
+  //Eliminar categoria
+  const deleteCategory = async (event, id) => {
+    event.stopPropagation();
+    event.preventDefault();
+    const result= await categoryService.eliminate(id)
+    if (result.status === 200) {
+			setNewMessage('¡Actualizado con éxito!')
+		} else {
+			setNewMessage('Ha ocurrido un error')
+			console.error(result)
+		}
+		setTimeout(() => {
+			setNewMessage(null)
+		}, 5000)
+  }
+
  
   //Añadir categoria
   const addCategory = async (event) => {
@@ -122,7 +138,7 @@ export default function Categories() {
 
   }
 
-  //Editar Categoria
+  //Editar Categoria DONE
 
   //Añadir producto
   const addProduct = async (event) => {
@@ -227,6 +243,9 @@ export default function Categories() {
                 descripcion={descripcion}
                 activo={activo}
                 categoryId={id}/>
+                <IconButton onClick={(event) => deleteCategory(event, id)}>
+                  <DeleteForeverIcon/>
+                </IconButton>
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
               <ModalNewProduct

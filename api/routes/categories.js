@@ -51,5 +51,10 @@ categoriesRouter.put('/:id', async (request, response) => {
     response.status(200).end()
 })
 
+categoriesRouter.delete('/:id', async (request, response) =>  {
+    const body = request.body
+
+    await control.borrar(category,{id: request.params.id})
+})
 
 module.exports = categoriesRouter
