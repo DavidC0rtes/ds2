@@ -16,7 +16,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Toast from '../../components/Toast';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import simpleMenu from '../../components/Menu';
+import SimpleMenu from '../../components/Menu';
 
 
 import ModalNewCategory from '../../components/modalNewCategory'
@@ -234,7 +234,7 @@ const handleActivo = () => {
               <Typography className={classes.secondaryHeading}>
                 {descripcion} 
               </Typography>
-              <simpleMenu
+              <SimpleMenu
                 values={['Editar', 'Eliminar']}
 
               />

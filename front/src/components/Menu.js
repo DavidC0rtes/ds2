@@ -22,15 +22,19 @@ const useStyles = makeStyles((theme) => ({
  * @param {array} values : valores del menu
  * @returns 
  */
-const simpleMenu = ( props ) => {
+const SimpleMenu = ( props ) => {
     const classes = useStyles()
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
+        event.stopPropagation();
     };
     
-    const handleClose = () => {
+    const handleClose = (event) => {
         setAnchorEl(null);
+        event.stopPropagation();
+
     };
     
     const {values, errors, handleChange, state, label, name, disable} = props
@@ -52,7 +56,7 @@ const simpleMenu = ( props ) => {
                     name={name}
                     open={open}
                     anchorEl={anchorEl}
-                    keepMounted
+                    
                     value={state}
                     onClose={handleClose}
                     style={{width:'60%', height:'100%'}}
@@ -68,4 +72,4 @@ const simpleMenu = ( props ) => {
     )
 }
 
-export default simpleMenu
+export default SimpleMenu
