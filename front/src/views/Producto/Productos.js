@@ -219,10 +219,13 @@ export default function Categories() {
       </Container>
       {
         auth.user && auth.user.rol == 'Administrador' &&
+
+        
         <ModalNewCategory
         handleFieldChange={(event) => CategoryModalHandler(state, setState, event)}
         state={state}
-        handleSubmit={addCategory}/>  
+        handleSubmit={addCategory}/>
+          
       }
            
       {Object.values(categorias).map(accordion => {

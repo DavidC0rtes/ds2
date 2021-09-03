@@ -37,6 +37,33 @@ const breadCrumbStyle = {
     display: 'flex',
     justifyContent: 'center',
     flexWrap: 'wrap',
+    backgroundColor: 'black',
+    paddingBottom: '1rem',
+    paddingTop: '.5rem',
+    color: 'white',
+    '& img': {
+      maxWidth: '1vw',
+      heigth: '1vh',
+      float: 'left'
+    },
+    '& h6 + img': {
+      clear: 'left'
+    },
+    Typography: {
+      color: 'white'
+    },
+    '& :active': {
+      color: 'white'
+    },
+    position: 'sticky',
+    top: 0,
+    zIndex: 10000
+}
+
+const imgStyle = {
+  width: '2vw',
+  heigth: '2vh',
+  float: 'left'
 }
 
 const NavBar = () => {
@@ -44,50 +71,54 @@ const NavBar = () => {
 
   return (
     <Breadcrumbs aria-label="breadcrumb" style={breadCrumbStyle}>
-        <Typography variant="h6">Restaurante</Typography>
-        <StyledBreadcrumb
-        component={Link}
-        to="/"
-        label="Inicio"
-        icon={<HomeIcon fontSize="small" />}
-      />
+        <img style={imgStyle} src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Univalle.svg/1200px-Univalle.svg.png"/>
+        
+        <Typography 
+          variant="h6" 
+          component={Link} to="/"
+          style={breadCrumbStyle.Typography}
+          >
+            UNIVALLE FRIED CHICKEN
+        </Typography>
+        
       <StyledBreadcrumb component={Link} to="/menu" label="Menú"/>
       <StyledBreadcrumb component={Link} to="/sedes" label="Sedes" onClick={handleClick} />
-    
-      {auth.user ? (
-        <Breadcrumbs style={breadCrumbStyle}>
-          
-          {
-            auth.user.rol !== 'Cliente' &&
-            <StyledBreadcrumb
-              component={Link}
-              to="/admin/dashboard"
-              label="Panel de control"
-              icon={<AssessmentIcon />}
-            />
-          }
-          <StyledBreadcrumb 
+      {
+        auth.user && 
+        <StyledBreadcrumb 
             component={Link} 
             to={`/perfil?mail=${auth.user.email}`}
             label="Pérfil" 
             icon={<UserIcon fontSize="small"/>}
           />
-          <StyledBreadcrumb 
-            component={Link} 
-            to="/" 
-            label="Cerrar sesión" 
-            onClick={auth.logout}
-          />
-          <span>{auth.user.rol}</span>
-        </Breadcrumbs>
-
-      ) : (
-        <Breadcrumbs style={breadCrumbStyle}>
+      }
+      
+      {
+        !auth.user && 
         <StyledBreadcrumb component={Link} to="/login" label="Iniciar sesión" />
+      }
+      {
+        !auth.user && 
         <StyledBreadcrumb component={Link} to="/registrarse" label="Crear cuenta" />
-        
-        </Breadcrumbs>
-      )}
+      }
+      {
+        auth.user && auth.user.rol !== 'Cliente' &&
+        <StyledBreadcrumb
+          component={Link}
+          to="/admin/dashboard"
+          label="Panel de control"
+          icon={<AssessmentIcon />}
+        />
+      }
+      {
+        auth.user && 
+        <StyledBreadcrumb 
+          component={Link} 
+          to="/"
+          label="Cerrar sesión" 
+          onClick={auth.logout}
+        />
+      }
 
       
     </Breadcrumbs> 
