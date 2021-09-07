@@ -1,27 +1,50 @@
 {
-  "name": "front",
-  "version": "0.1.0",
-  "private": true,
+  "name": "frontend",
+  "version": "1.9.0",
+  "description": "Proyecto final ds2",
+  "private": false,
+  "main": "dist/index.js",
   "dependencies": {
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/data-grid": "*",
+    "@material-ui/icons": "^4.11.2",
+    "@react-google-maps/api": "^2.1.1",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "axios": "^0.21.1",
+    "chartist": "^0.10.1",
+    "classnames": "^2.3.1",
+    "cross-env": "^7.0.3",
+    "dotenv": "^10.0.0",
+    "history": "^4.10.1",
+    "material-ui": "^0.20.2",
+    "perfect-scrollbar": "^1.5.0",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.0",
+    "react-chartist": "^0.14.4",
+    "react-dom": "^17.0.0",
+    "react-google-maps": "^9.4.5",
+    "react-material-ui-carousel": "^2.3.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.1"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+  "peerDependencies": {
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "react-router-dom": "^5.2.0"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "scripts": {
+    "start": "cross-env CI=false react-scripts start",
+    "build": "cross-env CI=false react-scripts build",
+    "test": "cross-env CI=false react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
+    "lint:check": "eslint . --ext=js,jsx;  exit 0",
+    "lint:fix": "eslint . --ext=js,jsx --fix;  exit 0",
+    "build-package-css": "cp src/assets/css/material-dashboard-react.css dist/material-dashboard-react.css",
+    "build-package": "npm run build-package-css && babel src --out-dir dist"
   },
   "browserslist": {
     "production": [
@@ -29,10 +52,49 @@
       "not dead",
       "not op_mini all"
     ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "development": []
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0"
+  },
+  "settings": {
+    "react": {
+      "version": "17.0.0"
+    }
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true,
+      "browser": true,
+      "es2020": true,
+      "amd": true,
+      "jest": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true,
+        "experimentalObjectSpread": true
+      }
+    },
+    "rules": {
+      "no-console": "off",
+      "no-trailing-spaces": "off",
+      "max-len": "off",
+      "no-tabs": "off",
+      "no-mixed-spaces-and-tabs": "off",
+      "no-unused-vars": "warn",
+      "react/prop-types": "off",
+      "react/display-names": "off"
+    }
+  },
+  "eslintIgnore": [
+    "build",
+    "public",
+    "assets"
+  ]
 }

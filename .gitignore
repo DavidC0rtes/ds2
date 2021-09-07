@@ -1,4 +1,10 @@
 tags
 node_modules
 .env
+.history
 */node_modules
+.vscode
+.env.secret
+ormconfig.yml
+.vscode
+package-lock.json
