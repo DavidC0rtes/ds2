@@ -1,6 +1,6 @@
 import React from "react";
 import { ProvideAuth } from './misc/useAuth'
-import Navbar from './components/Navbars/NavbarV2'
+import SimpleAppBar from "components/AppBar/AppBar";
 import { createBrowserHistory } from "history";
 import { 
   Router,
@@ -17,6 +17,7 @@ import Categories from './views/Categoria/Categoria'
 import Productos from './views/Producto/Productos'
 import Perfil from './views/Usuario/Perfil.js'
 import Inicio from './layouts/Inicio'
+import Footer from "components/Footer";
 
 
 import "assets/css/material-dashboard-react.css?v=1.9.0";
@@ -26,7 +27,7 @@ const App = () => {
         return (
             <ProvideAuth>
             <Router history={hist}>
-                <Navbar />
+                <SimpleAppBar />
                 <Switch>
                     <Route exact path="/" component={Inicio}/>
                     <Route path="/admin" component={Admin} />
@@ -37,8 +38,8 @@ const App = () => {
                     <Redirect exact from = "/admin" to= "/admin/dashboard"/>
                     <Route exact path="/menu" component={Productos} />
                     <Redirect from="/admin" to="/admin/dashboard" />
-
                 </Switch>
+                <Footer />
             </Router>
             </ProvideAuth>
         );

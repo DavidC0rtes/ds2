@@ -111,7 +111,7 @@ export default function Admin({ ...rest }) {
       <div className={classes.wrapper}>
         <Sidebar
           routes={routes[0]}
-          logoText={"Restaurante"}
+          logoText={"UNIVALLE FRIED CHICKEN"}
           image={image}
           handleDrawerToggle={handleDrawerToggle}
           open={mobileOpen}

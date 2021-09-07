@@ -21,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
     submit: {
       margin: theme.spacing(3, 0, 2),
     },
+    button: {
+        maxWidth: '50%',
+        position: 'relative',
+        margin: '0 15vw 0',
+    }
   }));
 
 
@@ -45,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 
       return (
           <div>
-              <Button variant="outlined" color="primary" fullWidth onClick ={handleClickOpen}>
+              <Button variant="outlined" color="secondary" className={classes.button} fullWidth onClick ={handleClickOpen}>
                   Nuevo Producto
               </Button>
               <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

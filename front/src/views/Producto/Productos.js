@@ -39,16 +39,17 @@ const styles = {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "100%"
+    width: "100%",
   },
   heading: {
     fontSize: theme.typography.pxToRem(20),
+    fontWeight: 'bold',
     flexBasis: "33.33%",
-    flexShrink: 0
+    flexShrink: 0,
   },
   paper: {
     padding: theme.spacing(2),
-    margin: 'auto',
+    margin: '1rem auto 1rem',
     maxWidth: 500,
   },
   image: {
@@ -60,7 +61,17 @@ const useStyles = makeStyles(theme => ({
     display: 'block',
     maxWidth: '100%',
     maxHeight: '100%',
+    border: '1px solid gray',
+    borderRadius: '6px',
   },
+  title: {
+    fontWeight: 'bolder',
+    paddingTop: '1vh',
+  },
+  productGrid: {
+    border: '1px solid black',
+    borderRadius: '8px'
+  }
 
 }));
 
@@ -92,10 +103,6 @@ export default function Categories() {
   const getProducts =  function f1(id){
     productService.getByCat(id).then(function(prods) {setProducts(prods)})
   }
-  
-
-  
-
  
   //Añadir categoria
   const addCategory = async (event) => {
@@ -197,7 +204,6 @@ export default function Categories() {
   };
 
 
-
   const productHandleChange = panel => (event, isExpanded) => {
     var x = document.getElementById("secondheader");
     if (x.style.display === 'none') {
@@ -209,20 +215,22 @@ export default function Categories() {
   };
     return (
     <div className={classes.root}>
-      <Container maxWidth="sm" >
-        <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom >
-          Menú
+      <Container maxWidth="md" >
+        <Typography  className={classes.title} component="h1" variant="h2" align="left" color="textPrimary" gutterBottom >
+          Conoce nuestro menú 🍲
         </Typography>
-        <Typography variant="h5" align="center" color="textSecondary" paragraph>
+        <Typography variant="subtitle1" align="left" color="textSecondary" paragraph>
           Disponibilidad puede variar dependiendo de la sede
         </Typography>
-      </Container>
+      
       {
         auth.user && auth.user.rol == 'Administrador' &&
+
+        
         <ModalNewCategory
         handleFieldChange={(event) => CategoryModalHandler(state, setState, event)}
         state={state}
-        handleSubmit={addCategory}/>  
+        handleSubmit={addCategory}/>
       }
            
       {Object.values(categorias).map(accordion => {
@@ -239,7 +247,7 @@ export default function Categories() {
               aria-controls="category_panel1bh-content"
               id="category_panel1bh-header"
             >
-              <Typography className={classes.heading}>{nombre}</Typography>
+              <Typography className={classes.heading} gutterBottom>{nombre}</Typography>
               <Typography className={classes.secondaryHeading}>
                 {descripcion} 
               </Typography>
@@ -260,7 +268,7 @@ export default function Categories() {
             const { id, nombre, descripcion, precio, imagen, iva} = paper;
             return (
             <div className={classes.root} key={id}>
-              <Paper className={classes.paper}>
+              <Paper className={classes.paper} elevation={9}>
                 <Grid container spacing={2}>
                   <Grid item>
                     <ButtonBase className={classes.image}>
@@ -269,7 +277,7 @@ export default function Categories() {
                   </Grid>
                   <Grid item xs={12} sm container>
                     <Grid item xs container direction="column" spacing={2}>
-                      <Grid item xs>
+                      <Grid item xs >
                         <Typography gutterBottom variant="subtitle1">
                           {nombre}
                         </Typography>
@@ -306,6 +314,7 @@ export default function Categories() {
             vertical='bottom'
             horizontal='center'
         />
+      </Container>
         <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
           Ordena ya!

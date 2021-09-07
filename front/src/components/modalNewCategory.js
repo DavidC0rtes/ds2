@@ -20,6 +20,17 @@ const useStyles = makeStyles((theme) => ({
     submit: {
       margin: theme.spacing(3, 0, 2),
     },
+    root: {
+        width: '100%',
+
+    },
+    button: {
+        backgroundColor: '#b30000 !important',
+        color: 'white',
+        '&:hover': {
+            backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.4) 0 0) !important'
+        }   
+    }
   }));
 
 
@@ -49,8 +60,8 @@ const useStyles = makeStyles((theme) => ({
       };
 
       return (
-          <div>
-              {(<Button variant="outlined" color="primary" fullWidth onClick ={handleClickOpen}>
+          <div className={classes.root}>
+              {(<Button className={classes.button} variant="contained" color="blue" fullWidth onClick ={handleClickOpen}>
                   Nueva Categoria
               </Button>)}
               <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

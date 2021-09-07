@@ -249,12 +249,15 @@ const ProfileForm = ({ user }) => {
 					<TextField
 						name="telefono"
 						label="Teléfono"
+						type="tel"
 						disabled={disable}
 						value={ getState('telefono') }
+						placeholder="###"
 						fullWidth
 						variant="filled"
 						onChange={handleFieldChange}
 						InputLabelProps={{ shrink: true }}
+						inputProps={{ pattern: "[0-9]{7,12}" }}
 					/>
 				</Grid>
 				<Grid item xs={12}>

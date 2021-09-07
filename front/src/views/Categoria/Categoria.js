@@ -43,19 +43,25 @@ const useStyles = makeStyles(theme => ({
     width: "100%"
   },
   heading: {
-    fontSize: theme.typography.pxToRem(15),
-    flexBasis: "33.33%",
-
-    flexShrink: 0
+    fontSize: theme.typography.pxToRem(18),
+    flexShrink: 0,
   },
   secondaryHeading: {
     fontSize: theme.typography.pxToRem(15),
+    fontWeight: 'regular !important',
     display: 'inline-block',
     color: theme.palette.text.secondary
   },
   toggleContainer: {
     margin: theme.spacing(2, 0),
   },
+  title: {
+    fontWeight: 'bolder',
+    marginTop: '-3.5rem'
+  },
+  column: {
+    flexBasis: '33.33%'
+  }
 }));
 
 
@@ -208,8 +214,6 @@ export default function Categories() {
   };
 
 
-
-
   const productHandleChange = panel => (event, isExpanded) => {
     var x = document.getElementById("secondheader");
     if (x.style.display === 'none') {
@@ -221,7 +225,9 @@ export default function Categories() {
   };
     return (
     <div className={classes.root}>
-      <header>Listado de categorias y productos</header>
+      <Typography  className={classes.title} variant="h4" align="left" color="textPrimary" gutterBottom >
+          Administrar categorías
+        </Typography>
       <ModalNewCategory
         handleFieldChange={(event) => CategoryModalHandler(state, setState, event)}
         state={state}
@@ -234,42 +240,39 @@ export default function Categories() {
             //TransitionProps={{ unmountOnExit: true }} 
             expanded={expanded === id}
             key={id}
-            onChange={handleChange(id)}
-          >
+            onChange={handleChange(id)}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="category_panel1bh-content"
-              id="category_panel1bh-header"
-            >
-              <Typography className={classes.heading}>{nombre}              
-              </Typography>
-              <Typography className={classes.secondaryHeading}>
-                {descripcion} 
-              </Typography>
-              <ModalEditCategory
+              id="category_panel1bh-header">
+              <div className={classes.column}>
+                  <Typography className={classes.heading}>{nombre}</Typography>
+              </div>
+              
+              <div className={classes.column}>
+                <Typography className={classes.secondaryHeading}>
+                  {descripcion} 
+                </Typography>
+              </div>
+              
+              <ModalEditCategory className={classes.column}
                 handleFieldChange={(event) => CategoryModalHandler(state, setState, event)}
                 state={state}
                 nombre={nombre}
                 descripcion={descripcion}
                 activo={activo}
                 categoryId={id}/>
-                  <AlertDialog
-						        message="¿Estas seguro? Esta acción no se puede deshacer."
-						        agreeTxt="Sí"
-						        disagreeTxt="No"
-						        btnTxt={'Eliminar'}
-						        doAction={(event) =>deleteCategory(event, id)}
-					>
-
-					</AlertDialog>
+              <AlertDialog className={classes.column}
+						    message="¿Estas seguro? Esta acción no se puede deshacer."
+						    agreeTxt="Sí"
+						    disagreeTxt="No"
+						    btnTxt={'Eliminar'}
+						    doAction={(event) => deleteCategory(event, id)}>
+					    </AlertDialog>
 
             </AccordionSummary>
             <AccordionDetails style={{display:'block'}}>
-              <ModalNewProduct
-              handleFieldChange={(event) => ProductModalHandler(state, setState, event, id)}
-              state={state}
-              handleSubmit={addProduct}  
-              />
+             
             {products ? Object.values(products).map(accordion => {
         const { id, nombre, descripcion, cantidad, precio, iva } = accordion;
         return (
@@ -281,13 +284,19 @@ export default function Categories() {
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="product_panel1bh-content"
-              id="product_panel1bh-header"
-            >
-              <Typography className={classes.heading}>{nombre}</Typography>
-              <Typography className={classes.secondaryHeading} id="secondheader">
-                {descripcion}
-              </Typography>
-              <ModalEditProduct
+              id="product_panel1bh-header">
+                
+                <div className={classes.column}>
+                  <Typography variant="subtitle1" className={classes.heading}>{nombre}</Typography>
+                </div>
+              
+                <div className={classes.column}>
+                <  Typography className={classes.secondaryHeading} id="secondheader">
+                    {descripcion}
+                  </Typography>
+                </div>
+              
+              <ModalEditProduct className={classes.column}
                 handleFieldChange={(event) => CategoryModalHandler(state, setState, event)}
                 id={id}
                 state={state}
@@ -297,7 +306,7 @@ export default function Categories() {
                 precio={precio}
                 iva={iva}
                 />
-                <AlertDialog
+                <AlertDialog className={classes.column}
 						        message="¿Estas seguro? Esta acción no se puede deshacer."
 						        agreeTxt="Sí"
 						        disagreeTxt="No"

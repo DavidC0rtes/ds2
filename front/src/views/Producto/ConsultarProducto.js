@@ -1,14 +1,11 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import CameraIcon from '@material-ui/icons/PhotoCamera';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -62,22 +59,20 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
   },
-}));
+  container: {
 
-const cards = [1, 2, 3, 4];
+  }
+}));
 
 export default function Album() {
   const classes = useStyles();
 
   return (
-    <React.Fragment>
-      <CssBaseline />
-      <main>
-        {/* Hero unit */}
-        <div className={classes.heroContent}>
-          <Container maxWidth="sm" >
+    <React.Fragment className={classes.container}>
+        <div >
+          <Container maxWidth="md" >
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              Menú
+              Conoce nuestro menú
             </Typography>
             <Typography variant="h5" align="center" color="textSecondary" paragraph>
               Disponibilidad puede variar dependiendo de la sede
@@ -189,7 +184,6 @@ export default function Album() {
             </Grid>
           </Grid>
         </Container>
-      </main>
       {/* Footer */}
       <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
