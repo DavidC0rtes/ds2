@@ -18,13 +18,13 @@ const StyledBreadcrumb = withStyles((theme) => ({
     height: theme.spacing(3),
     color: '#fff',
     fontWeight: theme.typography.fontWeightMedium,
-    fontSize: 14,
+    fontSize: 20,
     '&:hover, &:focus': {
       backgroundColor: theme.palette.grey[300],
     },
     '&:active': {
       boxShadow: theme.shadows[1],
-      backgroundColor: emphasize(theme.palette.grey[300], 0.12),
+      //backgroundColor: emphasize(theme.palette.grey[300], 0.12),
     },
   },
 }))(Chip);
@@ -41,6 +41,7 @@ const breadCrumbStyle = {
     paddingBottom: '1rem',
     paddingTop: '.5rem',
     color: 'white',
+    height: '12vh',
     '& img': {
       maxWidth: '1vw',
       heigth: '1vh',
@@ -50,7 +51,8 @@ const breadCrumbStyle = {
       clear: 'left'
     },
     Typography: {
-      color: 'white'
+      color: 'white',
+
     },
     '& :active': {
       color: 'white'
@@ -61,8 +63,8 @@ const breadCrumbStyle = {
 }
 
 const imgStyle = {
-  width: '2vw',
-  heigth: '2vh',
+  width: '90px',
+  heigth: '90px',
   float: 'left'
 }
 
@@ -71,7 +73,7 @@ const NavBar = () => {
 
   return (
     <Breadcrumbs aria-label="breadcrumb" style={breadCrumbStyle}>
-        <img style={imgStyle} src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Univalle.svg/1200px-Univalle.svg.png"/>
+        <img style={imgStyle} src="https://i.postimg.cc/4xkHN1xm/chickenlogo-removebg-preview.png"/>
         
         <Typography 
           variant="h6" 
