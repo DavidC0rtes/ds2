@@ -29,7 +29,10 @@ categoriesRouter.post('/', async (request, response) => {
         descripcion: body.descripcion,
         activo: body.activo
     }
-
+    if (newCategory.nombre = null){
+        return response.status(401)
+    }
+    
     const savedCategory = await control.insert(category, newCategory)
 
     response.json(savedCategory)
