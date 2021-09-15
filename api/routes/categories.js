@@ -31,14 +31,12 @@ categoriesRouter.post('/', async (request, response) => {
     }
     if (newCategory.nombre = null){
         return response.status(401).json({ error: 'Se requiere un nombre de categoria'})
+    } if (newCategory.descripcion = null) {
+        return response.status(401).json({error: 'Se requiere una descripcion de categoria'})
     } else {
         const savedCategory = await control.insert(category, newCategory)
-
         response.json(savedCategory)
     }
-    
-
-
 
 })
 
