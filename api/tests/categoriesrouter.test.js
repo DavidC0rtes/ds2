@@ -3,6 +3,8 @@ const request = require('supertest');
 const app = require('../app');
 const api = request(app)
 
+//Autores: Jose Alejandro Hurtado 1744883 - David Cortes Cortes 1745133 - Alejandro Orozco 1744439 - David Pereira 1744403
+
 describe('El servidor retorna 401 cuando', () => {
 
     test('No se le envia un nombre de categoria.', () => {
