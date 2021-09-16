@@ -20,7 +20,7 @@ categoriesRouter.head('/:name', async (request, response) => {
 
 })
 
-//Insertar una nueva categoria, nombre NO puede estar vacio
+//Insertar una nueva categoria, nombre y descripcion NO pueden estar vacios
 categoriesRouter.post('/', async (request, response) => {
     const body = request.body 
 
@@ -29,14 +29,11 @@ categoriesRouter.post('/', async (request, response) => {
         descripcion: body.descripcion,
         activo: body.activo
     }
-    if (newCategory.nombre = null){
-        return response.status(401).json({ error: 'Se requiere un nombre de categoria'})
-    } if (newCategory.descripcion = null) {
-        return response.status(401).json({error: 'Se requiere una descripcion de categoria'})
-    } else {
-        const savedCategory = await control.insert(category, newCategory)
-        response.json(savedCategory)
-    }
+    if (!newCategory.nombre) return response.status(401).json({ error: 'Se requiere un nombre de categoria'})
+    if (!newCategory.descripcion) return response.status(401).json({error: 'Se requiere una descripcion de categoria'})
+    
+    const savedCategory = await control.insert(category, newCategory)
+    response.json(savedCategory)
 
 })
 
