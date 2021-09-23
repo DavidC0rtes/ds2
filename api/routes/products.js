@@ -51,6 +51,11 @@ productsRouter.post('/', async (request, response) => {
         categoria: body.categoria,
         imagen: body.imagen
     } 
+    if (!newProduct.nombre) return response.status(401).json({ error: 'Se requiere un nombre de producto'})
+    if (!newProduct.precio) return response.status(401).json({error: 'Se requiere un precio de producto'})
+    if (!newProduct.category) return response.status(401).json({error: 'Se requiere un precio de producto'})
+
+
     const insertedProduct = await control.insert(product, newProduct)
     
     response.json(insertedProduct)
@@ -66,14 +71,17 @@ productsRouter.put('/:id', async (request, response) => {
         
     await control.update(product, {id: request.params.id}, editedProduct) 
 
-
     response.status(200).end()
 })
 
 productsRouter.delete('/:id', async (request, response) =>  {
     const body = request.body
 
+    if(!request.params.id) return response.status(401).json({error: 'No se recibió una ID de categoria'})
+
     await control.borrar(product,{id: request.params.id})
+
+    response.status(200).end()
 })
 
 module.exports = productsRouter
