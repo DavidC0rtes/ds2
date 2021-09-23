@@ -1,61 +1,21 @@
-const request = require('supertest');
+const request = require('supertest')
+const app = require('../app')
+let server, agent
 
-const app = require('../app');
-const api = request(app)
 
+beforeEach( async(done) => {
+    server = app.listen(4000, (err) => {
+        if (err) return done(err)
 
-describe('El servidor retorna 401 cuando', () => {
-
-    test('el usuario no existe', () => {
-        api
-        .post('/api/login')
-        .set('Content-Type', 'application/json/')
-        .send({email: 'este usuario no existe'})
-        .expect(401)
-        .end(function(err, res) {
-            if (err) throw err;
-        });
-    })
-    
-    test('el usuario no está activo', () => {
-      api
-        .post('/api/login')
-        .set('Content-Type', 'application/json/')
-        .send({email: 'pepito'})
-        .expect(401)
-        .end(function(err, res) {
-            if (err) throw err;
-        });
-    })
-
-    test('la contraseña es incorrecta', () => {
-        api
-        .post('/api/login')
-        .set('Content-Type', 'application/json/')
-        .send({email: 'admin', password: 'esta no es la contraseña'})
-        .expect(401)
-        .end(function(err, res) {
-            console.log(res)
-            if (err) throw err;
-        });
+        agent = request.agent(server)
+        done()
     })
 })
 
-
-describe('El servidor devuelve retorna 200 cuando', () => {
-    test(' el correo y la contraseña son correctos', () => {
-        
-        api
-        .post('/api/login')
-        .set('Content-Type', 'application/json/')
-        .send({email: 'admin', password: 'admin'})
-        .expect(200)
-        .end(function(err, res) {
-            if (err) throw err;
-        });
-    })
+afterEach((done) => {
+    return server && server.close(done)
 })
 
-afterAll(async () => {
-	await new Promise(resolve => setTimeout(() => resolve(), 500)); // avoid jest open handle error
-});
+test('whatever', async() => {
+    await agent.get('/api/users').expect(200)
+})

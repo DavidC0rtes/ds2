@@ -6,8 +6,6 @@ const config = require('./utils/config')
 
 const server = http.createServer(app)
 
-if (process.env.NODE_ENV !== 'test') {
-    server.listen(config.PORT, () => {
-        logger.info(`API corriendo en el puerto ${config.PORT}`)
-    })
-}
+server.listen(config.PORT, () => {
+    logger.info(`API corriendo en el puerto ${config.PORT}`)
+})

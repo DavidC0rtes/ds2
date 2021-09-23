@@ -8,3 +8,4 @@ node_modules
 ormconfig.yml
 .vscode
 package-lock.json
+tags*
