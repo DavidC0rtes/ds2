@@ -35,15 +35,6 @@ describe('Pruebas de funcionalidad - Fecha de cumpleaños', () => {
 
     })
 
-    it('Error al recibir una fecha la cual hace que el cliente tenga más de 200 años', () => {
-        cy.contains('Editar').click()
-        cy.get('[name=birthday]')
-          .type('1821-01-01')
-
-        cy.contains('Guardar').click()
-        cy.contains('Ha ocurrido un error')
-    })
-
     it('Se actualiza al recibir una fecha la cual hace que el cliente tenga más de 18 y menos de 200 años de edad', () => {
         cy.contains('Editar').click()
         cy.get('[name=birthday]')
