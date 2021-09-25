@@ -10,6 +10,9 @@ module.exports = new EntitySchema({
         },
         direccion: {
             type: "varchar"
+        },
+        id_horario:{
+            type: "int",
         }
     },
     relations: {

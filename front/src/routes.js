@@ -20,10 +20,12 @@ import CrearUsuarios from "views/Usuario/CrearUsuario.js";
 import ModificarUsuario from "views/Usuario/ModificarUsuario";
 import ConsultarUsuarios from "views/Usuario/ConsultarUsuarios";
 // Components for products
-import Producto from "views/Producto/Productos.js";
+import Categories from "views/Producto/Productos.js";
 import CrearProducto from "views/Producto/CrearProducto.js";
 import ModificarProducto from "views/Producto/ModificarProducto";
 import ConsultarProducto from "views/Producto/ConsultarProducto";
+// Components for clients
+import CartClient from "views/Cliente/Cart";
 
 const dashboardRoutes = [
   {
@@ -44,7 +46,7 @@ const dashboardRoutes = [
     path: "/productos",
     name: "Productos",
     icon: "content_paste",
-    component: Producto,
+    component: Categories,
     layout: "/admin"
   },
   {
@@ -104,8 +106,32 @@ const subRoutes = [
 
 ];
 
+const clientRoutes = [
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    icon: Dashboard,
+    component: Categories,
+    layout: "/client"
+  },
+  {
+    path: "/cart",
+    name: "Cart",
+    icon: Dashboard,
+    component: CartClient,
+    layout: "/client"
+  },
+  {
+    path: "/checkout",
+    name: "Cart",
+    icon: Dashboard,
+    component: CartClient,
+    layout: "/client"
+  }
+];
+
 const dashRoutes = [
-  dashboardRoutes, subRoutes
+  dashboardRoutes, subRoutes, clientRoutes
 ];
 
 export default dashRoutes;

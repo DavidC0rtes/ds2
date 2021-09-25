@@ -1,13 +1,17 @@
 /* eslint-disable react/display-name */
 import React, { useState, useEffect, useRef } from "react";
-
 import DataTable from '../../components/Table/DataGrid'
-import userService from '../../services/users'
+import sedeService from '../../services/sedes'
 import CustomTextField from '../../components/CustomInput/Textfield'
 import SearchIcon from '@material-ui/icons/Search';
 import Grid from '@material-ui/core/Grid'
 import RegularButton from '../../components/CustomButtons/Button'
 import QueryParams from '../../misc/QueryParameters'
+import {AppBar, Toolbar, Button} from '@material-ui/core';
+import ModalNewSede from '../../components/ModalEditSede'
+import AlertDialog from '../../components/Dialog/AlertDialog';
+import { render } from "@testing-library/react";
+
 
 function usePrevious(value) {
   // The ref object is a generic container whose current property is mutable ...
@@ -21,10 +25,19 @@ function usePrevious(value) {
   return ref.current;
 }
 
+function removeSede(event, params){
+  event.stopPropagation();
+  event.preventDefault();
+  sedeService.removeById(params.row.id_horario)
+}
 
-export default function UsersTable() {
 
-  const [users, setUsers] = useState([]) // Almacena los usuarios traídos de la db.
+  
+
+
+export default function SedesTable(value, onValueChange) {
+
+  const [sedes, setSedes] = useState([]) // Almacena los usuarios traídos de la db.
 
   const [filter, setFilter] = useState('') // Almacena el valor del campo de busqueda.
 
@@ -32,28 +45,46 @@ export default function UsersTable() {
 
   const previousUpdate = usePrevious(update)
 
-  const headers = [
+  const handleChange = (newValue) => {
+    onValueChange(newValue);
+  };
 
-    { field: 'activo', headerName: 'Activo', width: 120, type: 'boolean' },
-    { field: 'rol', headerName: 'Rol', width: 150 },
+  const headers = [
+    { field: 'direccion', headerName: 'Direccion', width: 150, id: 'direccion' },
+    { field: 'hora_apertura', headerName: 'Hora de apertura', width: 150, id: 'hora_apertura' },
+    { field: 'hora_cierre', headerName: 'Hora de cierre', width: 150, id: 'hora_cierre' },
+    { field: 'descripcion', headerName: 'Descripcion', width: 300, id: 'descripcion' },
     {
-      field: 'email',
-      headerName: 'Correo electrónico',
-      width: '300',
+      field: 'edicion',
+      headerName: ' ',
+      width: '100',
       renderCell: (params) => (
-        <strong>
-          <QueryParams
-            url="/perfil?mail="
-            param={params.value}
-            text={params.value}>
-          </QueryParams>
-        </strong>
+        <AlertDialog
+						    message="¿Estas seguro? Esta acción no se puede deshacer."
+						    agreeTxt="Sí"
+						    disagreeTxt="No"
+						    btnTxt={'e'}
+						    doAction={(event) => removeSede(event, params)}>
+				</AlertDialog>
       )
     },
-    { field: 'primer_nombre', headerName: 'Primer nombre', width: 200 },
-    { field: 'primer_apellido', headerName: 'Primer apellido', width: 200 },
+    {
+      field: '',
+      headerName: '',
+      width: '100',
+      renderCell: (params) => (
+        <ModalNewSede
+        id={params.row.id}
+        direccion={params.row.direccion}
+        id_horario={params.row.id_horario}
+        hora_apertura={params.row.hora_apertura}
+        hora_cierre={params.row.hora_cierre}
+        descripcion={params.row.descripcion}/>
+        
+      )
+    },
   ]
-
+  
 
   /**
    * Este hook de efecto trae todos los usuarios de la db
@@ -62,30 +93,23 @@ export default function UsersTable() {
    * sean más trabajables.
    */
   useEffect(() => {
-    const fetchUsers = async () => {
-      const result = await userService.getAll()
+    const fetchSedes = async () => {
+      const result = await sedeService.getAll()
+      
       result.forEach((item) => {
-        
-        delete item.password
-        item.rol = item.id_rol.nombre_rol
-
-        item.primer_nombre = ''
-        item.primer_apellido = ''
-        if (item.id_info) {
-          item.primer_nombre = item.id_info.primer_nombre
-          item.primer_apellido = item.id_info.primer_apellido
-          delete item.id_info
-        }
-
-        delete item.id_rol
+        item.id_direccion = item.direccion
+        item.id_hora_apertura = item.hora_apertura
+        item.id_hora_cierre = item.hora_cierre
+        item.id_descripcion = item.descripcion
       })
-      setUsers(result)
+      setSedes(result)
+      
     }
 
     // Solo llamar a la función si se le ha dado click
     // al botón de actualizar.
     if (previousUpdate !== update) {
-      fetchUsers()
+      fetchSedes()
     }
   }, [update])
 
@@ -93,14 +117,11 @@ export default function UsersTable() {
    * Filtra los usuarios según el filtro en cualquiera de los campos.
    * Si no hay filtro devuelve todos los usuarios.
    */
-  const usersToShow = filter
-    ? users.filter( (user) =>
-      user.email.match(new RegExp(filter, "i")) ||
-      user.primer_nombre.match(new RegExp(filter, "i")) ||
-      user.primer_apellido.match(new RegExp(filter, "i")) ||
-      user.rol.match(new RegExp(filter, "i"))
+  const sedesToShow = filter
+    ? sedes.filter( (sede) =>
+      sede.direccion.match(new RegExp(filter, "i"))
     )
-    : users
+    : sedes
 
 
   return (
@@ -128,7 +149,7 @@ export default function UsersTable() {
       </Grid>
 
       <DataTable
-        rows={usersToShow}
+        rows={sedesToShow}
         columns={headers}
         pageSize={10}
       />

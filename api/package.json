@@ -65,5 +65,7 @@
       "no-unused-vars": "warn"
     }
   },
-  "eslintIgnore": ["build"]
+  "eslintIgnore": [
+    "build"
+  ]
 }
