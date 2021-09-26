@@ -18,6 +18,8 @@ import Productos from './views/Producto/Productos'
 import Perfil from './views/Usuario/Perfil.js'
 import Inicio from './layouts/Inicio'
 import Footer from "components/Footer";
+import CartClient from "./views/Cliente/Cart.js"
+import Client from "layouts/Cliente";
 
 
 import "assets/css/material-dashboard-react.css?v=1.9.0";
@@ -30,16 +32,17 @@ const App = () => {
                 <SimpleAppBar />
                 <Switch>
                     <Route exact path="/" component={Inicio}/>
-                    <Route path="/admin" component={Admin} />
+                    <Route path="/admin" component={Admin} />   
+                    <Route path="/client" component={Client}/>
                     <Route path="/perfil" component={Perfil}/>
                     <Route exact path="/login" component={Login}/>
                     <Route exact path="/registrarse" component={SignUp} />
                     <Route exact path="/categorias" component={Categories} />
-                    <Redirect exact from = "/admin" to= "/admin/dashboard"/>
+
                     <Route exact path="/menu" component={Productos} />
+                    <Redirect from="/client" to = "client/dashboard" />
                     <Redirect from="/admin" to="/admin/dashboard" />
                 </Switch>
-                <Footer />
             </Router>
             </ProvideAuth>
         );

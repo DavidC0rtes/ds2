@@ -26,6 +26,8 @@ import Paper from '@material-ui/core/Paper';
 import categoryService from '../../services/categories'
 import productService from '../../services/products'
 
+import { addToCart } from '../../hooks/cart.js';
+
 // Sesión del usuario
 import { useAuth } from '../../misc/useAuth'
 
@@ -289,7 +291,7 @@ export default function Categories() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <Button variant="body2" style={{ cursor: 'pointer' }}>
+                        <Button variant="body2" onClick={() => {addToCart(nombre, descripcion, precio, imagen)}} style={{ cursor: 'pointer' }}>
                           Añadir al carrito
                         </Button>
                       </Grid>

@@ -29,9 +29,16 @@ const SimpleAppBar = () => {
 						UFC
 					</Typography>
 					<StyledButton component={Link} to="/menu">Menú</StyledButton>
+
+					{ auth.user && auth.user.rol == 'Cliente' &&
+
+					<StyledButton component={Link} to="/client/dashboard">Pedido</StyledButton>
+					}
+					
 					{!auth.user && 
 						<StyledButton component={Link} to="/login">Iniciar sesión</StyledButton>
 					}
+					
 					{!auth.user && 
 						<StyledButton component={Link} to="/registrarse">Crear cuenta</StyledButton>
 					}		
@@ -39,10 +46,16 @@ const SimpleAppBar = () => {
 						<StyledButton component={Link} to={`/perfil?mail=${auth.user.email}`}>Pérfil</StyledButton>
 					}
 
+					
+
 					{ auth.user && auth.user.rol !== 'Cliente' &&
 
 						<StyledButton component={Link} to="/admin/dashboard">Gestión</StyledButton>
 					}
+
+					
+
+					
 
 					{auth.user && 
 						<StyledButton component={Link} to="/" onClick={auth.logout}>Cerrar sesión</StyledButton>
