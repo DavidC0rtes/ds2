@@ -11,8 +11,6 @@ import GradeIcon from '@material-ui/icons/Grade'
 import ProfileForm from '../../components/Forms/ProfileForm'
 import { useLocation } from 'react-router-dom'
 import users from '../../services/users'
-import ChangeRole from 'components/Dialog/ChangeRole'
-import FormChangeRole from 'components/Forms/FormChangeRole';
 
 const useStyles = makeStyles((theme) => ({
 	header: {
