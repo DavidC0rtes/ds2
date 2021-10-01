@@ -43,6 +43,7 @@ const App = () => {
                     <Redirect from="/client" to = "client/dashboard" />
                     <Redirect from="/admin" to="/admin/dashboard" />
                 </Switch>
+                <Footer />
             </Router>
             </ProvideAuth>
         );
