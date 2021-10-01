@@ -1,4 +1,3 @@
-const typeorm = require('typeorm')
 const usersRouter = require('express').Router()
 const bcrypt = require('bcrypt')
 const control = require('../controllers/Control')
@@ -89,17 +88,24 @@ usersRouter.put('/:id', async (request, response) => {
     const body = request.body
     const user = {}
     const userInfo = {}
-    console.log(body)
     
     if (body.password && body.password.length > 3) {
         user.password = await bcrypt.hash(body.password, 10)
         delete body.password
     } 
 
+    const mapRolId = {
+        'Gerente': 3,
+        'Administrador': 2,
+        'Cliente': 1
+    }
+
     Object.keys(body).forEach((key) => {
         if (key === 'email' || key === 'activo') {
             user[key] = body[key]
-        } else {
+        } else if (key === 'rol') {
+            user['id_rol'] = mapRolId[body[key]]
+        }else {
             userInfo[key] = body[key]
         }
     })
