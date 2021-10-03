@@ -18,22 +18,26 @@ export default function CreateSede() {
   const addSede = async (event) =>{
     event.preventDefault()
     // Verificación todo está lleno
-    if (Object.keys(state).length === 4) {
+    if (Object.keys(state).length === 5) {
       const direccionInUse = await SedeService.getByDireccion(state.direccion)
-      
       if (direccionInUse) {
         const _copyState = JSON.parse(JSON.stringify(state))
         _copyState.errorDireccion = 'Direccion ya existente'
         setState(_copyState)
+      } else if (isNaN(state.telefono) || isNaN(state.hora_apertura) || isNaN(state.hora_cierre)) {
+        setMessage('Telefono, hora de apertura y hora de cierre deben ser numeros')
+        setTimeout(() => {
+          setMessage(null)
+        }, 4000)
       } else {
         // Objeto del nuevo usuario
         const newSede = {
-            direccion: state.direccion,
-            hora_apertura: state.hora_apertura,
-            hora_cierre: state.hora_cierre,
-            descripcion:  state.descripcion
+          direccion: state.direccion,
+          telefono: state.telefono,
+          hora_apertura: state.hora_apertura,
+          hora_cierre: state.hora_cierre,
+          descripcion:  state.descripcion
         }
-
         try {
           const result = await SedeService.create(newSede)
           setMessage('Sede creada correctamente')

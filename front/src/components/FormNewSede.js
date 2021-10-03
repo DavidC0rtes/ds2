@@ -41,6 +41,21 @@ const FormNewSede = (props) => {
               value={state.direccion}
             />
           </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              variant="outlined"
+              error={ state.errorTelefono && true}
+              helperText={state.errorTelefono}
+              required
+              fullWidth
+              id="telefono"
+              label="Telefono"
+              name="telefono"
+              autoComplete="telefono"
+              onChange={props.handleFieldChange}
+              value={state.telefono}
+            />
+          </Grid>
           <Grid item xs={12}>
             <TextField
               error={state.errorHoraApertura && true}

@@ -38,7 +38,6 @@ const App = () => {
                     <Route exact path="/login" component={Login}/>
                     <Route exact path="/registrarse" component={SignUp} />
                     <Route exact path="/categorias" component={Categories} />
-
                     <Route exact path="/menu" component={Productos} />
                     <Redirect from="/client" to = "client/dashboard" />
                     <Redirect from="/admin" to="/admin/dashboard" />
