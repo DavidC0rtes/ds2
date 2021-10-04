@@ -15,7 +15,8 @@ module.exports = new EntitySchema({
             type: "int"
         },
         telefono: {
-            type: "int"
+            type: "int",
+            nullable: true
         },
     },
     relations: {
