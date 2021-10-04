@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import { Redirect } from "react-router-dom";
 // core components
 import {AppBar, Toolbar, Button} from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -205,6 +206,15 @@ export default function Categories() {
        
   };
 
+  function handleCart(nombre, descripcion, precio, imagen){
+    if(auth.user){
+      addToCart(nombre, descripcion, precio, imagen);
+    } else {
+      location = '/login'
+    }
+    console.log("handle");
+  }
+
 
   const productHandleChange = panel => (event, isExpanded) => {
     var x = document.getElementById("secondheader");
@@ -291,7 +301,7 @@ export default function Categories() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <Button variant="body2" onClick={() => {addToCart(nombre, descripcion, precio, imagen)}} style={{ cursor: 'pointer' }}>
+                        <Button variant="text" onClick={() => {handleCart(nombre, descripcion, precio, imagen)}} style={{ cursor: 'pointer' }}>
                           Añadir al carrito
                         </Button>
                       </Grid>

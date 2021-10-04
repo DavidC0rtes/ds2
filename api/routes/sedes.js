@@ -4,10 +4,9 @@ const control = require('../controllers/Control')
 const Sedes = require('../entity/Sedes')
 const Horario = require('../entity/Horarios')
 
-// Determina si el usuario con correo email existe. No devuelve al usuario 
+// Determina si la sede con direccion (pasada por request) existe o no
 sedesRouter.head('/:direccion', async (request, response) => {
     const result = await control.getOneBy(Sedes, 'direccion', request.params.direccion)
-    console.log("Head retornar direccion")
     if (result) {
         return response.status(204).end()
     }
@@ -15,7 +14,7 @@ sedesRouter.head('/:direccion', async (request, response) => {
     return response.status(404).end()
 })
 
-// Devuelve todos los usuarios del proyecto cuando se hace un get
+// Devuelve a todas las sedes que hay en la BD, responde a un llamado GET
 sedesRouter.get('/', async (request, response) => {
     console.log("Retornar todos")
     const sedes = await control.getAll(Sedes)
@@ -28,6 +27,7 @@ sedesRouter.get('/', async (request, response) => {
                     id: sedes[x].id,
                     direccion: sedes[x].direccion,
                     id_horario: horario[y].id,
+                    telefono: sedes[x].telefono,
                     hora_apertura: horario[y].hora_apertura,
                     hora_cierre: horario[y].hora_cierre,
                     descripcion: horario[y].descripcion
@@ -37,7 +37,6 @@ sedesRouter.get('/', async (request, response) => {
         }
         
     }
-    console.log(arraySedes)
     response.json(arraySedes)
 })
 
@@ -49,7 +48,7 @@ sedesRouter.delete('/:id_horario', async(request, response) => {
 
 
 /*
- * Devuelve el usuario con email especificado. A diferencia del anterior, este
+ * Devuelve la sede con direccion especificado. A diferencia del anterior, este
  * responde a una solicitud GET
  */
 sedesRouter.get('/:direccion', async (request, response) => {
@@ -59,6 +58,7 @@ sedesRouter.get('/:direccion', async (request, response) => {
     const newSede = {
         id: sedes.id,
         direccion: sedes.direccion,
+        telefono: sedes.telefono,
         id_horario: horario.id_horario,
         hora_apertura: horario.hora_apertura,
         hora_cierre: horario.hora_cierre,
@@ -71,23 +71,12 @@ sedesRouter.get('/:direccion', async (request, response) => {
     }
 })
 
-/* Creación de usuarios, se entiende como una solicitud POST a /api/users,
- * el json de la petición debe tener la sgte estructura:
- * "email": "xxx",
- * "password": "zzz",
- * "id_rol": 0,
- * "info": {
- *      "primer_nombre": "aaaa",
- *      etc...
- *  }
- *  
- *  Los campos que pueden ser nulos son: segundo_nombre, direccion, cumpleaños y telefono.
+/* Creación de sedes, se entiende como una solicitud POST a /api/users,
+ * NO existen campos que puedan ser nulos, y la direccion de la sede
+ * es unica (No existen 2 sedes con la misma direccion)
  */
 sedesRouter.post('/', async (request, response) => {
-    console.log("Creacion de sede")
     const body = request.body
-    console.log("antes de guardar");
-    console.log(body);
 
     const newHorario = {
         hora_apertura: body.hora_apertura,
@@ -96,29 +85,28 @@ sedesRouter.post('/', async (request, response) => {
 
     }
 
-    
     const savedHorario = await control.insert(Horario, newHorario)
-    console.log("Despues de guardar Horario ");
     console.log(savedHorario);
 
     const newSede =  {
         direccion: body.direccion,
-        id_horario: savedHorario.identifiers[0].id
+        id_horario: savedHorario.identifiers[0].id,
+        telefono: body.telefono
     }
 
     const savedSede = await control.insert(Sedes, newSede)
-    console.log("Despues de guardar sede ");
-    console.log(savedSede);
     response.json(savedSede)
 })
 
 /**
  * Responde a peticiones PUT. Se utilizan para actualizar la información
- * de usuarios. 
+ * de sedes
  *
  * El objeto que recibe contiene los campos a actualizar.
- * Como los usuarios tocan dos tablas, debe revisarse que tablas
- * deben actualizarse en base a los campos del objeto de la petición.
+ * Como las sedes tocan dos tablas entonces se crean dos entidades,
+ * una para la sede y la otra para el horario, toda la informacion viene
+ * en el body
+ * 
  */
 
 sedesRouter.put('/update/:id_horario', async (request, response) => {
@@ -128,7 +116,8 @@ sedesRouter.put('/update/:id_horario', async (request, response) => {
     const SedeUpdate = {
         id: body.id,
         direccion: body.direccion,
-        id_horario: body.id_horario
+        id_horario: body.id_horario,
+        telefono: body.telefono
     }
 
     const HorarioUpdate = {
