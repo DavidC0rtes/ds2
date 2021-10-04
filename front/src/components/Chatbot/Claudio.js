@@ -7,7 +7,10 @@ const Claudio = () => {
 	return (
 		<Chatbot
 			floating={true}
+			width={300}
 			steps={steps}
+			placeholder={"Escribe aquí."}
+			headerTitle={"Chatea con Claudio"}
 		/>
 	)
 }
