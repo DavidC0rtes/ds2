@@ -5,6 +5,13 @@ import ChartistGraph from "react-chartist";
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
 import Icon from "@material-ui/core/Icon";
+
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 // @material-ui/icons
 import Store from "@material-ui/icons/Store";
 import Warning from "@material-ui/icons/Warning";
@@ -32,16 +39,14 @@ import CardFooter from "components/Card/CardFooter.js";
 
 import userService from '../../services/users'
 import sedeService from '../../services/sedes'
+import productService from '../../services/products'
 import QueryParams from '../../misc/QueryParameters'
 import DataTable from '../../components/Table/DataGrid'
 
 import { bugs, website, server } from "variables/general.js";
 
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart
-} from "variables/charts.js";
+//import {completedTasksChart} from "variables/charts.js";
+import datos from "variables/charts.js";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 
@@ -65,6 +70,8 @@ export default function Dashboard() {
   const [users, setUsers] = useState([]) // Almacena los usuarios traídos de la db.
 
   const [sedes, setSedes] = useState([]) // Almacena las sedes traídos de la db.
+
+  const [products, setProducts] = useState({}) // Almacena los productos traídos de la db.
 
   const [filter, setFilter] = useState('Cliente') // Almacena el valor del campo de busqueda.
 
@@ -100,7 +107,6 @@ export default function Dashboard() {
     { field: 'ventas', headerName: 'Total de ventas', width: 200 },
   ]
 
-
   /**
    * Este hook de efecto trae todos los usuarios de la db
    * en el momento en que se renderice la página.
@@ -109,8 +115,8 @@ export default function Dashboard() {
    */
   useEffect(() => {
     const fetchUsers = async () => {
-      const result = await userService.getAll()
-      result.forEach((item) => {
+      const resultU = await userService.getAll()
+      resultU.forEach((item) => {
         
         delete item.password
         item.rol = item.id_rol.nombre_rol
@@ -125,29 +131,41 @@ export default function Dashboard() {
 
         delete item.id_rol
       })
-      setUsers(result)
+      setUsers(resultU)
     }
 
     const fetchSedes = async () => {
-      const result = await sedeService.getAll()
-      result.forEach((item) => {
+      const resultS = await sedeService.getAll()
+      resultS.forEach((item) => {
         delete item.hora_cierre
         delete item.hora_apertura
         delete item.descripcion
         item.id_direccion = item.direccion
 
       })
-      setSedes(result)        
-      }
+      setSedes(resultS)}
+    
+    const fetchProductos = async () => {
+      const resultP = await productService.getAll()
+      resultP.forEach((item) => {
+        //
+      })
+      setProducts(resultP)}
+
 
     // Solo llamar a la función si se le ha dado click
     // al botón de actualizar.
     if (previousUpdate !== update) {
       fetchUsers()
       fetchSedes()
+      fetchProductos()
     }
   }, [update])
 
+  var auxProductos = []
+  for(let i=0;i<products.length;i++){
+    auxProductos.push(products[i]);
+  }
   /**
    * Filtra los usuarios según el filtro en cualquiera de los campos.
    * Si no hay filtro devuelve todos los usuarios.
@@ -240,15 +258,15 @@ export default function Dashboard() {
         </GridItem>
       </GridContainer>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={4}>
+        <GridItem xs={12} sm={12} md={15}>
           <Card chart>
             <CardHeader color="info">
               <ChartistGraph
                 className="ct-chart"
-                data={dailySalesChart.data}
+                data={datos.ventaFecha().data}
                 type="Line"
-                options={dailySalesChart.options}
-                listener={dailySalesChart.animation}
+                options={datos.ventaFecha().options}
+                listener={datos.ventaFecha().animation}
               />
             </CardHeader>
             <CardBody>
@@ -267,16 +285,16 @@ export default function Dashboard() {
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
+        <GridItem xs={12} sm={12} md={6}>
           <Card chart>
             <CardHeader color="success">
               <ChartistGraph
                 className="ct-chart"
-                data={emailsSubscriptionChart.data}
+                data={datos.productoMasVendidos(products).data}
                 type="Bar"
-                options={emailsSubscriptionChart.options}
-                responsiveOptions={emailsSubscriptionChart.responsiveOptions}
-                listener={emailsSubscriptionChart.animation}
+                options={datos.productoMasVendidos(products).options}
+                responsiveOptions={datos.productoMasVendidos(products).responsiveOptions}
+                listener={datos.productoMasVendidos(products).animation}
               />
             </CardHeader>
             <CardBody>
@@ -290,16 +308,16 @@ export default function Dashboard() {
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
+        <GridItem xs={12} sm={12} md={6}>
           <Card chart>
             <CardHeader color="danger">
               <ChartistGraph
                 className="ct-chart"
-                data={emailsSubscriptionChart.data}
+                data={datos.productoMasVendidos(products).data}
                 type="Bar"
-                options={emailsSubscriptionChart.options}
-                responsiveOptions={emailsSubscriptionChart.responsiveOptions}
-                listener={emailsSubscriptionChart.animation}
+                options={datos.productoMasVendidos(products).options}
+                responsiveOptions={datos.productoMasVendidos(products).responsiveOptions}
+                listener={datos.productoMasVendidos(products).animation}
               />
             </CardHeader>
             <CardBody>
@@ -313,20 +331,33 @@ export default function Dashboard() {
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
+        <GridItem xs={12} sm={12} md={15}>
           <Card chart>
             <CardHeader color="danger">
               <ChartistGraph
                 className="ct-chart"
-                data={completedTasksChart.data}
+                data={datos.ventaMeses().data}
                 type="Line"
-                options={completedTasksChart.options}
-                listener={completedTasksChart.animation}
+                options={datos.ventaMeses().options}
+                listener={datos.ventaMeses().animation}
               />
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Total de ventas en los ultimos 6 meses de: </h4>
-              <p className={classes.cardCategory}>Producto</p>
+              <p className={classes.cardCategory}>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">Producto</FormLabel>
+                  <RadioGroup row aria-label="producto" name="row-radio-buttons-group">
+                    {
+                      auxProductos.map((x) => {
+                        return (
+                        <FormControlLabel key={x.id} value={x.nombre} control={<Radio />} label={x.nombre}/>
+                        )
+                      })
+                    }
+                  </RadioGroup>
+                </FormControl>
+              </p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
