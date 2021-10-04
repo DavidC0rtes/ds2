@@ -17,6 +17,9 @@ var delays2 = 80,
 // // // Ventas por fecha
 // #############################
 function ventaFecha(){
+  var yserie = [12, 17, 7, 17, 23, 18, 36, 20]
+  //var maxHigh = Math.max(...yserie) + ((Math.max(...yserie) - Math.min(...yserie))/2);
+
   const dailySalesChart  = {
     data: {
       labels: [
@@ -33,7 +36,7 @@ function ventaFecha(){
         "Nov",
         "Dec"
       ],
-      series: [[12, 17, 7, 17, 23, 18, 38]]
+      series: [yserie]
     },
     options: {
       lineSmooth: Chartist.Interpolation.cardinal({
@@ -92,10 +95,13 @@ function productoMasVendidos(productos) {
     nombresProductos.push(productos[i]["nombre"]);
   }
 
+  var yserie = [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]
+  //var maxHigh = Math.max(...yserie) + ((Math.max(...yserie) - Math.min(...yserie))/2);
+
   const emailsSubscriptionChart = {
     data: {
       labels: nombresProductos,
-      series: [[542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]]
+      series: [yserie]
     },
     options: {
       axisX: {
@@ -158,10 +164,13 @@ function ventaMeses(){
     }
   }
 
+  var yserie = [230, 750, 450, 300, 280, 240, 250]
+  //var maxHigh = Math.max(...yserie) + ((Math.max(...yserie) - Math.min(...yserie))/2);
+
   const completedTasksChart = {
     data: {
       labels: ultimosMeses,
-      series: [[230, 750, 450, 300, 280, 240, 250]]
+      series: [yserie]
     },
     options: {
       lineSmooth: Chartist.Interpolation.cardinal({
