@@ -4,7 +4,7 @@
 
  require('dotenv').config()
 import axios from 'axios'
- const baseUrl = process.env.REACT_APP_CI ? '/api/users' : 'http://localhost:3001/api/users'
+ const baseUrl = process.env.REACT_APP_HEROKU ? '/api/users' : 'http://localhost:3001/api/users'
 
 /**
  * Obtiene todos los usuarios del proyecto, i.e: manda una petición
