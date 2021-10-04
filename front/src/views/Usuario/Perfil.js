@@ -35,7 +35,10 @@ const useStyles = makeStyles((theme) => ({
 		height: theme.spacing(10),
 		marginBottom: '1em',
 		backgroundColor: '#da0a0a'
-	}
+	},
+	roleChange: {
+		marginTop: '-8em',
+	},
 }))
 
 // A custom hook that builds on useLocation to parse
@@ -73,6 +76,7 @@ const Perfil = () => {
 		fetchUser()
 	}, [])
 
+	
 	return (
 		<div>
 			<Container maxWidth="md">
@@ -88,32 +92,35 @@ const Perfil = () => {
 							<ProfileForm user={userData}/>
 						</Paper>
 					</Grid>
-
-					<Grid item xs={3} className={classes.profile}>
-						<Paper elevation={3} className={classes.profileCard}>
-							<Avatar className={classes.avatar}>
-                                {userData.primer_nombre}
-                            </Avatar>
-							<Chip
-								size="small" 
-								label={userData.rol} 
-								style={{marginBottom: '1em', fontWeight: 'bold'}}
-								color=
+					
+					<Grid container item xs>
+						<Grid item xs className={classes.profile}>
+							<Paper elevation={3} className={classes.profileCard}>
+								<Avatar className={classes.avatar}>
+                                	{userData.primer_nombre}
+                            	</Avatar>
+								<Chip
+									size="small" 
+									label={userData.rol} 
+									style={{marginBottom: '1em', fontWeight: 'bold'}}
+									color=
 									{ 
 										(userData.rol == 'Administrador' || userData.rol == 'Gerente')
 										? ('primary')
 										: ('default')
 									}
-								icon = { userData.rol == 'Gerente' ? (<GradeIcon />) : null }
+									icon = { userData.rol == 'Gerente' ? (<GradeIcon />) : null }
 								
 								/>
-							<Grid item xs={12}>
-								{userData.primer_nombre + ' ' + userData.primer_apellido}
-							</Grid>
+								<Grid item xs={12}>
+									{userData.primer_nombre + ' ' + userData.primer_apellido}
+								</Grid>
 
-							<Grid item xs={12}><strong>{userData.email}</strong></Grid>
-						</Paper>
+								<Grid item xs={12}><strong>{userData.email}</strong></Grid>
+							</Paper>
+						</Grid>
 					</Grid>
+					
 				</Grid>
 				
 			</Container>

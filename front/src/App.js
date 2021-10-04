@@ -1,5 +1,6 @@
 import React from "react";
 import { ProvideAuth } from './misc/useAuth'
+import { ProvideSede } from './misc/useSede'
 import SimpleAppBar from "components/AppBar/AppBar";
 import { createBrowserHistory } from "history";
 import { 
@@ -28,6 +29,7 @@ const hist = createBrowserHistory()
 const App = () => { 
         return (
             <ProvideAuth>
+            <ProvideSede>
             <Router history={hist}>
                 <SimpleAppBar />
                 <Switch>
@@ -42,7 +44,9 @@ const App = () => {
                     <Redirect from="/client" to = "client/dashboard" />
                     <Redirect from="/admin" to="/admin/dashboard" />
                 </Switch>
+                <Footer />
             </Router>
+            </ProvideSede>
             </ProvideAuth>
         );
 }
