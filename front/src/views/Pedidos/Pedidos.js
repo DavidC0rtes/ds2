@@ -23,7 +23,7 @@ const CustomSkinMap = ({googleMapURL, containerStyle}) => {
 export default function Maps() {
   return (
     <CustomSkinMap
-      googleMapURL="YOUR_KEY_HERE"
+      googleMapURL="AIzaSyCpAjZ9gvtVirroeofdUv3ei7lkBTkpEQY"
       containerStyle={ {height: `100vh` }} 
     />
   );
