@@ -1,4 +1,5 @@
-import React from "react";
+/* eslint-disable react/display-name */
+import React, { useState, useEffect, useRef } from "react";
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 // @material-ui/core
@@ -29,6 +30,11 @@ import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
+import userService from '../../services/users'
+import sedeService from '../../services/sedes'
+import QueryParams from '../../misc/QueryParameters'
+import DataTable from '../../components/Table/DataGrid'
+
 import { bugs, website, server } from "variables/general.js";
 
 import {
@@ -39,10 +45,122 @@ import {
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 
+function usePrevious(value) {
+  // The ref object is a generic container whose current property is mutable ...
+  // ... and can hold any value, similar to an instance property on a class
+  const ref = useRef();
+  // Store current value in ref
+  useEffect(() => {
+    ref.current = value;
+  }, [value]); // Only re-run if value changes
+  // Return previous value (happens before update in useEffect above)
+  return ref.current;
+}
+
 const useStyles = makeStyles(styles);
 
 export default function Dashboard() {
   const classes = useStyles();
+
+  const [users, setUsers] = useState([]) // Almacena los usuarios traídos de la db.
+
+  const [sedes, setSedes] = useState([]) // Almacena las sedes traídos de la db.
+
+  const [filter, setFilter] = useState('Cliente') // Almacena el valor del campo de busqueda.
+
+  const [update, setUpdate] = useState(0) // Para saber si se le ha dado clic a "Actualizar"
+
+  const previousUpdate = usePrevious(update)
+
+  
+  const headersClientes = [
+    {
+      field: 'email',
+      headerName: 'Correo electrónico',
+      width: '230',
+      renderCell: (params) => (
+        <strong>
+          <QueryParams
+            url="/perfil?mail="
+            param={params.value}
+            text={params.value}>
+          </QueryParams>
+        </strong>
+      )
+    },
+    { field: 'primer_nombre', headerName: 'Primer nombre', width: 150 },
+    { field: 'primer_apellido', headerName: 'Primer apellido', width: 150 },
+    { field: 'birthday', headerName: 'Cumpleaños', width: 200 },
+    { field: 'rol', headerName: 'Rol', width: 100 },
+  ]
+
+  const headersSede = [
+    { field: 'direccion', headerName: 'Direccion', width: 300},
+    { field: 'ganancias', headerName: 'Ganancias', width: 200 },
+    { field: 'ventas', headerName: 'Total de ventas', width: 200 },
+  ]
+
+
+  /**
+   * Este hook de efecto trae todos los usuarios de la db
+   * en el momento en que se renderice la página.
+   * Después itera por cada uno de los usuarios para que los datos
+   * sean más trabajables.
+   */
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const result = await userService.getAll()
+      result.forEach((item) => {
+        
+        delete item.password
+        item.rol = item.id_rol.nombre_rol
+        item.primer_nombre = ''
+        item.primer_apellido = ''
+        if (item.id_info) {
+          item.primer_nombre = item.id_info.primer_nombre
+          item.primer_apellido = item.id_info.primer_apellido
+          item.birthday = item.id_info.birthday
+          delete item.id_info
+        }
+
+        delete item.id_rol
+      })
+      setUsers(result)
+    }
+
+    const fetchSedes = async () => {
+      const result = await sedeService.getAll()
+      result.forEach((item) => {
+        delete item.hora_cierre
+        delete item.hora_apertura
+        delete item.descripcion
+        item.id_direccion = item.direccion
+
+      })
+      setSedes(result)        
+      }
+
+    // Solo llamar a la función si se le ha dado click
+    // al botón de actualizar.
+    if (previousUpdate !== update) {
+      fetchUsers()
+      fetchSedes()
+    }
+  }, [update])
+
+  /**
+   * Filtra los usuarios según el filtro en cualquiera de los campos.
+   * Si no hay filtro devuelve todos los usuarios.
+   */
+  const usersToShow = filter
+    ? users.filter( (user) =>
+      user.email.match(new RegExp(filter, "i")) ||
+      user.primer_nombre.match(new RegExp(filter, "i")) ||
+      user.primer_apellido.match(new RegExp(filter, "i")) ||
+      user.rol.match(new RegExp(filter, "i"))
+    )
+    : users
+
   return (
     <div>
       <GridContainer>
@@ -109,8 +227,8 @@ export default function Dashboard() {
               <CardIcon color="info">
                 <Accessibility />
               </CardIcon>
-              <p className={classes.cardCategory}>Followers</p>
-              <h3 className={classes.cardTitle}>+245</h3>
+              <p className={classes.cardCategory}>Clientes registrados</p>
+              <h3 className={classes.cardTitle}>#</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -124,7 +242,7 @@ export default function Dashboard() {
       <GridContainer>
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
-            <CardHeader color="success">
+            <CardHeader color="info">
               <ChartistGraph
                 className="ct-chart"
                 data={dailySalesChart.data}
@@ -134,7 +252,7 @@ export default function Dashboard() {
               />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Daily Sales</h4>
+              <h4 className={classes.cardTitle}>Ventas</h4>
               <p className={classes.cardCategory}>
                 <span className={classes.successText}>
                   <ArrowUpward className={classes.upArrowCardCategory} /> 55%
@@ -151,7 +269,7 @@ export default function Dashboard() {
         </GridItem>
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
-            <CardHeader color="warning">
+            <CardHeader color="success">
               <ChartistGraph
                 className="ct-chart"
                 data={emailsSubscriptionChart.data}
@@ -162,7 +280,30 @@ export default function Dashboard() {
               />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Email Subscriptions</h4>
+              <h4 className={classes.cardTitle}>Productos más vendidos</h4>
+              <p className={classes.cardCategory}>Last Campaign Performance</p>
+            </CardBody>
+            <CardFooter chart>
+              <div className={classes.stats}>
+                <AccessTime /> campaign sent 2 days ago
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={4}>
+          <Card chart>
+            <CardHeader color="danger">
+              <ChartistGraph
+                className="ct-chart"
+                data={emailsSubscriptionChart.data}
+                type="Bar"
+                options={emailsSubscriptionChart.options}
+                responsiveOptions={emailsSubscriptionChart.responsiveOptions}
+                listener={emailsSubscriptionChart.animation}
+              />
+            </CardHeader>
+            <CardBody>
+              <h4 className={classes.cardTitle}>Productos menos vendidos</h4>
               <p className={classes.cardCategory}>Last Campaign Performance</p>
             </CardBody>
             <CardFooter chart>
@@ -184,8 +325,8 @@ export default function Dashboard() {
               />
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>Completed Tasks</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
+              <h4 className={classes.cardTitle}>Total de ventas en los ultimos 6 meses de: </h4>
+              <p className={classes.cardCategory}>Producto</p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
@@ -197,65 +338,51 @@ export default function Dashboard() {
       </GridContainer>
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
-          <CustomTabs
-            title="Tasks:"
-            headerColor="primary"
-            tabs={[
-              {
-                tabName: "Bugs",
-                tabIcon: BugReport,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[0, 3]}
-                    tasksIndexes={[0, 1, 2, 3]}
-                    tasks={bugs}
-                  />
-                )
-              },
-              {
-                tabName: "Website",
-                tabIcon: Code,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[0]}
-                    tasksIndexes={[0, 1]}
-                    tasks={website}
-                  />
-                )
-              },
-              {
-                tabName: "Server",
-                tabIcon: Cloud,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[1]}
-                    tasksIndexes={[0, 1, 2]}
-                    tasks={server}
-                  />
-                )
-              }
-            ]}
-          />
-        </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
           <Card>
-            <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>Employees Stats</h4>
+            <CardHeader color="success">
+              <h4 className={classes.cardTitleWhite}>Sedes con más ventas</h4>
               <p className={classes.cardCategoryWhite}>
-                New employees on 15th September, 2016
               </p>
             </CardHeader>
             <CardBody>
-              <Table
-                tableHeaderColor="warning"
-                tableHead={["ID", "Name", "Salary", "Country"]}
-                tableData={[
-                  ["1", "Dakota Rice", "$36,738", "Niger"],
-                  ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                  ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                  ["4", "Philip Chaney", "$38,735", "Korea, South"]
-                ]}
-              />
+            <DataTable
+              rows={sedes}
+              columns={headersSede}
+              pageSize={10}
+            />
+            </CardBody>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={6}>
+          <Card>
+            <CardHeader color="danger">
+              <h4 className={classes.cardTitleWhite}>Sedes con menos ventas</h4>
+              <p className={classes.cardCategoryWhite}>
+              </p>
+            </CardHeader>
+            <CardBody>
+            <DataTable
+              rows={sedes}
+              columns={headersSede}
+              pageSize={10}
+            />
+            </CardBody>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={6}>
+          <Card>
+            <CardHeader color="info">
+              <h4 className={classes.cardTitleWhite}>Clientes</h4>
+              <p className={classes.cardCategoryWhite}>
+                Cumpleaños de los Clientes
+              </p>
+            </CardHeader>
+            <CardBody>
+            <DataTable
+              rows={usersToShow}
+              columns={headersClientes}
+              pageSize={10}
+            />
             </CardBody>
           </Card>
         </GridItem>
