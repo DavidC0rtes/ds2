@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import LocationOnIcon from '@material-ui/icons/LocationOn'
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import {
 	Dialog,
@@ -9,14 +8,13 @@ import {
 	MenuItem,
 	Select,
 	InputLabel,
-	Input,
 	FormControl,
 	Button,
 	IconButton,
 	makeStyles
 } from '@material-ui/core'
 
-import FormHandler from '../../variables/formHandler'
+//import FormHandler from '../../variables/formHandler'
 import { useSede } from '../../misc/useSede'
 import sedeService from '../../services/sedes'
 
@@ -32,14 +30,16 @@ const useStyles = makeStyles((theme) => ({
 	},
   }));
 
-export default function DialogSelect(props) {
+export default function DialogSelect() {
 	const location = useSede()
 
 	const [open, setOpen] = useState(false)
 	const [state, setState] = useState({id: 0, direccion: ''})
-	const [sedes, setSedes] = useState([])
 	
-	const handleClose = () => setOpen(false)
+	const handleClose = () => {
+		if (location.sede)
+			setOpen(false)
+	}
 	const handleOpen = () => setOpen(true)
 	
 	const handleChange = (event) => {
@@ -51,17 +51,23 @@ export default function DialogSelect(props) {
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
-		location.set(state)
-		setOpen(false)
+		if (state.direccion !== '' && state.id !== 0) {
+			location.set(state)
+			setOpen(false)
+			
+		} else {
+			const newState = JSON.parse(JSON.stringify(state))
+			newState.error = true
+			setState(newState)
+		}
 	}
 
 	useEffect(async() => {
 		if (!location.sede) {
 			const allSedes = await sedeService.getAll()
-			setSedes(allSedes)
+			location.saveAll(allSedes)
 			setOpen(true)
 		}
-		
 	},[])
 
 	/*const [
@@ -79,13 +85,13 @@ export default function DialogSelect(props) {
 			<IconButton aria-label="open" onClick={handleOpen}>
 				<LocationOnOutlinedIcon style={{color: 'white'}}></LocationOnOutlinedIcon>
 			</IconButton>
-			<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+			<Dialog disableEscapeKeyDown open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
 				<DialogTitle id="form-dialog-title">{"Seleccionar sede"}</DialogTitle>
 				<DialogContent>
 					<DialogContent>
 						{"Por favor, selecciona tu sede preferida."}
-						<form className={classes.container}>
-							<FormControl className={classes.formControl}>
+						<form className={classes.container} onSubmit={handleSubmit}>
+							<FormControl className={classes.formControl} required>
 								<InputLabel shrink id="dialog-select-label">{"Sedes disponibles"}</InputLabel>
 								<Select
 									labelId="dialog-select-label"
@@ -93,9 +99,11 @@ export default function DialogSelect(props) {
 									value={state.direccion}
 									renderValue={(value) => value}
 									onChange={handleChange}
+									error={state.error}
+									required
 									>
 									{
-										sedes.map((x) => {
+										location.all.map((x) => {
 											return (
 												<MenuItem 
 													key={x.id} 
@@ -113,9 +121,6 @@ export default function DialogSelect(props) {
 					</DialogContent>
 				</DialogContent>
 				<DialogActions>
-					<Button onClick={handleClose} style={{color: '#8b0000'}} color="primary">
-						Cancelar
-					</Button>
 					<Button onClick={handleSubmit} style={{color: '#8b0000'}} color="primary">
 						Ok
 					</Button>

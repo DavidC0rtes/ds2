@@ -25,7 +25,7 @@ export const useSede = () => {
 // Provider hook that creates sede object and handles state
 function useProvideSede() {
     const [sede, setSede] = useState(JSON.parse(window.localStorage.getItem('sede')))
-
+    const [all, setAll] = useState(JSON.parse(window.localStorage.getItem('all-sedes')) || [])
     /**
      * Métodos para manipular el estado de la variable
      * sede en localStorage.
@@ -33,10 +33,22 @@ function useProvideSede() {
 
     const set = async (obj) => {
         setSede(obj)
-        window.localStorage.setItem('sede', JSON.stringify(sede))
+        window.localStorage.setItem('sede', JSON.stringify(obj))
+    }
+
+    const saveAll = async (foo) => {
+        setAll(foo)
+        window.localStorage.setItem('all-sedes', JSON.stringify(foo))
+    }
+
+    const getInitialState = () => {
+        if(window.localStorage.getItem('all-sedes') === null) {
+            return []
+        }
+        return JSON.parse(window.localStorage.getItem('all-sedes'))
     }
 
     return {
-        sede, set
+        sede, set, all, saveAll
     }
 }

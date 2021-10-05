@@ -7,6 +7,7 @@ const Claudio = () => {
 	return (
 		<Chatbot
 			floating={true}
+			hideUserAvatar={true}
 			width={300}
 			steps={steps}
 			placeholder={"Escribe aquí."}
