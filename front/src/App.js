@@ -21,6 +21,7 @@ import Inicio from './layouts/Inicio'
 import Footer from "components/Footer";
 import CartClient from "./views/Cliente/Cart.js"
 import Client from "layouts/Cliente";
+import Claudio from "components/Chatbot/Claudio"
 
 
 import "assets/css/material-dashboard-react.css?v=1.9.0";
@@ -44,6 +45,7 @@ const App = () => {
                     <Redirect from="/client" to = "client/dashboard" />
                     <Redirect from="/admin" to="/admin/dashboard" />
                 </Switch>
+                <Claudio />
                 <Footer />
             </Router>
             </ProvideSede>
