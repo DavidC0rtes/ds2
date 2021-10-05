@@ -1,6 +1,10 @@
 import React from "react";
 import {GoogleMap, useLoadScript, Marker, InfoWindow} from "@react-google-maps/api"
-import {formatRelative} from "date-fns"
+import usePlacesAutocomplete, {
+    getGeocode,
+    getLatLng,
+  } from "use-places-autocomplete";
+import sedeService from '../../services/sedes'
 
 const libraries =["places"];
 const mapContainerStyle ={
@@ -17,6 +21,9 @@ const options = {
     zoomControl: true
 }
 
+var sedes = sedeService.getAll().then(function(sites) {sedes = sites})
+
+
 export default function sedesMap () {
     const { isLoaded, loadError} = useLoadScript({
         googleMapsApiKey: "AIzaSyCpAjZ9gvtVirroeofdUv3ei7lkBTkpEQY",
@@ -26,6 +33,20 @@ export default function sedesMap () {
     if (loadError) return "Error cargando el mapa";
     if (!isLoaded) return "Cargando"
 
+    const convertAddress = async (address) => { //convertir la direccion a
+        try {
+            const result = await getGeocode({address});
+            const {lat, lng} = await getLatLng(result[0]);
+            const coordinates = {
+                latitude: lat,
+                longitude: lng
+            }
+            return coordinates
+        } catch (error) {
+            console.log (error)
+        }
+    }
+
     return (
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
@@ -33,6 +54,18 @@ export default function sedesMap () {
           center={center}
           options={options}
 
-        ></GoogleMap>
+        >
+        {Object.values(sedes).map(sede => {
+            const {id, nombre, direccion, id_horario } = sede;
+            <Marker 
+                key={id} 
+                position= {{
+                    lat: 3.435668, 
+                    lng: -76.518606
+                }}
+                />    
+            })}
+
+        </GoogleMap>
     )
 }

@@ -13,7 +13,7 @@ import DashboardPage from "views/Dashboard/Dashboard.js";
 
 import Categorias from "views/Categoria/Categoria.js";
 import Sedes from "views/Sede/Sede.js";
-import Pedidos from "views/Pedidos/Pedidos.js";
+import Pedidos from "views/Sede/sedesMap";
 // Components for users
 import Usuarios from "views/Usuario/Usuario.js";
 import CrearUsuarios from "views/Usuario/CrearUsuario.js";
