@@ -5,7 +5,7 @@ name: Node.js CI
 
 on:
   pull_request:
-    branches: [ develop ]
+    branches: [ master ]
 
 jobs:
   build-front:
@@ -29,4 +29,11 @@ jobs:
           ./front/package-lock.json
           ./api/package-lock.json
     - run: npm ci
-    - run: npm run lint:check
+    - run: npm run build
+    - run: rm -rf ../api/build/* && mv build ../api/
+    - uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Add static files for deployment
+        file_pattern: api/build/*
+        disable_globbing: true
+        skip_fetch: true
