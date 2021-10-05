@@ -32,12 +32,15 @@ const SimpleAppBar = () => {
 					>
 						UFC
 					</Typography>
-					<DialogSelect />
+          <DialogSelect />
+
+					{ !auth.user &&
+
 					<StyledButton component={Link} to="/menu">Menú</StyledButton>
-
-					{ auth.user && auth.user.rol == 'Cliente' &&
-
-					<StyledButton component={Link} to="/client/dashboard">Pedido</StyledButton>
+					}
+					
+					{ auth.user &&
+					<StyledButton component={Link} to="/client">Pedido</StyledButton>
 					}
 					
 					{!auth.user && 
