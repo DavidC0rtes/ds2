@@ -12,7 +12,9 @@ var delays = 80,
   durations = 500;
 var delays2 = 80,
   durations2 = 500;
-
+// Meses
+const month = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", 
+"Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 // ##############################
 // // // Ventas por fecha
 // #############################
@@ -152,8 +154,6 @@ function productoMasVendidos(productos) {
 // #############################
 function ventaMeses(){
   var mesActual = new Date();
-  var month = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", 
-              "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
   var ultimosMeses = []
   for(let i =6;i>=0;i--){

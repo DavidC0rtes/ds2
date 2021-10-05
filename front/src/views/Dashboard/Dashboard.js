@@ -24,6 +24,10 @@ import Accessibility from "@material-ui/icons/Accessibility";
 import BugReport from "@material-ui/icons/BugReport";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
+import Face from "@material-ui/icons/Face";
+import AttachMoney from "@material-ui/icons/AttachMoney";
+import Kitchen from "@material-ui/icons/Kitchen";
+
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -49,6 +53,7 @@ import { bugs, website, server } from "variables/general.js";
 import datos from "variables/charts.js";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
+import { Delete, Storefront } from "@material-ui/icons";
 
 function usePrevious(value) {
   // The ref object is a generic container whose current property is mutable ...
@@ -98,7 +103,6 @@ export default function Dashboard() {
     { field: 'primer_nombre', headerName: 'Primer nombre', width: 150 },
     { field: 'primer_apellido', headerName: 'Primer apellido', width: 150 },
     { field: 'birthday', headerName: 'Cumpleaños', width: 200 },
-    { field: 'rol', headerName: 'Rol', width: 100 },
   ]
 
   const headersSede = [
@@ -162,9 +166,31 @@ export default function Dashboard() {
     }
   }, [update])
 
+  //Auxiliar para prodcutos, los ingresa a una array que luego se usara para extraer sus valores en el boton
   var auxProductos = []
   for(let i=0;i<products.length;i++){
     auxProductos.push(products[i]);
+  }
+  //Cuantos empleados y clientes hay
+  var numeroClientes = 0;
+  var numeroEmpleados = 0;
+  for(let i=0;i<users.length;i++){
+    if(String(users[i].rol) == "Cliente"){
+      numeroClientes ++;
+    } else {
+      numeroEmpleados  ++;
+    }
+  }
+  //Clientes que cumplen años este mes
+
+  var mesActual = new Date().getMonth() + 1;
+  var auxClientesBirthday = [];
+  for(let i=0;i<users.length;i++){
+    if(String(users[i].rol) == "Cliente"){
+      if(String(users[i].birthday).split('-')[1] == String(mesActual)){
+        auxClientesBirthday.push(users[i]);
+      }
+    }
   }
   /**
    * Filtra los usuarios según el filtro en cualquiera de los campos.
@@ -182,7 +208,7 @@ export default function Dashboard() {
   return (
     <div>
       <GridContainer>
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem xs={12} sm={6} md={4}>
           <Card>
             <CardHeader color="warning" stats icon>
               <CardIcon color="warning">
@@ -205,11 +231,11 @@ export default function Dashboard() {
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem xs={12} sm={6} md={4}>
           <Card>
             <CardHeader color="success" stats icon>
               <CardIcon color="success">
-                <Store />
+                <AttachMoney />
               </CardIcon>
               <p className={classes.cardCategory}>Revenue</p>
               <h3 className={classes.cardTitle}>$34,245</h3>
@@ -222,31 +248,65 @@ export default function Dashboard() {
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem xs={12} sm={6} md={4}>
           <Card>
-            <CardHeader color="danger" stats icon>
-              <CardIcon color="danger">
-                <Icon>info_outline</Icon>
+            <CardHeader color="warning" stats icon>
+              <CardIcon color="warning">
+                <Store />
               </CardIcon>
-              <p className={classes.cardCategory}>Fixed Issues</p>
-              <h3 className={classes.cardTitle}>75</h3>
+              <p className={classes.cardCategory}>Sedes</p>
+              <h3 className={classes.cardTitle}>{sedes.length}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
-                <LocalOffer />
-                Tracked from Github
+                <Update />
+                Just Updated
               </div>
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem xs={12} sm={6} md={4}>
+          <Card>
+            <CardHeader color="warning" stats icon>
+              <CardIcon color="warning">
+                <Kitchen />
+              </CardIcon>
+              <p className={classes.cardCategory}>Productos</p>
+              <h3 className={classes.cardTitle}>{products.length}</h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <Update />
+                Just Updated
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={6} md={4}>
+          <Card>
+            <CardHeader color="info" stats icon>
+              <CardIcon color="info">
+                <Face />
+              </CardIcon>
+              <p className={classes.cardCategory}>Personal</p>
+              <h3 className={classes.cardTitle}>{numeroEmpleados}</h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <Update />
+                Just Updated
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={6} md={4}>
           <Card>
             <CardHeader color="info" stats icon>
               <CardIcon color="info">
                 <Accessibility />
               </CardIcon>
               <p className={classes.cardCategory}>Clientes registrados</p>
-              <h3 className={classes.cardTitle}>#</h3>
+              <h3 className={classes.cardTitle}>{numeroClientes}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -403,14 +463,14 @@ export default function Dashboard() {
         <GridItem xs={12} sm={12} md={6}>
           <Card>
             <CardHeader color="info">
-              <h4 className={classes.cardTitleWhite}>Clientes</h4>
+              <h4 className={classes.cardTitleWhite}>Cumpleaños</h4>
               <p className={classes.cardCategoryWhite}>
-                Cumpleaños de los Clientes
+                Clientes que cumplen años este mes
               </p>
             </CardHeader>
             <CardBody>
             <DataTable
-              rows={usersToShow}
+              rows={auxClientesBirthday}
               columns={headersClientes}
               pageSize={10}
             />
