@@ -12,8 +12,12 @@ module.exports = new EntitySchema({
             type: "varchar"
         },
         id_horario:{
+            type: "int"
+        },
+        telefono: {
             type: "int",
-        }
+            nullable: true
+        },
     },
     relations: {
         categoria: {
