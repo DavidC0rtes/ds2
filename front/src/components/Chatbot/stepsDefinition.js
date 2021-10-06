@@ -1,6 +1,23 @@
 import React from 'react'
 import SedesGrid from 'components/Grid/SedesGrid'
 import Categories from 'views/Producto/Productos'
+import { Link } from 'react-router-dom'
+
+const linkStyle = {
+  '&:visited': {
+    color: '#fff',
+    textDecoration: 'none',
+  },
+  '&:hover': {
+    color: '#fff',
+    textDecoration: 'none',
+  },
+  '&:focus': {
+    color: '#fff',
+    textDecoration: 'none',
+  },
+  color: '#fff'
+}
 
 const steps = [
 	{
@@ -40,8 +57,13 @@ const steps = [
 	  {
 		  id: 'productos',
       component: <Categories />,
-      trigger: 'checkout'
+      trigger: 'checkout2'
 	  },
+    {
+      id: 'checkout2',
+      asMessage: true,
+      component: <Link style={linkStyle} to={"/cart/client"}>Dame click cuando acabes</Link>
+    },
     {
       id: 'checkout',
       options: [
