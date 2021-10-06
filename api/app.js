@@ -3,10 +3,12 @@
  * Acá se inicializa todas las cosas sin las que el backend
  * no podría funcionar
  */
+require('express-async-errors')
 const typeorm = require('typeorm')
 const express = require('express')
-require('express-async-errors')
+
 const app = express()
+
 const cors = require('cors')
 const logger = require('./utils/logger')
 const middleware = require('./utils/middleware')
@@ -14,11 +16,15 @@ const config = require('./utils/config')
 
 let usersRouter = null
 
-typeorm.createConnection(config.DBNAME).then( () => {
+//console.log('A')
+typeorm.createConnection(config.DBNAME).then(() => {
+    //console.log('B')
     const usersRouter = require('./routes/users')  
     const loginRouter = require('./routes/login')
     const categoriesRouter = require('./routes/categories')
     const productsRouter = require('./routes/products')
+    const sedesRouter = require('./routes/sedes')
+    const facturasRouter = require('./routes/facturas')
 
     if (config.ENV === 'production') app.use(express.static('build'))
 
@@ -31,11 +37,13 @@ typeorm.createConnection(config.DBNAME).then( () => {
     app.use('/api/login', loginRouter)
     app.use('/api/categories', categoriesRouter)
     app.use('/api/products', productsRouter)
+    app.use('/api/sedes', sedesRouter)
+    app.use('/api/facturas', facturasRouter)
     // Fin especificaciones
     app.use(middleware.unknownEndpoint)
     app.use(middleware.errorHandler)
 
 })
-.catch( err => console.log(err))
+.catch( err => logger.error(`Error al tratar de conectarse: ${err}`))
 
 module.exports = app

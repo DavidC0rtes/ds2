@@ -2,29 +2,32 @@ import React, { useState } from 'react'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
-import {AppBar, Toolbar, Button} from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
+import {Button} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Accordion from '@material-ui/core/Accordion';
 import Container from '@material-ui/core/Container';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionActions from '@material-ui/core/AccordionActions';
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Toast from '../../components/Toast'
+import AlertDialog from '../../components/Dialog/AlertDialog';
+import IconButton from '@material-ui/core/IconButton';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import ModalNewCategory from '../../components/modalNewCategory'
 import ModalNewProduct from '../../components/modalNewProduct'
-import FormHandler from '../../variables/formHandler'
 import CategoryModalHandler from '../../variables/categoryModalHandler'
 import ProductModalHandler from '../../variables/productModalHandler'
+import ModalEditProduct from '../../components/modalEditProduct'
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Paper from '@material-ui/core/Paper';
 
 import categoryService from '../../services/categories'
 import productService from '../../services/products'
+
+import { addToCart } from '../../hooks/cart.js';
 
 // Sesión del usuario
 import { useAuth } from '../../misc/useAuth'
@@ -75,13 +78,7 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-/* Añadir un producto TODO
-*/
 
-
-//Eliminar categoria TODO
-
-//Editar categoria TODO
 
 /*obtener todas las categorias
 * Usamos esta variable
@@ -90,8 +87,14 @@ var categorias = categoryService.getAll().then(function(cats) {categorias = cats
 
 
 
+function currency(numero) {
+  return "$" + numero.toFixed(0).replace(/./g, function(c, i, a) {
+    return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "." + c : c;
+  });
+}
 
 export default function Categories() {
+
   const [state, setState] = useState({})
   const [products, setProducts] = useState({})
   const [message, setNewMessage] = useState(null)
@@ -187,13 +190,28 @@ export default function Categories() {
       setState(_copyState)
     }
   }
-
+  const deleteProduct = async (event, id) => {
+    event.stopPropagation();
+    event.preventDefault();
+    const result= await productService.eliminate(id)
+    if (result.status === 200) {
+			setNewMessage('¡Actualizado con éxito!')
+		} else {
+			setNewMessage('Ha ocurrido un error')
+			console.error(result)
+		}
+		setTimeout(() => {
+			setNewMessage(null)
+		}, 5000)
+  }
 
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [productExpanded, setProductExpanded] = useState(false);
   
   const handleChange = panel => (event, isExpanded) => {
+    //event.stopPropagation()
+    //event.preventDefault()
     if(isExpanded){
       getProducts(panel)
       setExpanded(panel)
@@ -202,6 +220,15 @@ export default function Categories() {
     }
        
   };
+
+  function handleCart(nombre, descripcion, precio, imagen){
+    if(auth.user){
+      addToCart(nombre, descripcion, precio, imagen);
+    } else {
+      location = '/login'
+    }
+    console.log("handle");
+  }
 
 
   const productHandleChange = panel => (event, isExpanded) => {
@@ -214,7 +241,7 @@ export default function Categories() {
     setProductExpanded(isExpanded ? panel : false);
   };
     return (
-    <div className={classes.root}>
+    <div className={classes.root} id="productAccordion">
       <Container maxWidth="md" >
         <Typography  className={classes.title} component="h1" variant="h2" align="left" color="textPrimary" gutterBottom >
           Conoce nuestro menú 🍲
@@ -265,7 +292,7 @@ export default function Categories() {
               
             {products ? Object.values(products).map(paper => {
             //Productos lista desplegable
-            const { id, nombre, descripcion, precio, imagen, iva} = paper;
+            const { id, nombre, descripcion, cantidad, precio, imagen, iva} = paper;
             return (
             <div className={classes.root} key={id}>
               <Paper className={classes.paper} elevation={9}>
@@ -289,14 +316,48 @@ export default function Categories() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <Button variant="body2" style={{ cursor: 'pointer' }}>
+                       
+                        <Button variant="text" onClick={(event) => {
+                            event.stopPropagation()
+                            event.preventDefault()             
+                            handleCart(nombre, descripcion, precio, imagen)
+                          }} 
+                          >
                           Añadir al carrito
-                        </Button>
+                        </Button>         
                       </Grid>
                     </Grid>
                     <Grid item>
-                      <Typography variant="subtitle1">${precio}</Typography>
+                      <Typography variant="subtitle1">{currency(precio)}</Typography>
                     </Grid>
+                    <Grid item>
+                    {auth.user && auth.user.rol == 'Administrador' &&
+                    <ModalEditProduct className={classes.column}
+                    handleFieldChange={(event) => CategoryModalHandler(state, setState, event)}
+                    id={id}
+                    state={state}
+                    nombre={nombre}
+                    descripcion={descripcion}
+                    cantidad={cantidad}
+                    precio={precio}
+                    iva={iva}
+                    imagen={imagen}
+                    products={products}
+                    setProducts={setProducts}
+                    />}
+                    </Grid>
+                    <Grid item>
+                    {auth.user && auth.user.rol == 'Administrador' &&
+                    <AlertDialog className={classes.column}
+                    message="¿Estas seguro? Esta acción no se puede deshacer."
+                    agreeTxt="Sí"
+                    disagreeTxt="No"
+                    btnTxt={'Eliminar'}
+                    doAction={(event) =>deleteProduct(event, id)}
+              ></AlertDialog>
+                        }
+                    </Grid>
+                    
                   </Grid>
                 </Grid>
               </Paper>

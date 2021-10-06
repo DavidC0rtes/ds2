@@ -44,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
       };
 
       const submitAndClose = () => {
-          props.handleSubmit;
-          handleClose;
+          props.handleSubmit();
+          handleClose();
       };
 
       return (
@@ -89,6 +89,17 @@ const useStyles = makeStyles((theme) => ({
                           autoFocus
                           onChange={props.handleFieldChange}
                           value={state.descripcion || ''}/>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <TextField
+                            name="imagen"
+                            variant="outlined"
+                            fullWidth
+                            id="imagen"
+                            autoFocus
+                            onChange={props.handleFieldChange}
+                            value={state.imagen || ''}
+                        />
                       </Grid>
                       <Grid item xs={4}>
                           <TextField                            

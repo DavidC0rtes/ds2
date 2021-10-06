@@ -2,13 +2,20 @@ import React, { useState, useEffect } from 'react'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import Select from '@material-ui/core/Select'
+import { FormControl, InputLabel, MenuItem } from '@material-ui/core'
 
 import FormHandler from '../../variables/formHandler'
 import userService from '../../services/users'
 import Toast from '../Toast'
 import AlertDialog from '../Dialog/AlertDialog'
+import { useAuth } from '../../misc/useAuth'
 
 import { makeStyles } from '@material-ui/core/styles';
+import WarningIcon from '@material-ui/icons/Warning';
+import { getLocalTime } from 'misc/misc'
+import { useLocation } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 /**
  * Estilos del formulario
@@ -32,8 +39,16 @@ const useStyles = makeStyles({
 	helperText: {
 		color: 'red',
 		fontWeight: 'bolder'
-	}
+	},
+	select: {
+		minWidth: '11em'
+	},
 })
+
+// A custom hook that builds on useLocation to parse
+// the query string for you. https://reactrouter.com/web/example/query-parameters
+const useQuery = () => new URLSearchParams(useLocation().search)
+
 /**
  * Se encarga de construir y manejar el formulario que se le presenta al usuario
  * en /perfil
@@ -50,6 +65,12 @@ const ProfileForm = ({ user }) => {
 	const [state, setState] = useState(user)
 	const [message, setMessage] = useState(null)
 	const [disable, setDisable] = useState(true)
+    const auth = useAuth()
+
+	// Hook de URLSearchParams
+	const hookUrl = useQuery()
+
+	const history = useHistory()
 
 	// Actualizar state cada que el prop user cambie.
 	useEffect(() => setState(user), [user])
@@ -61,7 +82,7 @@ const ProfileForm = ({ user }) => {
 
 		// Añadir a toSend solo los campos que han cambiado
 		Object.keys(state).forEach((key) => {
-			if (state[key] !== user[key]) 
+			if (state[key] !== user[key])
 				toSend[key] = state[key]
 		})
 		// Convertir cumpleaños a hora local
@@ -69,18 +90,25 @@ const ProfileForm = ({ user }) => {
 			const date = toSend.birthday.split('-')
 			toSend.birthday = new Date(...date)
 		}
-
-		const result = await userService.update(toSend, user.id)
-		if (result.status === 200) {
-			setMessage('¡Actualizado con éxito!')
-		} else {
-			setMessage('Ha ocurrido un error')
-			console.error(result)
+		
+		if (Object.keys(toSend).length >= 1) {
+			const result = await userService.update(toSend, user.id)
+			if (result.status === 200) {
+				setMessage('¡Actualizado con éxito!')
+				if (toSend.email) {
+					user.email = toSend.email
+					hookUrl.set('mail', toSend.email)
+					history.replace(`/perfil?mail=${hookUrl.get('mail')}`)
+				}
+			} else {
+				setMessage('Ha ocurrido un error')
+				console.error(result)
+			}
+			setTimeout(() => {
+				setMessage(null)
+			}, 5000)
+			setDisable(true)
 		}
-		setTimeout(() => {
-			setMessage(null)
-		}, 5000)
-		setDisable(true)
 	}
 
 	/**
@@ -138,7 +166,7 @@ const ProfileForm = ({ user }) => {
 	const classes = useStyles()
 	return (
 		<>
-		<form validate="true" onSubmit={handleSubmit} className={classes.root} autoComplete="off">
+		<form validate onSubmit={handleSubmit} className={classes.root} autoComplete="off">
 			<Grid container spacing={2}>
 				<Grid item xs={12} md={6} >
 					<TextField
@@ -196,6 +224,7 @@ const ProfileForm = ({ user }) => {
 					<TextField
 						name="email"
 						label="Correo electrónico"
+						type="email"
 						InputLabelProps={{ shrink: true }}
 						error={ getState('errorEmail') }
 						value={ getState('email') }
@@ -230,6 +259,8 @@ const ProfileForm = ({ user }) => {
 						fullWidth
 						onChange={handleFieldChange}
 						InputLabelProps={{ shrink: true }}
+						inputProps={{max: getLocalTime('18 años'),
+									min: getLocalTime('120 años')}}
 					/>
 				</Grid>
 				<Grid item xs={12} md={7}>
@@ -260,25 +291,57 @@ const ProfileForm = ({ user }) => {
 						inputProps={{ pattern: "[0-9]{7,12}" }}
 					/>
 				</Grid>
-				<Grid item xs={12}>
-					<TextField
-						name="password"
-						type="password"
-						label="Contraseña"
-						InputLabelProps={{ shrink: true }}
-						error={ getState('errorPassword') }
-						helperText="Llena este campo sólo si deseas cambiar tu contraseña"
-						value={ getState('password') }
-						disabled={disable}
-						variant="filled"
-						fullWidth
-						onChange={handleFieldChange}
-						FormHelperTextProps={{
-							className: classes.helperText
-						}}
-					/>
-				</Grid>
-				<Grid item xs={6} md={2}>
+                {auth.user.email === user.email && 
+				    <Grid item xs={12}>
+				    	<TextField
+				    		name="password"
+				    		type="password"
+				    		label="Contraseña"
+				    		InputLabelProps={{ shrink: true }}
+				    		error={ getState('errorPassword') }
+				    		helperText="Llena este campo sólo si deseas cambiar tu contraseña"
+				    		value={ getState('password') }
+				    		disabled={disable}
+				    		variant="filled"
+				    		fullWidth
+				    		onChange={handleFieldChange}
+				    		FormHelperTextProps={{
+				    			className: classes.helperText
+				    		}}
+				    	/>
+				    </Grid>
+                }
+                {auth.user.email !== user.email && auth.user.rol !== 'Cliente' && 
+                    
+				    <Grid item xs={12}>
+				    	<FormControl variant="filled">
+				    	<InputLabel id="label-role" shrink>Selecciona un rol</InputLabel>
+				    	
+				    	<Select className={classes.select}
+				    		id="rol"
+				    		name="rol"
+				    		value={getState('rol')}
+				    		disabled={disable}
+				    		fullWidth
+				    		labelId="label-role"
+				    		
+				    		onChange={handleFieldChange}
+				    		FormHelperTextProps={{
+				    			className: classes.helperText
+				    		}}
+				    	>
+
+				    	<MenuItem value={'Gerente'}>Gerente</MenuItem>
+				    	<MenuItem value={'Administrador'}>Administrador</MenuItem>
+				    	<MenuItem value={'Cliente'}>Cliente</MenuItem>
+				    	
+				    	</Select>
+				    	</FormControl>
+				    </Grid>
+                }
+
+
+				<Grid item xs={6} md={4}>
 					<AlertDialog
 						message="¿Estas seguro?"
 						agreeTxt="Sí"
@@ -287,7 +350,9 @@ const ProfileForm = ({ user }) => {
 						'Desactivar cuenta' 
 						:'Activar cuenta'
 						}
+						btnStyle={{backgroundColor: '#eadd79'}}
 						doAction={toggleAccount}
+						icon={<WarningIcon fontSize="small"/>}
 					>
 
 					</AlertDialog>

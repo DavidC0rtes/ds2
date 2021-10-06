@@ -34,10 +34,11 @@ const useStyles = makeStyles({
 		width: '100%',
 		backgroundColor: 'black',
 		color: 'white',
-		heigth: '100%'
+		heigth: '2em',
+		textAlign: 'center'
 	},
 	content: {
-		padding: '5% 10%'
+		padding: '3% 0'
 	}
 })
 

@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT;
 
 
 // Determina a que base de datos conectarse dependiento del ambiente

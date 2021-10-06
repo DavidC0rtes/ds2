@@ -65,6 +65,7 @@ export default function UsersTable() {
     const fetchUsers = async () => {
       const result = await userService.getAll()
       result.forEach((item) => {
+        
         delete item.password
         item.rol = item.id_rol.nombre_rol
 

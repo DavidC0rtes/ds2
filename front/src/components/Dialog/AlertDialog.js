@@ -10,9 +10,10 @@ export default function AlertDialog(props)  {
 
 	const [open, setOpen] = React.useState(false)
 	
+	
 	return (
 		<>
-			<Button onClick={() => setOpen(true)}>
+			<Button style={props.btnStyle} startIcon={props.icon} onClick={() => setOpen(true)}>
 				{props.btnTxt}
 			</Button>
 			<Dialog
@@ -24,6 +25,7 @@ export default function AlertDialog(props)  {
 					<DialogContentText>
 						{props.message}
 					</DialogContentText>
+					{props.form}
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={() => setOpen(false)}>
