@@ -190,6 +190,8 @@ export default function Categories() {
   const [productExpanded, setProductExpanded] = useState(false);
   
   const handleChange = panel => (event, isExpanded) => {
+    //event.stopPropagation()
+    //event.preventDefault()
     if(isExpanded){
       getProducts(panel)
       setExpanded(panel)
@@ -219,7 +221,7 @@ export default function Categories() {
     setProductExpanded(isExpanded ? panel : false);
   };
     return (
-    <div className={classes.root}>
+    <div className={classes.root} id="productAccordion">
       <Container maxWidth="md" >
         <Typography  className={classes.title} component="h1" variant="h2" align="left" color="textPrimary" gutterBottom >
           Conoce nuestro menú 🍲
@@ -295,7 +297,9 @@ export default function Categories() {
                       </Grid>
                       <Grid item>
                        
-                        <Button variant="text" onClick={() => {             
+                        <Button variant="text" onClick={(event) => {
+                            event.stopPropagation()
+                            event.preventDefault()             
                             handleCart(nombre, descripcion, precio, imagen)
                           }} 
                           >
