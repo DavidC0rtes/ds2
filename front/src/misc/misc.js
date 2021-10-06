@@ -28,3 +28,24 @@ const getIdRol = (rol) => {
 const getTypeDoc = (type) => {
 
 }
+
+const getLocalTime = (string) => {
+	const time = new Date()
+	let offset = time.getTimezoneOffset() * 60 * 1000
+
+	if (string === '120 años') {
+		offset += 120*365*24*60*60*1000
+	} else if (string === '18 años') {
+		offset += 18*365*24*60*60*1000
+	}
+
+	const tlocal = new Date(time - offset)
+
+	let iso = tlocal.toISOString()
+	iso = iso.slice(0,10)
+	console.log(iso)
+	return iso
+}
+
+
+module.exports = {getLocalTime}
