@@ -1,24 +1,19 @@
 import React, { useState } from 'react'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { Redirect } from "react-router-dom";
 // core components
-import {AppBar, Toolbar, Button} from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
+import {Button} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Accordion from '@material-ui/core/Accordion';
 import Container from '@material-ui/core/Container';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionActions from '@material-ui/core/AccordionActions';
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Toast from '../../components/Toast'
 
 import ModalNewCategory from '../../components/modalNewCategory'
 import ModalNewProduct from '../../components/modalNewProduct'
-import FormHandler from '../../variables/formHandler'
 import CategoryModalHandler from '../../variables/categoryModalHandler'
 import ProductModalHandler from '../../variables/productModalHandler'
 import ButtonBase from '@material-ui/core/ButtonBase';
@@ -91,10 +86,8 @@ const useStyles = makeStyles(theme => ({
 */
 var categorias = categoryService.getAll().then(function(cats) {categorias = cats})
 
-
-
-
-export default function Categories() {
+export default function Categories(props) {
+  const showBtn = props.showBtn
   const [state, setState] = useState({})
   const [products, setProducts] = useState({})
   const [message, setNewMessage] = useState(null)
@@ -300,11 +293,19 @@ export default function Categories() {
                           IVA: {iva}%
                         </Typography>
                       </Grid>
+                      
                       <Grid item>
-                        <Button variant="text" onClick={() => {handleCart(nombre, descripcion, precio, imagen)}} style={{ cursor: 'pointer' }}>
+                        <Button variant="text" onClick={(event) => { 
+                            event.stopPropagation()
+                            event.preventDefault()
+            
+                            handleCart(nombre, descripcion, precio, imagen)
+                          }} 
+                          >
                           Añadir al carrito
                         </Button>
                       </Grid>
+                    
                     </Grid>
                     <Grid item>
                       <Typography variant="subtitle1">${precio}</Typography>

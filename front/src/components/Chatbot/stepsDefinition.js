@@ -2,6 +2,7 @@ import React from 'react'
 import SedesGrid from 'components/Grid/SedesGrid'
 import Categories from 'views/Producto/Productos'
 import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 const redirect = (id) => id
 
@@ -36,20 +37,35 @@ const steps = [
       },
 	  {
 		  id: '5',
-		  message: 'Listo! Por favor, ¡escoge lo que gustes!',
+		  message: 'Listo! Por favor, ¡escoge lo que gustes! y cuando termines escribe Listo',
 		  trigger: 'productos',
 	  },
 	  {
 		  id: 'productos',
       component: <Categories />,
-      trigger: 'checkout'
+      end: true
 	  },
     {
       id: 'checkout',
-      asMessage: true,
-      component: <Link to="/login" >Cuando estés listo, presiona este link.</Link>,
-      end: true
+      user: true,
+      trigger: 'lct',
+    },
+    {
+      id: 'lct',
+      message: 'Te redireccionaré al carrito de compras.',
+      trigger: goToView
+    },
+    {
+      id: 'end',
+      message: 'muchas gracias!',
+      end: true,
     }
 ]
+
+const goToView = () => {
+  const history = useHistory()
+  history.replace("/client/cart")
+  return 'end'
+}
 
 export default steps
