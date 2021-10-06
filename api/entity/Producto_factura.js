@@ -14,23 +14,25 @@ module.exports = new EntitySchema({
         }
     },
     relations: {
-        factura: {
+        id_factura: {
             target: "Factura",
             type: "many-to-one",
             nullable: false,
             joinColumn: {
                 name: "id_factura"
             },
-            onDelete: 'CASCADE'
+            onDelete: 'CASCADE',
+            eager: true
         },
-        producto: {
+        id_producto: {
             target: "producto",
             type: "many-to-one",
             nullable: false,
             joinColumn: {
                 name: "id_producto"
             },
-            onDelete: 'CASCADE'
+            onDelete: 'CASCADE',
+            eager: true
         }
     }
 })

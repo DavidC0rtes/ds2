@@ -46,9 +46,10 @@ function ventaFecha(){
       }),
       low: 0,
       high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+      fullWidth: true,
       chartPadding: {
         top: 0,
-        right: 0,
+        right: 45,
         bottom: 0,
         left: 0
       }
@@ -90,27 +91,43 @@ function ventaFecha(){
 // ##############################
 // // // Producto mas vendidos
 // #############################
-function productoMasVendidos(productos) {
+function productoMasVendidos(productos, facturas) {
 
   var nombresProductos = []
+  var vendidos = []
   for(let i=0;i<productos.length;i++){
     nombresProductos.push(productos[i]["nombre"]);
+    vendidos.push(0);
   }
 
-  var yserie = [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]
-  //var maxHigh = Math.max(...yserie) + ((Math.max(...yserie) - Math.min(...yserie))/2);
+  //Llenara la array con las cantidad de veces que se vendio un producto
+  for(let i = 0;i<facturas.length;i++){
+    let idProducto = facturas[i]["id_producto"];
+    let aux = productos.findIndex(x => x.id === idProducto);
+    for(let j=0;j<productos.length;j++){
+      switch(idProducto){
+        case productos[j]["id"]:
+          vendidos[aux] = vendidos[aux] + facturas[i]["cantidad"];
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  var maxHigh = Math.max(...vendidos) + ((Math.max(...vendidos) - Math.min(...vendidos))/2);
 
   const emailsSubscriptionChart = {
     data: {
       labels: nombresProductos,
-      series: [yserie]
+      series: [vendidos]
     },
     options: {
       axisX: {
         showGrid: false
       },
       low: 0,
-      high: 1000,
+      high: maxHigh,
       chartPadding: {
         top: 0,
         right: 5,
@@ -178,9 +195,10 @@ function ventaMeses(){
       }),
       low: 0,
       high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+      fullWidth: true,
       chartPadding: {
         top: 0,
-        right: 0,
+        right: 45,
         bottom: 0,
         left: 0
       }

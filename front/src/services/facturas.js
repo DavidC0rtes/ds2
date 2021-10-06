@@ -1,5 +1,5 @@
 /**
- * Este archivo manda todas las peticiones que tienen que ver con los usuarios
+ * Este archivo manda todas las peticiones que tienen que ver con las facturas
  */
 
  require('dotenv').config()

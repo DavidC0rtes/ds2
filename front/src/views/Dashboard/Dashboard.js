@@ -44,6 +44,8 @@ import CardFooter from "components/Card/CardFooter.js";
 import userService from '../../services/users'
 import sedeService from '../../services/sedes'
 import productService from '../../services/products'
+import facturaService from '../../services/facturas'
+
 import QueryParams from '../../misc/QueryParameters'
 import DataTable from '../../components/Table/DataGrid'
 
@@ -76,6 +78,8 @@ export default function Dashboard() {
 
   const [sedes, setSedes] = useState([]) // Almacena las sedes traídos de la db.
 
+  const [facturas, setFacturas] = useState([]) // Almacena las facturas traídos de la db.
+  
   const [products, setProducts] = useState({}) // Almacena los productos traídos de la db.
 
   const [filter, setFilter] = useState('Cliente') // Almacena el valor del campo de busqueda.
@@ -152,9 +156,14 @@ export default function Dashboard() {
     const fetchProductos = async () => {
       const resultP = await productService.getAll()
       resultP.forEach((item) => {
-        //
       })
       setProducts(resultP)}
+
+    const fetchFactura = async () => {
+      const resultF = await facturaService.getAll()
+      resultF.forEach((item) => {
+        })
+        setFacturas(resultF)}
 
 
     // Solo llamar a la función si se le ha dado click
@@ -163,6 +172,7 @@ export default function Dashboard() {
       fetchUsers()
       fetchSedes()
       fetchProductos()
+      fetchFactura()
     }
   }, [update])
 
@@ -171,6 +181,18 @@ export default function Dashboard() {
   for(let i=0;i<products.length;i++){
     auxProductos.push(products[i]);
   }
+  //Convertir de numero entero a moneda
+  function currency(numero) {
+    return "$" + numero.toFixed(0).replace(/./g, function(c, i, a) {
+      return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "." + c : c;
+    });
+  }
+  //Ganancias, los ingresa a una array que luego se usara para extraer sus valores en el boton
+  var ganancias = 0;
+  for(let i=0;i<facturas.length;i++){
+    ganancias = ganancias + facturas[i].costo;
+  }
+
   //Cuantos empleados y clientes hay
   var numeroClientes = 0;
   var numeroEmpleados = 0;
@@ -182,7 +204,6 @@ export default function Dashboard() {
     }
   }
   //Clientes que cumplen años este mes
-
   var mesActual = new Date().getMonth() + 1;
   var auxClientesBirthday = [];
   for(let i=0;i<users.length;i++){
@@ -238,7 +259,7 @@ export default function Dashboard() {
                 <AttachMoney />
               </CardIcon>
               <p className={classes.cardCategory}>Revenue</p>
-              <h3 className={classes.cardTitle}>$34,245</h3>
+              <h3 className={classes.cardTitle}>{currency(ganancias)}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -345,43 +366,20 @@ export default function Dashboard() {
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem xs={12} sm={12} md={15}>
           <Card chart>
             <CardHeader color="success">
               <ChartistGraph
                 className="ct-chart"
-                data={datos.productoMasVendidos(products).data}
+                data={datos.productoMasVendidos(products, facturas).data}
                 type="Bar"
-                options={datos.productoMasVendidos(products).options}
-                responsiveOptions={datos.productoMasVendidos(products).responsiveOptions}
-                listener={datos.productoMasVendidos(products).animation}
+                options={datos.productoMasVendidos(products, facturas).options}
+                responsiveOptions={datos.productoMasVendidos(products, facturas).responsiveOptions}
+                listener={datos.productoMasVendidos(products, facturas).animation}
               />
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Productos más vendidos</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
-            </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-                <AccessTime /> campaign sent 2 days ago
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
-          <Card chart>
-            <CardHeader color="danger">
-              <ChartistGraph
-                className="ct-chart"
-                data={datos.productoMasVendidos(products).data}
-                type="Bar"
-                options={datos.productoMasVendidos(products).options}
-                responsiveOptions={datos.productoMasVendidos(products).responsiveOptions}
-                listener={datos.productoMasVendidos(products).animation}
-              />
-            </CardHeader>
-            <CardBody>
-              <h4 className={classes.cardTitle}>Productos menos vendidos</h4>
               <p className={classes.cardCategory}>Last Campaign Performance</p>
             </CardBody>
             <CardFooter chart>
