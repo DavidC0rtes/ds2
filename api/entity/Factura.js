@@ -44,7 +44,7 @@ module.exports = new EntitySchema({
             joinColumn: {
                 name: "id_sede"
             },
-            //eager: true,
+            eager: true,
             
         }
 

@@ -13,45 +13,41 @@ var delays = 80,
 var delays2 = 80,
   durations2 = 500;
 // Meses
-const month = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", 
+var month = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", 
 "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 // ##############################
 // // // Ventas por fecha
 // #############################
-function ventaFecha(){
-  var yserie = [12, 17, 7, 17, 23, 18, 36, 20]
-  //var maxHigh = Math.max(...yserie) + ((Math.max(...yserie) - Math.min(...yserie))/2);
+function ventaFecha(facturas, mesIni, mesFin){
+  
+  var ventasTotales = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  
+  for(let i=0;i<facturas.length;i++){
+    let aux = (String(facturas[i].fecha).split('-')[1] - 1)
+    for(let j=0;j<(12-aux);j++){
+      ventasTotales[aux+j] = ventasTotales[aux+j] + facturas[i]["costo"]
+    }
+  }
+
+  var maxHigh = Math.max(...ventasTotales) + ((Math.max(...ventasTotales) - Math.min(...ventasTotales))/2);
 
   const dailySalesChart  = {
     data: {
-      labels: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "Mai",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec"
-      ],
-      series: [yserie]
+      labels: month.slice(mesIni, mesFin),
+      series: [ventasTotales.slice(mesIni, mesFin)]
     },
     options: {
       lineSmooth: Chartist.Interpolation.cardinal({
         tension: 0
       }),
       low: 0,
-      high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+      high: maxHigh, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
       fullWidth: true,
       chartPadding: {
         top: 0,
-        right: 45,
+        right: 55,
         bottom: 0,
-        left: 0
+        left: 30
       }
     },
     // for animation
@@ -169,32 +165,45 @@ function productoMasVendidos(productos, facturas) {
 // ##############################
 // // // Ventas ultimos 6 meses
 // #############################
-function ventaMeses(){
+function ventaMeses(producto, facturas){
   var mesActual = new Date();
 
   var ultimosMeses = []
+  var ultimosNmeses = []
   for(let i =6;i>=0;i--){
     if((mesActual.getMonth() - i) < 0){
       ultimosMeses.push(month[12 + (mesActual.getMonth() - i)]);
+      ultimosNmeses.push(12 + (mesActual.getMonth() - i));
     } else {
       ultimosMeses.push(month[mesActual.getMonth() - i]);
+      ultimosNmeses.push(mesActual.getMonth() - i);
     }
   }
 
-  var yserie = [230, 750, 450, 300, 280, 240, 250]
-  //var maxHigh = Math.max(...yserie) + ((Math.max(...yserie) - Math.min(...yserie))/2);
+  var ventas = [0, 0, 0, 0, 0, 0, 0]
+
+  for(let i=0;i<facturas.length;i++){
+    if(facturas[i]["id_producto"] == producto){
+      for(let j = 0;j<ultimosNmeses.length;j++){
+        if((String(facturas[i].fecha).split('-')[1] - 1) == ultimosNmeses[j]){
+          ventas[j] = ventas[j] + facturas[i]["cantidad"];
+        }
+      }
+    }
+  }
+  var maxHigh = Math.max(...ventas) + ((Math.max(...ventas) - Math.min(...ventas))/2);
 
   const completedTasksChart = {
     data: {
       labels: ultimosMeses,
-      series: [yserie]
+      series: [ventas]
     },
     options: {
       lineSmooth: Chartist.Interpolation.cardinal({
         tension: 0
       }),
       low: 0,
-      high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+      high: maxHigh, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
       fullWidth: true,
       chartPadding: {
         top: 0,

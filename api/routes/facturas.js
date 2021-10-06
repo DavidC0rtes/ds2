@@ -16,7 +16,7 @@ facturasRouter.get('/', async (request, response) => {
             id: factura[x].id,
             costo: factura[x].costo,
             fecha: factura[x].fecha,
-            id_sede: factura[x].id_sede,
+            id_sede: factura[x].id_sede.id,
             cantidad: producto_factura[x].cantidad,
             id_producto: producto_factura[x].id_producto.id,
             id_usuario: factura[x].id_usuario.id

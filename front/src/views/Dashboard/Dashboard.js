@@ -5,10 +5,9 @@ import ChartistGraph from "react-chartist";
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
 import Icon from "@material-ui/core/Icon";
-
+import classNames from 'classnames';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -19,15 +18,13 @@ import DateRange from "@material-ui/icons/DateRange";
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
+import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import AccessTime from "@material-ui/icons/AccessTime";
 import Accessibility from "@material-ui/icons/Accessibility";
-import BugReport from "@material-ui/icons/BugReport";
-import Code from "@material-ui/icons/Code";
-import Cloud from "@material-ui/icons/Cloud";
 import Face from "@material-ui/icons/Face";
 import AttachMoney from "@material-ui/icons/AttachMoney";
 import Kitchen from "@material-ui/icons/Kitchen";
-
+import SaveIcon from "@material-ui/icons/Save";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -49,13 +46,11 @@ import facturaService from '../../services/facturas'
 import QueryParams from '../../misc/QueryParameters'
 import DataTable from '../../components/Table/DataGrid'
 
-import { bugs, website, server } from "variables/general.js";
-
 //import {completedTasksChart} from "variables/charts.js";
 import datos from "variables/charts.js";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
-import { Delete, Storefront } from "@material-ui/icons";
+import { Button } from "@material-ui/core";
 
 function usePrevious(value) {
   // The ref object is a generic container whose current property is mutable ...
@@ -68,6 +63,9 @@ function usePrevious(value) {
   // Return previous value (happens before update in useEffect above)
   return ref.current;
 }
+
+const month = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", 
+"Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
 const useStyles = makeStyles(styles);
 
@@ -82,12 +80,13 @@ export default function Dashboard() {
   
   const [products, setProducts] = useState({}) // Almacena los productos traídos de la db.
 
-  const [filter, setFilter] = useState('Cliente') // Almacena el valor del campo de busqueda.
+  const [filter, setFilter] = useState('') // Almacena el valor del campo de busqueda.
 
   const [update, setUpdate] = useState(0) // Para saber si se le ha dado clic a "Actualizar"
 
   const previousUpdate = usePrevious(update)
 
+  const [seleccion, setSeleccion] = useState("")
   
   const headersClientes = [
     {
@@ -148,8 +147,8 @@ export default function Dashboard() {
         delete item.hora_cierre
         delete item.hora_apertura
         delete item.descripcion
-        item.id_direccion = item.direccion
-
+        item.ganancias = 0;
+        item.ventas = 0;
       })
       setSedes(resultS)}
     
@@ -181,16 +180,54 @@ export default function Dashboard() {
   for(let i=0;i<products.length;i++){
     auxProductos.push(products[i]);
   }
+  //Limpiar las ganancias y ventas
+  sedes.forEach((item) => { 
+    item.ganancias = 0
+    item.ventas = 0
+  })
+  //Funcion para total de ventas de un producto
+  function nombre_id(nombreP){
+    for(let i=0;i<products.length;i++){
+      if(nombreP == products[i].nombre){
+        return products[i]["id"];
+      }
+    }
+  }
+  //
+  function fechanumero(fecha){
+    for(let i=0;i<month.length;i++){
+      if(fecha == month[i]){
+        return i;
+      }
+    }
+  }
   //Convertir de numero entero a moneda
   function currency(numero) {
     return "$" + numero.toFixed(0).replace(/./g, function(c, i, a) {
       return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "." + c : c;
     });
   }
-  //Ganancias, los ingresa a una array que luego se usara para extraer sus valores en el boton
+  //Ganancias totales
   var ganancias = 0;
   for(let i=0;i<facturas.length;i++){
     ganancias = ganancias + facturas[i].costo;
+  }
+
+  //Array con la direccion, ganancias y total de ventas por sede
+  
+  for(let i=0;i<facturas.length;i++){
+    let idSede = facturas[i].id_sede;
+    let aux = sedes.findIndex(x => x.id === idSede);
+    for(let j=0;j<sedes.length;j++){
+      switch(idSede){
+        case sedes[j].id:
+          sedes[aux].ganancias = sedes[aux].ganancias + facturas[i].costo;
+          sedes[aux].ventas = sedes[aux].ventas + facturas[i].cantidad;
+          break;
+        default:
+          break;
+      }
+    }
   }
 
   //Cuantos empleados y clientes hay
@@ -213,6 +250,7 @@ export default function Dashboard() {
       }
     }
   }
+
   /**
    * Filtra los usuarios según el filtro en cualquiera de los campos.
    * Si no hay filtro devuelve todos los usuarios.
@@ -229,27 +267,12 @@ export default function Dashboard() {
   return (
     <div>
       <GridContainer>
-        <GridItem xs={12} sm={6} md={4}>
+        <GridItem xs={12} sm={6} md={12}>
           <Card>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
-                <Icon>content_copy</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>Used Space</p>
-              <h3 className={classes.cardTitle}>
-                49/50 <small>GB</small>
-              </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <Danger>
-                  <Warning />
-                </Danger>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
-                  Get more space
-                </a>
-              </div>
-            </CardFooter>
+            <Button variant="contained" className={classes.button}>
+                <SaveIcon className={classNames(classes.leftIcon, classes.iconSmall)} />
+                Save
+            </Button>
           </Card>
         </GridItem>
         <GridItem xs={12} sm={6} md={4}>
@@ -344,24 +367,36 @@ export default function Dashboard() {
             <CardHeader color="info">
               <ChartistGraph
                 className="ct-chart"
-                data={datos.ventaFecha().data}
+                data={datos.ventaFecha(facturas, fechanumero(seleccion), 12).data}
                 type="Line"
-                options={datos.ventaFecha().options}
-                listener={datos.ventaFecha().animation}
+                options={datos.ventaFecha(facturas, fechanumero(seleccion), 12).options}
+                listener={datos.ventaFecha(facturas,fechanumero(seleccion), 12).animation}
               />
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Ventas</h4>
+                <FormControl component="fieldset">
+                  <RadioGroup row aria-label="producto" name="row-radio-buttons-group" 
+                  value={seleccion} onChange={(e) => setSeleccion(e.target.value)}>
+                    {
+                      month.map((x) => {
+                        return (
+                        <FormControlLabel key={x} value={x} control={<Radio />} label={x}/>
+                        )
+                      })
+                    }
+                  </RadioGroup>
+                </FormControl>
               <p className={classes.cardCategory}>
                 <span className={classes.successText}>
-                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
+                  < ArrowUpward className={classes.upArrowCardCategory} />
                 </span>{" "}
-                increase in today sales.
+                Ventas en este año.
               </p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> updated 4 minutes ago
+                <AccessTime /> updated 2 minutes ago
               </div>
             </CardFooter>
           </Card>
@@ -380,11 +415,11 @@ export default function Dashboard() {
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Productos más vendidos</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
+              <p className={classes.cardCategory}>Desempeño de los productos</p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> campaign sent 2 days ago
+                <AccessTime /> updated 4 minutes ago
               </div>
             </CardFooter>
           </Card>
@@ -394,18 +429,18 @@ export default function Dashboard() {
             <CardHeader color="danger">
               <ChartistGraph
                 className="ct-chart"
-                data={datos.ventaMeses().data}
+                data={datos.ventaMeses(nombre_id(seleccion), facturas).data}
                 type="Line"
-                options={datos.ventaMeses().options}
-                listener={datos.ventaMeses().animation}
+                options={datos.ventaMeses(nombre_id(seleccion), facturas).options}
+                listener={datos.ventaMeses(nombre_id(seleccion), facturas).animation}
               />
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Total de ventas en los ultimos 6 meses de: </h4>
               <p className={classes.cardCategory}>
                 <FormControl component="fieldset">
-                  <FormLabel component="legend">Producto</FormLabel>
-                  <RadioGroup row aria-label="producto" name="row-radio-buttons-group">
+                  <RadioGroup row aria-label="producto" name="row-radio-buttons-group" 
+                  value={seleccion} onChange={(e) => setSeleccion(e.target.value)}>
                     {
                       auxProductos.map((x) => {
                         return (
@@ -419,7 +454,7 @@ export default function Dashboard() {
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> campaign sent 2 days ago
+                <AccessTime /> updated 1 minutes ago
               </div>
             </CardFooter>
           </Card>
@@ -429,23 +464,7 @@ export default function Dashboard() {
         <GridItem xs={12} sm={12} md={6}>
           <Card>
             <CardHeader color="success">
-              <h4 className={classes.cardTitleWhite}>Sedes con más ventas</h4>
-              <p className={classes.cardCategoryWhite}>
-              </p>
-            </CardHeader>
-            <CardBody>
-            <DataTable
-              rows={sedes}
-              columns={headersSede}
-              pageSize={10}
-            />
-            </CardBody>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
-          <Card>
-            <CardHeader color="danger">
-              <h4 className={classes.cardTitleWhite}>Sedes con menos ventas</h4>
+              <h4 className={classes.cardTitleWhite}>Ventas y ganancias por sede</h4>
               <p className={classes.cardCategoryWhite}>
               </p>
             </CardHeader>
@@ -475,6 +494,7 @@ export default function Dashboard() {
             </CardBody>
           </Card>
         </GridItem>
+        <Card></Card>
       </GridContainer>
     </div>
   );
