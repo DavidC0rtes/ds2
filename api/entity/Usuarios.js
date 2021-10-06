@@ -43,7 +43,6 @@ module.exports = new EntitySchema({
         factura: {
             target: "Factura",
             type: "one-to-many",
-            inverseSide: "Usuarios"
         }
     }
 

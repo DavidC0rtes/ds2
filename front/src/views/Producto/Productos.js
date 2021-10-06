@@ -91,7 +91,11 @@ const useStyles = makeStyles(theme => ({
 var categorias = categoryService.getAll().then(function(cats) {categorias = cats})
 
 
-
+function currency(numero) {
+  return "$" + numero.toFixed(0).replace(/./g, function(c, i, a) {
+    return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "." + c : c;
+  });
+}
 
 export default function Categories() {
   const [state, setState] = useState({})
@@ -319,7 +323,7 @@ export default function Categories() {
                       </Grid>
                     </Grid>
                     <Grid item>
-                      <Typography variant="subtitle1">${precio}</Typography>
+                      <Typography variant="subtitle1">{currency(precio)}</Typography>
                     </Grid>
                     <Grid item>
                     {auth.user && auth.user.rol == 'Administrador' &&

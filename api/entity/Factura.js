@@ -18,13 +18,14 @@ module.exports = new EntitySchema({
         }
     },
     relations: {
-        usuario: {
+        id_usuario: {
             target: "Usuarios",
             type: "many-to-one",
             joinColumn: {
                 name: "id_usuario"
             },
-            onDelete: 'SET NULL'
+            onDelete: 'SET NULL',
+            eager: true
         },
         pago: {
             target: "Pago",
@@ -36,13 +37,15 @@ module.exports = new EntitySchema({
             type: "one-to-many",
             inverseSide: "Factura"
         },
-        sede: {
+        id_sede: {
             target: "sede",
             type: "many-to-one",
             nullable: false,
             joinColumn: {
                 name: "id_sede"
-            }
+            },
+            eager: true,
+            
         }
 
     }
