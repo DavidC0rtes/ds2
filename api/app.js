@@ -28,12 +28,12 @@ typeorm.createConnection(config.DBNAME).then(() => {
 
     if (config.ENV === 'production') {
         app.use(express.static('build'))
-        app.get('/*', function (res, req) {
-            res.sendFile(path.join(_dirname, 'build/index.html'))
-            if (err) {
-                res.status(500).send(err)
-            }
-        })
+       // app.get('/*', function (res, req) {
+       //     res.sendFile(path.join(_dirname, 'build/index.html'))
+       //     if (err) {
+       //         res.status(500).send(err)
+       //     }
+       // })
     }
 
     app.use(cors())
