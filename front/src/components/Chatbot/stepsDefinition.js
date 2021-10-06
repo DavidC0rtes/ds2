@@ -37,23 +37,18 @@ const steps = [
       },
 	  {
 		  id: '5',
-		  message: 'Listo! Por favor, ¡escoge lo que gustes! y cuando termines escribe Listo',
+		  message: 'Listo! Por favor, ¡escoge lo que gustes!',
 		  trigger: 'productos',
 	  },
 	  {
 		  id: 'productos',
       component: <Categories />,
-      end: true
+      trigger: 'checkout'
 	  },
     {
       id: 'checkout',
-      user: true,
-      trigger: 'lct',
-    },
-    {
-      id: 'lct',
-      message: 'Te redireccionaré al carrito de compras.',
-      trigger: goToView
+      component: <Redirect text={"¡Dame clic cuando termines!"} dest={"/client/cart"} />,
+      trigger: 'end',
     },
     {
       id: 'end',
@@ -62,10 +57,10 @@ const steps = [
     }
 ]
 
-const goToView = () => {
-  const history = useHistory()
-  history.replace("/client/cart")
-  return 'end'
+const Redirect = ({text, dest}) => {
+  return (
+    <Link to={dest}>{text}</Link>
+  )
 }
 
 export default steps

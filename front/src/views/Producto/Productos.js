@@ -86,8 +86,8 @@ const useStyles = makeStyles(theme => ({
 */
 var categorias = categoryService.getAll().then(function(cats) {categorias = cats})
 
-export default function Categories(props) {
-  const showBtn = props.showBtn
+export default function Categories() {
+
   const [state, setState] = useState({})
   const [products, setProducts] = useState({})
   const [message, setNewMessage] = useState(null)
@@ -293,19 +293,15 @@ export default function Categories(props) {
                           IVA: {iva}%
                         </Typography>
                       </Grid>
-                      
                       <Grid item>
-                        <Button variant="text" onClick={(event) => { 
-                            event.stopPropagation()
-                            event.preventDefault()
-            
+                       
+                        <Button variant="text" onClick={() => {             
                             handleCart(nombre, descripcion, precio, imagen)
                           }} 
                           >
                           Añadir al carrito
                         </Button>
                       </Grid>
-                    
                     </Grid>
                     <Grid item>
                       <Typography variant="subtitle1">${precio}</Typography>
