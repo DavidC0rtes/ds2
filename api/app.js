@@ -24,6 +24,7 @@ typeorm.createConnection(config.DBNAME).then(() => {
     const categoriesRouter = require('./routes/categories')
     const productsRouter = require('./routes/products')
     const sedesRouter = require('./routes/sedes')
+    const facturasRouter = require('./routes/facturas')
 
     if (config.ENV === 'production') app.use(express.static('build'))
 
@@ -37,6 +38,7 @@ typeorm.createConnection(config.DBNAME).then(() => {
     app.use('/api/categories', categoriesRouter)
     app.use('/api/products', productsRouter)
     app.use('/api/sedes', sedesRouter)
+    app.use('/api/facturas', facturasRouter)
     // Fin especificaciones
     app.use(middleware.unknownEndpoint)
     app.use(middleware.errorHandler)
