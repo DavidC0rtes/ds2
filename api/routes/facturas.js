@@ -8,7 +8,9 @@ const Producto_factura = require('../entity/Producto_factura')
 facturasRouter.get('/', async (request, response) => {
     console.log("Retornar todos")
     const factura = await control.getAll(Factura)
+    console.log(factura)
     const producto_factura = await control.getAll(Producto_factura)
+    console.log(producto_factura)
     const arrayFactura = [];
     for(var x = 0; x < factura.length; x++){
         for(var y = 0; y < producto_factura.length; y++){

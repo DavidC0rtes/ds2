@@ -18,13 +18,13 @@ module.exports = new EntitySchema({
         }
     },
     relations: {
-        usuario: {
+        id_usuario: {
             target: "Usuarios",
             type: "many-to-one",
             joinColumn: {
                 name: "id_usuario"
             },
-            onDelete: 'SET NULL'
+            eager: true
         },
         pago: {
             target: "Pago",
