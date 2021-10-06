@@ -48,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
           handleClose();
       };
 
-      console.log(state)
       return (
           <div>
               <Button variant="outlined" color="secondary" className={classes.button} fullWidth onClick ={handleClickOpen}>
