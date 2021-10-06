@@ -203,8 +203,6 @@ export default function Categories() {
 		}, 5000)
   }
 
-
-
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [productExpanded, setProductExpanded] = useState(false);
@@ -323,7 +321,11 @@ export default function Categories() {
                     descripcion={descripcion}
                     cantidad={cantidad}
                     precio={precio}
-                    iva={iva}/>}
+                    iva={iva}
+                    imagen={imagen}
+                    products={products}
+                    setProducts={setProducts}
+                    />}
                     </Grid>
                     <Grid item>
                     {auth.user && auth.user.rol == 'Administrador' &&
