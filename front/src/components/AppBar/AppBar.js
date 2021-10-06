@@ -8,9 +8,13 @@ import {
 	withStyles
 } from '@material-ui/core'
 
+import DialogSelect from 'components/Dialog/DialogSelect'
+
 import { Link } from 'react-router-dom'
 
 import { useAuth } from '../../misc/useAuth'
+
+import { useSede } from '../../misc/useSede'
 
 //https://i.postimg.cc/4xkHN1xm/chickenlogo-removebg-preview.png
 const SimpleAppBar = () => {
@@ -28,11 +32,15 @@ const SimpleAppBar = () => {
 					>
 						UFC
 					</Typography>
+          <DialogSelect />
+
+					{ !auth.user &&
+
 					<StyledButton component={Link} to="/menu">Menú</StyledButton>
-
-					{ auth.user && auth.user.rol == 'Cliente' &&
-
-					<StyledButton component={Link} to="/client/dashboard">Pedido</StyledButton>
+					}
+					
+					{ auth.user &&
+					<StyledButton component={Link} to="/client">Pedido</StyledButton>
 					}
 					
 					{!auth.user && 
@@ -52,11 +60,7 @@ const SimpleAppBar = () => {
 
 						<StyledButton component={Link} to="/admin/dashboard">Gestión</StyledButton>
 					}
-
 					
-
-					
-
 					{auth.user && 
 						<StyledButton component={Link} to="/" onClick={auth.logout}>Cerrar sesión</StyledButton>
 					}

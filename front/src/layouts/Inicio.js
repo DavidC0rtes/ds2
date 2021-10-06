@@ -38,7 +38,7 @@ const useStyles = makeStyles(() => ({
 const items = [
   {
       Name: "Apanados",
-      Caption: "Crugientes por fuera, suaves por dentro.",
+      Caption: "Crujientes por fuera, suaves por dentro.",
       contentPosition: "left",
       Items: [
           {

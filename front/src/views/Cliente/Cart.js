@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { addToCart, removeFromCart, printedLocal } from '../../hooks/cart.js';
+// Hook del carrito
+import { addToCart, removeFromCart, printedLocal, totallPrice, getPrice } from '../../hooks/cart.js';
 // @material-ui/core components
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-// core components
+// Core components
 import {
     AppBar, 
     Toolbar, 
@@ -17,14 +18,7 @@ import {
     CardActionArea,
     CardActions} from '@material-ui/core';
 
-
-function sumPrice(){
-    var totalPrice = 0;
-    for(var i = 0; i < printedLocal.length; i++){
-        totalPrice += printedLocal[i].precio*printedLocal[i].cantidad;
-    }
-    document.getElementById("checkout").innerHTML = totalPrice;
-}
+    // Definicion de los estilos utilizados para el frontend
 
 const useStyles = makeStyles((theme) => ({
     details: {
@@ -59,8 +53,7 @@ const useStyles = makeStyles((theme) => ({
       },
 
       cardContent: {
-        maxWidth: "200px",
-        height: "70px"
+        maxWidth: "200px"
       },
 
       cartContent: {
@@ -94,10 +87,50 @@ const useStyles = makeStyles((theme) => ({
       }
   }));
 
+  // Definicion de la funcion main
+
   export default function CartClient() {
+
+    // Seccion de temas y estilos
+
     const classes = useStyles();
     const theme = useTheme();
-    if(!printedLocal || printedLocal.length == 0){
+
+    const cart = localStorage.getItem("cart");
+    console.log(cart);
+
+    /* 
+      Estados usados por la pagina (printedLocal y totallPrice son referenciados por 
+      el hook del carro, ahí se encuentran documentadas las variables)
+    */
+
+    const [cartState, setCart] = useState(printedLocal);
+    const [priceState, setPrice] = useState(getPrice);
+
+    // Manejador de eventos, casos de cambio de estados
+
+    function handleCartChange(product, description, price, image, opt){
+      if(opt == "remove"){
+        removeFromCart(product, description, price, image);
+        setPrice(priceState - price);
+      } else {
+        addToCart(product, description, price, image)
+        setPrice(priceState + price)
+      }
+      var cartArray = JSON.parse(localStorage.getItem("cart"));
+      setCart(cartArray);
+    }
+
+    /* 
+      Render principal, si el carro de compras está vacio
+      retorna/muestra una pantalla con un letrero diciendo
+      que el carro esta vacio, de lo contrario sencillamente
+      renderiza los productos, en todo esto se utiliza el estado y 
+      no el carrito como tal pues necesitamos que estas funciones
+      se actualicen cada que un producto cambia
+      */
+
+    if(!cartState || cartState.length == 0){
       return(
         <Container>
           No hemos encontrado ningun producto, lo sentimos
@@ -107,9 +140,10 @@ const useStyles = makeStyles((theme) => ({
     return (
       <Container className = {classes.cartContent}>
         <Grid container spacing = {1}>
+          
           {
-          printedLocal.map((data, key) => {
-
+            // Funcion main para renderizar cada uno de los productos en el carrito
+          cartState.map((data, key) => {
             return (
               <Grid item key={key}>
                   <Pedido
@@ -119,22 +153,23 @@ const useStyles = makeStyles((theme) => ({
                     price={data.precio}
                     quantity={data.cantidad}
                     image={data.imagen}
+                    handlerOnChange = {handleCartChange}
                   />
               </Grid>
             );
           })}
 
-      
-
-        </Grid>
-            Precio total: <div id = "checkout">0 </div>
-          <Button className = {classes.btn}><Link href = "cart" style={{ color: 'white', textDecoration: 'none' }} > Checkout </Link></Button>
+        </Grid>    
+        <p>Precio total: { priceState }</p>
+        <Button className = {classes.btn}><Link href = "cart" style={{ color: 'white', textDecoration: 'none' }} > Checkout </Link></Button>
       </Container>
     );
     }
   }
 
-  const Pedido = ({ product, description, price, quantity, image}) => {
+  // Definicion del componente producto 
+
+  const Pedido = ({ product, description, price, quantity, image, handlerOnChange}) => {
     const classes = useStyles();
     const theme = useTheme();
     if (!product) return <div />;
@@ -153,17 +188,18 @@ const useStyles = makeStyles((theme) => ({
                 <Typography variant="body2">
                   {description}
                 </Typography>
+                <Typography variant="body2">
+                <p>Precio: {price}, Cantidad: {quantity}</p>
+                </Typography>
               </CardContent>
             </CardActionArea>
             <CardActions>
-              <Button size="small" className = {classes.btnAdd} onClick={() => {addToCart(product, description, price, image); sumPrice()}}>
-                Aumentar 1
+              <Button size="small" className = {classes.btnAdd} onClick={() => {handlerOnChange(product, description, price, image, "add")}}>
+                +
               </Button>
-              <Button size = "small" className = {classes.btnRemove} onClick={() => {removeFromCart(product, description, price, image); sumPrice()}}>
-                Reducir 1
+              <Button size = "small" className = {classes.btnRemove} onClick={() => {handlerOnChange(product, description, price, image, "remove")}}>
+                -
               </Button>
-              <div style = {{ float: 'right' }}>Precio: {price}</div>
-              <div style = {{ float: 'right' }}>Cantidad: {quantity}</div>
             </CardActions>
           </Card>
     );

@@ -6,7 +6,7 @@
 // https://usehooks.com/useAuth/
 // https://reactrouter.com/web/example/auth-workflow
 
-import React, { useState, useEffect, useContext, createContext } from "react"
+import React, { useState, useContext, createContext } from "react"
 import loginService from '../services/login'
 import userService from '../services/users'
 
@@ -58,7 +58,6 @@ function useProvideAuth() {
      */
     const logout = () => { 
         window.localStorage.clear();
-        
         setUser(null)
     }
 

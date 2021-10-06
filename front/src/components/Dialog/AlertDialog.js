@@ -10,6 +10,7 @@ export default function AlertDialog(props)  {
 
 	const [open, setOpen] = React.useState(false)
 	
+	
 	return (
 		<>
 			<Button style={props.btnStyle} startIcon={props.icon} onClick={() => setOpen(true)}>
