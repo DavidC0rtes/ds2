@@ -15,12 +15,17 @@ import AccordionActions from '@material-ui/core/AccordionActions';
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Toast from '../../components/Toast'
+import AlertDialog from '../../components/Dialog/AlertDialog';
+import IconButton from '@material-ui/core/IconButton';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import ModalNewCategory from '../../components/modalNewCategory'
 import ModalNewProduct from '../../components/modalNewProduct'
 import FormHandler from '../../variables/formHandler'
 import CategoryModalHandler from '../../variables/categoryModalHandler'
 import ProductModalHandler from '../../variables/productModalHandler'
+import ModalEditProduct from '../../components/modalEditProduct'
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Paper from '@material-ui/core/Paper';
 
@@ -78,13 +83,7 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-/* Añadir un producto TODO
-*/
 
-
-//Eliminar categoria TODO
-
-//Editar categoria TODO
 
 /*obtener todas las categorias
 * Usamos esta variable
@@ -190,7 +189,20 @@ export default function Categories() {
       setState(_copyState)
     }
   }
-
+  const deleteProduct = async (event, id) => {
+    event.stopPropagation();
+    event.preventDefault();
+    const result= await productService.eliminate(id)
+    if (result.status === 200) {
+			setNewMessage('¡Actualizado con éxito!')
+		} else {
+			setNewMessage('Ha ocurrido un error')
+			console.error(result)
+		}
+		setTimeout(() => {
+			setNewMessage(null)
+		}, 5000)
+  }
 
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
@@ -277,7 +289,7 @@ export default function Categories() {
               
             {products ? Object.values(products).map(paper => {
             //Productos lista desplegable
-            const { id, nombre, descripcion, precio, imagen, iva} = paper;
+            const { id, nombre, descripcion, cantidad, precio, imagen, iva} = paper;
             return (
             <div className={classes.root} key={id}>
               <Paper className={classes.paper} elevation={9}>
@@ -303,12 +315,40 @@ export default function Categories() {
                       <Grid item>
                         <Button variant="text" onClick={() => {handleCart(nombre, descripcion, precio, imagen)}} style={{ cursor: 'pointer' }}>
                           Añadir al carrito
-                        </Button>
+                        </Button>         
                       </Grid>
                     </Grid>
                     <Grid item>
                       <Typography variant="subtitle1">${precio}</Typography>
                     </Grid>
+                    <Grid item>
+                    {auth.user && auth.user.rol == 'Administrador' &&
+                    <ModalEditProduct className={classes.column}
+                    handleFieldChange={(event) => CategoryModalHandler(state, setState, event)}
+                    id={id}
+                    state={state}
+                    nombre={nombre}
+                    descripcion={descripcion}
+                    cantidad={cantidad}
+                    precio={precio}
+                    iva={iva}
+                    imagen={imagen}
+                    products={products}
+                    setProducts={setProducts}
+                    />}
+                    </Grid>
+                    <Grid item>
+                    {auth.user && auth.user.rol == 'Administrador' &&
+                    <AlertDialog className={classes.column}
+                    message="¿Estas seguro? Esta acción no se puede deshacer."
+                    agreeTxt="Sí"
+                    disagreeTxt="No"
+                    btnTxt={'Eliminar'}
+                    doAction={(event) =>deleteProduct(event, id)}
+              ></AlertDialog>
+                        }
+                    </Grid>
+                    
                   </Grid>
                 </Grid>
               </Paper>
