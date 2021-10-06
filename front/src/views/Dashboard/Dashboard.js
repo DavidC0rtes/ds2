@@ -5,10 +5,9 @@ import ChartistGraph from "react-chartist";
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
 import Icon from "@material-ui/core/Icon";
-
+import classNames from 'classnames';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -19,11 +18,13 @@ import DateRange from "@material-ui/icons/DateRange";
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
+import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import AccessTime from "@material-ui/icons/AccessTime";
 import Accessibility from "@material-ui/icons/Accessibility";
-import BugReport from "@material-ui/icons/BugReport";
-import Code from "@material-ui/icons/Code";
-import Cloud from "@material-ui/icons/Cloud";
+import Face from "@material-ui/icons/Face";
+import AttachMoney from "@material-ui/icons/AttachMoney";
+import Kitchen from "@material-ui/icons/Kitchen";
+import SaveIcon from "@material-ui/icons/Save";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -40,15 +41,16 @@ import CardFooter from "components/Card/CardFooter.js";
 import userService from '../../services/users'
 import sedeService from '../../services/sedes'
 import productService from '../../services/products'
+import facturaService from '../../services/facturas'
+
 import QueryParams from '../../misc/QueryParameters'
 import DataTable from '../../components/Table/DataGrid'
-
-import { bugs, website, server } from "variables/general.js";
 
 //import {completedTasksChart} from "variables/charts.js";
 import datos from "variables/charts.js";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
+import { Button } from "@material-ui/core";
 
 function usePrevious(value) {
   // The ref object is a generic container whose current property is mutable ...
@@ -62,6 +64,9 @@ function usePrevious(value) {
   return ref.current;
 }
 
+const month = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", 
+"Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
 const useStyles = makeStyles(styles);
 
 export default function Dashboard() {
@@ -71,14 +76,17 @@ export default function Dashboard() {
 
   const [sedes, setSedes] = useState([]) // Almacena las sedes traídos de la db.
 
+  const [facturas, setFacturas] = useState([]) // Almacena las facturas traídos de la db.
+  
   const [products, setProducts] = useState({}) // Almacena los productos traídos de la db.
 
-  const [filter, setFilter] = useState('Cliente') // Almacena el valor del campo de busqueda.
+  const [filter, setFilter] = useState('') // Almacena el valor del campo de busqueda.
 
   const [update, setUpdate] = useState(0) // Para saber si se le ha dado clic a "Actualizar"
 
   const previousUpdate = usePrevious(update)
 
+  const [seleccion, setSeleccion] = useState("")
   
   const headersClientes = [
     {
@@ -98,7 +106,6 @@ export default function Dashboard() {
     { field: 'primer_nombre', headerName: 'Primer nombre', width: 150 },
     { field: 'primer_apellido', headerName: 'Primer apellido', width: 150 },
     { field: 'birthday', headerName: 'Cumpleaños', width: 200 },
-    { field: 'rol', headerName: 'Rol', width: 100 },
   ]
 
   const headersSede = [
@@ -140,17 +147,22 @@ export default function Dashboard() {
         delete item.hora_cierre
         delete item.hora_apertura
         delete item.descripcion
-        item.id_direccion = item.direccion
-
+        item.ganancias = 0;
+        item.ventas = 0;
       })
       setSedes(resultS)}
     
     const fetchProductos = async () => {
       const resultP = await productService.getAll()
       resultP.forEach((item) => {
-        //
       })
       setProducts(resultP)}
+
+    const fetchFactura = async () => {
+      const resultF = await facturaService.getAll()
+      resultF.forEach((item) => {
+        })
+        setFacturas(resultF)}
 
 
     // Solo llamar a la función si se le ha dado click
@@ -159,13 +171,86 @@ export default function Dashboard() {
       fetchUsers()
       fetchSedes()
       fetchProductos()
+      fetchFactura()
     }
   }, [update])
 
+  //Auxiliar para prodcutos, los ingresa a una array que luego se usara para extraer sus valores en el boton
   var auxProductos = []
   for(let i=0;i<products.length;i++){
     auxProductos.push(products[i]);
   }
+  //Limpiar las ganancias y ventas
+  sedes.forEach((item) => { 
+    item.ganancias = 0
+    item.ventas = 0
+  })
+  //Funcion para total de ventas de un producto
+  function nombre_id(nombreP){
+    for(let i=0;i<products.length;i++){
+      if(nombreP == products[i].nombre){
+        return products[i]["id"];
+      }
+    }
+  }
+  //
+  function fechanumero(fecha){
+    for(let i=0;i<month.length;i++){
+      if(fecha == month[i]){
+        return i;
+      }
+    }
+  }
+  //Convertir de numero entero a moneda
+  function currency(numero) {
+    return "$" + numero.toFixed(0).replace(/./g, function(c, i, a) {
+      return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "." + c : c;
+    });
+  }
+  //Ganancias totales
+  var ganancias = 0;
+  for(let i=0;i<facturas.length;i++){
+    ganancias = ganancias + facturas[i].costo;
+  }
+
+  //Array con la direccion, ganancias y total de ventas por sede
+  
+  for(let i=0;i<facturas.length;i++){
+    let idSede = facturas[i].id_sede;
+    let aux = sedes.findIndex(x => x.id === idSede);
+    for(let j=0;j<sedes.length;j++){
+      switch(idSede){
+        case sedes[j].id:
+          sedes[aux].ganancias = sedes[aux].ganancias + facturas[i].costo;
+          sedes[aux].ventas = sedes[aux].ventas + facturas[i].cantidad;
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  //Cuantos empleados y clientes hay
+  var numeroClientes = 0;
+  var numeroEmpleados = 0;
+  for(let i=0;i<users.length;i++){
+    if(String(users[i].rol) == "Cliente"){
+      numeroClientes ++;
+    } else {
+      numeroEmpleados  ++;
+    }
+  }
+  //Clientes que cumplen años este mes
+  var mesActual = new Date().getMonth() + 1;
+  var auxClientesBirthday = [];
+  for(let i=0;i<users.length;i++){
+    if(String(users[i].rol) == "Cliente"){
+      if(String(users[i].birthday).split('-')[1] == String(mesActual)){
+        auxClientesBirthday.push(users[i]);
+      }
+    }
+  }
+
   /**
    * Filtra los usuarios según el filtro en cualquiera de los campos.
    * Si no hay filtro devuelve todos los usuarios.
@@ -182,37 +267,22 @@ export default function Dashboard() {
   return (
     <div>
       <GridContainer>
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem xs={12} sm={6} md={12}>
           <Card>
-            <CardHeader color="warning" stats icon>
-              <CardIcon color="warning">
-                <Icon>content_copy</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>Used Space</p>
-              <h3 className={classes.cardTitle}>
-                49/50 <small>GB</small>
-              </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <Danger>
-                  <Warning />
-                </Danger>
-                <a href="#pablo" onClick={e => e.preventDefault()}>
-                  Get more space
-                </a>
-              </div>
-            </CardFooter>
+            <Button variant="contained" className={classes.button}>
+                <SaveIcon className={classNames(classes.leftIcon, classes.iconSmall)} />
+                Save
+            </Button>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem xs={12} sm={6} md={4}>
           <Card>
             <CardHeader color="success" stats icon>
               <CardIcon color="success">
-                <Store />
+                <AttachMoney />
               </CardIcon>
               <p className={classes.cardCategory}>Revenue</p>
-              <h3 className={classes.cardTitle}>$34,245</h3>
+              <h3 className={classes.cardTitle}>{currency(ganancias)}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -222,31 +292,65 @@ export default function Dashboard() {
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem xs={12} sm={6} md={4}>
           <Card>
-            <CardHeader color="danger" stats icon>
-              <CardIcon color="danger">
-                <Icon>info_outline</Icon>
+            <CardHeader color="warning" stats icon>
+              <CardIcon color="warning">
+                <Store />
               </CardIcon>
-              <p className={classes.cardCategory}>Fixed Issues</p>
-              <h3 className={classes.cardTitle}>75</h3>
+              <p className={classes.cardCategory}>Sedes</p>
+              <h3 className={classes.cardTitle}>{sedes.length}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
-                <LocalOffer />
-                Tracked from Github
+                <Update />
+                Just Updated
               </div>
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem xs={12} sm={6} md={4}>
+          <Card>
+            <CardHeader color="warning" stats icon>
+              <CardIcon color="warning">
+                <Kitchen />
+              </CardIcon>
+              <p className={classes.cardCategory}>Productos</p>
+              <h3 className={classes.cardTitle}>{products.length}</h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <Update />
+                Just Updated
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={6} md={4}>
+          <Card>
+            <CardHeader color="info" stats icon>
+              <CardIcon color="info">
+                <Face />
+              </CardIcon>
+              <p className={classes.cardCategory}>Personal</p>
+              <h3 className={classes.cardTitle}>{numeroEmpleados}</h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <Update />
+                Just Updated
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={6} md={4}>
           <Card>
             <CardHeader color="info" stats icon>
               <CardIcon color="info">
                 <Accessibility />
               </CardIcon>
               <p className={classes.cardCategory}>Clientes registrados</p>
-              <h3 className={classes.cardTitle}>#</h3>
+              <h3 className={classes.cardTitle}>{numeroClientes}</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -263,70 +367,59 @@ export default function Dashboard() {
             <CardHeader color="info">
               <ChartistGraph
                 className="ct-chart"
-                data={datos.ventaFecha().data}
+                data={datos.ventaFecha(facturas, fechanumero(seleccion), 12).data}
                 type="Line"
-                options={datos.ventaFecha().options}
-                listener={datos.ventaFecha().animation}
+                options={datos.ventaFecha(facturas, fechanumero(seleccion), 12).options}
+                listener={datos.ventaFecha(facturas,fechanumero(seleccion), 12).animation}
               />
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Ventas</h4>
+                <FormControl component="fieldset">
+                  <RadioGroup row aria-label="producto" name="row-radio-buttons-group" 
+                  value={seleccion} onChange={(e) => setSeleccion(e.target.value)}>
+                    {
+                      month.map((x) => {
+                        return (
+                        <FormControlLabel key={x} value={x} control={<Radio />} label={x}/>
+                        )
+                      })
+                    }
+                  </RadioGroup>
+                </FormControl>
               <p className={classes.cardCategory}>
                 <span className={classes.successText}>
-                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
+                  < ArrowUpward className={classes.upArrowCardCategory} />
                 </span>{" "}
-                increase in today sales.
+                Ventas en este año.
               </p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> updated 4 minutes ago
+                <AccessTime /> updated 2 minutes ago
               </div>
             </CardFooter>
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem xs={12} sm={12} md={15}>
           <Card chart>
             <CardHeader color="success">
               <ChartistGraph
                 className="ct-chart"
-                data={datos.productoMasVendidos(products).data}
+                data={datos.productoMasVendidos(products, facturas).data}
                 type="Bar"
-                options={datos.productoMasVendidos(products).options}
-                responsiveOptions={datos.productoMasVendidos(products).responsiveOptions}
-                listener={datos.productoMasVendidos(products).animation}
+                options={datos.productoMasVendidos(products, facturas).options}
+                responsiveOptions={datos.productoMasVendidos(products, facturas).responsiveOptions}
+                listener={datos.productoMasVendidos(products, facturas).animation}
               />
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Productos más vendidos</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
+              <p className={classes.cardCategory}>Desempeño de los productos</p>
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> campaign sent 2 days ago
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
-          <Card chart>
-            <CardHeader color="danger">
-              <ChartistGraph
-                className="ct-chart"
-                data={datos.productoMasVendidos(products).data}
-                type="Bar"
-                options={datos.productoMasVendidos(products).options}
-                responsiveOptions={datos.productoMasVendidos(products).responsiveOptions}
-                listener={datos.productoMasVendidos(products).animation}
-              />
-            </CardHeader>
-            <CardBody>
-              <h4 className={classes.cardTitle}>Productos menos vendidos</h4>
-              <p className={classes.cardCategory}>Last Campaign Performance</p>
-            </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-                <AccessTime /> campaign sent 2 days ago
+                <AccessTime /> updated 4 minutes ago
               </div>
             </CardFooter>
           </Card>
@@ -336,18 +429,18 @@ export default function Dashboard() {
             <CardHeader color="danger">
               <ChartistGraph
                 className="ct-chart"
-                data={datos.ventaMeses().data}
+                data={datos.ventaMeses(nombre_id(seleccion), facturas).data}
                 type="Line"
-                options={datos.ventaMeses().options}
-                listener={datos.ventaMeses().animation}
+                options={datos.ventaMeses(nombre_id(seleccion), facturas).options}
+                listener={datos.ventaMeses(nombre_id(seleccion), facturas).animation}
               />
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Total de ventas en los ultimos 6 meses de: </h4>
               <p className={classes.cardCategory}>
                 <FormControl component="fieldset">
-                  <FormLabel component="legend">Producto</FormLabel>
-                  <RadioGroup row aria-label="producto" name="row-radio-buttons-group">
+                  <RadioGroup row aria-label="producto" name="row-radio-buttons-group" 
+                  value={seleccion} onChange={(e) => setSeleccion(e.target.value)}>
                     {
                       auxProductos.map((x) => {
                         return (
@@ -361,7 +454,7 @@ export default function Dashboard() {
             </CardBody>
             <CardFooter chart>
               <div className={classes.stats}>
-                <AccessTime /> campaign sent 2 days ago
+                <AccessTime /> updated 1 minutes ago
               </div>
             </CardFooter>
           </Card>
@@ -371,23 +464,7 @@ export default function Dashboard() {
         <GridItem xs={12} sm={12} md={6}>
           <Card>
             <CardHeader color="success">
-              <h4 className={classes.cardTitleWhite}>Sedes con más ventas</h4>
-              <p className={classes.cardCategoryWhite}>
-              </p>
-            </CardHeader>
-            <CardBody>
-            <DataTable
-              rows={sedes}
-              columns={headersSede}
-              pageSize={10}
-            />
-            </CardBody>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={6}>
-          <Card>
-            <CardHeader color="danger">
-              <h4 className={classes.cardTitleWhite}>Sedes con menos ventas</h4>
+              <h4 className={classes.cardTitleWhite}>Ventas y ganancias por sede</h4>
               <p className={classes.cardCategoryWhite}>
               </p>
             </CardHeader>
@@ -403,20 +480,21 @@ export default function Dashboard() {
         <GridItem xs={12} sm={12} md={6}>
           <Card>
             <CardHeader color="info">
-              <h4 className={classes.cardTitleWhite}>Clientes</h4>
+              <h4 className={classes.cardTitleWhite}>Cumpleaños</h4>
               <p className={classes.cardCategoryWhite}>
-                Cumpleaños de los Clientes
+                Clientes que cumplen años este mes
               </p>
             </CardHeader>
             <CardBody>
             <DataTable
-              rows={usersToShow}
+              rows={auxClientesBirthday}
               columns={headersClientes}
               pageSize={10}
             />
             </CardBody>
           </Card>
         </GridItem>
+        <Card></Card>
       </GridContainer>
     </div>
   );

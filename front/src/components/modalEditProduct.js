@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     product.cantidad = props.cantidad
     product.precio = props.precio
     product.iva = props.iva
+    product.imagen = props.imagen
 
     const [state, setState] = useState(product)
     const [open, setOpen] = useState(false);
@@ -67,6 +68,9 @@ const useStyles = makeStyles((theme) => ({
         const result = await productService.update(toSend, product.id)
         if (result.status === 200) {
 			setMessage('¡Actualizado con éxito!')
+            setOpen(false)
+            const copyCat = JSON.parse(JSON.stringify(props.products))
+            props.setProducts(copyCat)
 		} else {
             setMessage('Ha ocurrido un error')
 			console.error(result)
@@ -74,7 +78,6 @@ const useStyles = makeStyles((theme) => ({
         setTimeout(() => {
 			setMessage(null)
 		}, 5000)
-
     }
     
     const classes = useStyles()
@@ -139,6 +142,17 @@ const useStyles = makeStyles((theme) => ({
                           onChange={handleFieldChange}
                           value={getState('descripcion')}/>
                       </Grid>
+                      <Grid item xs={12}>
+                          <TextField                             
+                          name="imagen"
+                          variant="outlined"
+                          fullWidth
+                          id="imagen"
+                          label="Imagen URL"
+                          autoFocus
+                          onChange={handleFieldChange}
+                          value={getState('imagen')}/>
+                      </Grid>
                       <Grid item xs={4}>
                           <TextField                            
                           name="cantidad"
@@ -188,7 +202,7 @@ const useStyles = makeStyles((theme) => ({
                           Cancelar
                       </Button>
                       <Button  type="submit" onClick={handleSubmit} color ="primary">
-                          Crear
+                          Guardar cambios
                       </Button>
                       </form>
                   </DialogContent>
