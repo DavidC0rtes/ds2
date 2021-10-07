@@ -19,7 +19,11 @@ module.exports = new EntitySchema({
         },
         longitud:{
             type: "decimal"
-        } 
+        },
+        telefono:{
+            type:"varchar",
+            nullable: true,
+        }
     },
     relations: {
         categoria: {
