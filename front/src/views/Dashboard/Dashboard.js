@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import ChartistGraph from "react-chartist";
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
-import Icon from "@material-ui/core/Icon";
 import classNames from 'classnames';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -13,12 +12,9 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 // @material-ui/icons
 import Store from "@material-ui/icons/Store";
-import Warning from "@material-ui/icons/Warning";
 import DateRange from "@material-ui/icons/DateRange";
-import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import AccessTime from "@material-ui/icons/AccessTime";
 import Accessibility from "@material-ui/icons/Accessibility";
 import Face from "@material-ui/icons/Face";
@@ -28,10 +24,6 @@ import SaveIcon from "@material-ui/icons/Save";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
-import Table from "components/Table/Table.js";
-import Tasks from "components/Tasks/Tasks.js";
-import CustomTabs from "components/CustomTabs/CustomTabs.js";
-import Danger from "components/Typography/Danger.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
@@ -88,6 +80,10 @@ export default function Dashboard() {
 
   const [seleccion, setSeleccion] = useState("")
   
+  const [mesIni, setMesIni] = useState("")
+
+  const [mesFin, setMesFin] = useState("")
+
   const headersClientes = [
     {
       field: 'email',
@@ -269,9 +265,9 @@ export default function Dashboard() {
       <GridContainer>
         <GridItem xs={12} sm={6} md={12}>
           <Card>
-            <Button variant="contained" className={classes.button}>
+            <Button variant="contained" className={classes.button} onClick={() => { alert('No esta implementado') }}>
                 <SaveIcon className={classNames(classes.leftIcon, classes.iconSmall)} />
-                Save
+                Descargar en PDF
             </Button>
           </Card>
         </GridItem>
@@ -367,17 +363,29 @@ export default function Dashboard() {
             <CardHeader color="info">
               <ChartistGraph
                 className="ct-chart"
-                data={datos.ventaFecha(facturas, fechanumero(seleccion), 12).data}
+                data={datos.ventaFecha(facturas, fechanumero(mesIni), fechanumero(mesFin) + 1).data}
                 type="Line"
-                options={datos.ventaFecha(facturas, fechanumero(seleccion), 12).options}
-                listener={datos.ventaFecha(facturas,fechanumero(seleccion), 12).animation}
+                options={datos.ventaFecha(facturas, fechanumero(mesIni), fechanumero(mesFin) + 1).options}
+                listener={datos.ventaFecha(facturas,fechanumero(mesIni), fechanumero(mesFin) + 1).animation}
               />
             </CardHeader>
             <CardBody>
               <h4 className={classes.cardTitle}>Ventas</h4>
                 <FormControl component="fieldset">
                   <RadioGroup row aria-label="producto" name="row-radio-buttons-group" 
-                  value={seleccion} onChange={(e) => setSeleccion(e.target.value)}>
+                  value={mesIni} onChange={(e) => setMesIni(e.target.value)}>
+                    {
+                      month.map((x) => {
+                        return (
+                        <FormControlLabel key={x} value={x} control={<Radio />} label={x}/>
+                        )
+                      })
+                    }
+                  </RadioGroup>
+                </FormControl>
+                <FormControl component="fieldset">
+                  <RadioGroup row aria-label="producto" name="row-radio-buttons-group" 
+                  value={mesFin} onChange={(e) => setMesFin(e.target.value)}>
                     {
                       month.map((x) => {
                         return (
@@ -391,7 +399,8 @@ export default function Dashboard() {
                 <span className={classes.successText}>
                   < ArrowUpward className={classes.upArrowCardCategory} />
                 </span>{" "}
-                Ventas en este año.
+                {datos.getPorcentaje()}
+                 % Ventas en este periodo.
               </p>
             </CardBody>
             <CardFooter chart>

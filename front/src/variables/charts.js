@@ -15,9 +15,14 @@ var delays2 = 80,
 // Meses
 var month = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", 
 "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+var porcentaje = 0;
 // ##############################
 // // // Ventas por fecha
 // #############################
+function getPorcentaje(){
+  return porcentaje
+}
 function ventaFecha(facturas, mesIni, mesFin){
   
   var ventasTotales = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -27,6 +32,14 @@ function ventaFecha(facturas, mesIni, mesFin){
     for(let j=0;j<(12-aux);j++){
       ventasTotales[aux+j] = ventasTotales[aux+j] + facturas[i]["costo"]
     }
+  }
+  
+ if(ventasTotales[mesIni] == 0){
+    porcentaje = Math.round(((ventasTotales[mesFin - 1] - 0) / 
+                1) * 100);
+  } else {
+    porcentaje = Math.round(((ventasTotales[mesFin - 1] - ventasTotales[mesIni]) / 
+                Math.abs(ventasTotales[mesIni])) * 100);
   }
 
   var maxHigh = Math.max(...ventasTotales) + ((Math.max(...ventasTotales) - Math.min(...ventasTotales))/2);
@@ -245,6 +258,7 @@ function ventaMeses(producto, facturas){
   return completedTasksChart;
 }
 module.exports = {
+  getPorcentaje,
   ventaFecha,
   productoMasVendidos,
   ventaMeses
