@@ -27,6 +27,8 @@ sedesRouter.get('/', async (request, response) => {
                 const newSede = {
                     id: sedes[x].id,
                     direccion: sedes[x].direccion,
+                    latitud: sedes[x].latitud,
+                    longitud: sedes[x].longitud,
                     id_horario: horario[y].id,
                     hora_apertura: horario[y].hora_apertura,
                     hora_cierre: horario[y].hora_cierre,

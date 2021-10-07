@@ -26,8 +26,8 @@ const mapContainerStyle ={
     height: "100vh"
 }
 const center = {
-    lat: 3.420556,
-    lng: -76.52222
+    lat: 3.4461792,
+    lng: -76.5140701
 }
 
 const options = {
@@ -38,6 +38,7 @@ export default function sedesMap () {
 
     const [sedes, setSedes] = useState([]) // Almacena los usuarios traídos de la db.
     const [update, setUpdate] = useState(0) // Para saber si se le ha dado clic a "Actualizar"
+    const [selectedSede, setSelectedSede] = useState(null)
     const previousUpdate = usePrevious(update)
 
     const convertAddress = (address) => { //convertir la direccion a
@@ -56,20 +57,14 @@ export default function sedesMap () {
     useEffect(() => {
         const fetchSedes = async () => {
           const result = await sedeService.getAll()
-          
-          result.forEach( async (item) => {
-              var results = await getGeocode({address: item.direccion})
-              item.coordinates= await getLatLng(results[0]);
-              console.log(item.coordinates)
-              console.log(item)
-          })
-          setSedes(result)
 
           result.forEach((item) => {
             item.id_direccion = item.direccion
             item.id_hora_apertura = item.hora_apertura
             item.id_hora_cierre = item.hora_cierre
             item.id_descripcion = item.descripcion
+            item.id_latitud = item.latitud
+            item.id_longitud = item.longitud
             
           })
           setSedes(result)
@@ -107,22 +102,36 @@ export default function sedesMap () {
           options={options}
 
         >
-         {(sedes).map(sede => {
-            const {id, nombre, direccion, id_horario, coordinates, coordenadas } = sede
-            console.log(sede)
-            console.log(direccion)
-            console.log(sede.coordinates)
-            console.log(coordenadas);
+         {sedes.map(sede => (  //Crear marcadores para el mapa
             <Marker 
-                key={id} 
-                position= {{
-                    lat: 40, 
-                    lng: -3
-                }}
-                />    
-            })}    
-
-
+            key={sede.id} 
+            position= {{
+                lat: parseFloat(sede.latitud), //Se me escapa por qué, pero las coordenadas se convierten en texto en 
+                lng: parseFloat(sede.longitud) //algun lado del traerlas de la BD
+            }}
+            onClick={() => {
+              setSelectedSede(sede);
+            }}
+            /> 
+           
+         ))}    
+         {selectedSede ? (
+           <InfoWindow
+           position = {{
+            lat: parseFloat(selectedSede.latitud), //Se me escapa por qué, pero las coordenadas se convierten en texto en 
+            lng: parseFloat(selectedSede.longitud) //algun lado del traerlas de la BD
+          }}
+          onCloseClick = {() => {
+            setSelectedSede(null);
+          }}
+          
+          >
+             <div>{selectedSede.direccion}
+             <p>{selectedSede.hora_apertura} horas - {selectedSede.hora_cierre} horas</p> 
+             </div>
+              
+           </InfoWindow>
+         ) : null}
         </GoogleMap>
     )
 }

@@ -79,7 +79,9 @@ export default function SedesTable(value, onValueChange) {
         id_horario={params.row.id_horario}
         hora_apertura={params.row.hora_apertura}
         hora_cierre={params.row.hora_cierre}
-        descripcion={params.row.descripcion}/>
+        descripcion={params.row.descripcion}
+        latitud={params.row.latitud}
+        longitud={params.row.longitud}/>
         
       )
     },
@@ -95,12 +97,15 @@ export default function SedesTable(value, onValueChange) {
   useEffect(() => {
     const fetchSedes = async () => {
       const result = await sedeService.getAll()
+      console.log(result)
       
       result.forEach((item) => {
         item.id_direccion = item.direccion
         item.id_hora_apertura = item.hora_apertura
         item.id_hora_cierre = item.hora_cierre
         item.id_descripcion = item.descripcion
+        item.id_lat = item.latitud
+        item.id_lng = item.longitud
       })
       setSedes(result)
       
@@ -123,6 +128,7 @@ export default function SedesTable(value, onValueChange) {
     )
     : sedes
 
+    console.log(sedes)
 
   return (
     <React.Fragment>
