@@ -2,15 +2,12 @@ import React, { useState } from 'react'
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
-import {AppBar, Toolbar, Button} from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
+import {Button} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Accordion from '@material-ui/core/Accordion';
 import Container from '@material-ui/core/Container';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionActions from '@material-ui/core/AccordionActions';
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Toast from '../../components/Toast'
@@ -21,7 +18,6 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 import ModalNewCategory from '../../components/modalNewCategory'
 import ModalNewProduct from '../../components/modalNewProduct'
-import FormHandler from '../../variables/formHandler'
 import CategoryModalHandler from '../../variables/categoryModalHandler'
 import ProductModalHandler from '../../variables/productModalHandler'
 import ModalEditProduct from '../../components/modalEditProduct'
@@ -91,8 +87,14 @@ var categorias = categoryService.getAll().then(function(cats) {categorias = cats
 
 
 
+function currency(numero) {
+  return "$" + numero.toFixed(0).replace(/./g, function(c, i, a) {
+    return i > 0 && c !== "." && (a.length - i) % 3 === 0 ? "." + c : c;
+  });
+}
 
 export default function Categories() {
+
   const [state, setState] = useState({})
   const [products, setProducts] = useState({})
   const [message, setNewMessage] = useState(null)
@@ -203,13 +205,13 @@ export default function Categories() {
 		}, 5000)
   }
 
-
-
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [productExpanded, setProductExpanded] = useState(false);
   
   const handleChange = panel => (event, isExpanded) => {
+    //event.stopPropagation()
+    //event.preventDefault()
     if(isExpanded){
       getProducts(panel)
       setExpanded(panel)
@@ -218,6 +220,15 @@ export default function Categories() {
     }
        
   };
+
+  function handleCart(nombre, descripcion, precio, imagen){
+    if(auth.user){
+      addToCart(nombre, descripcion, precio, imagen);
+    } else {
+      location = '/login'
+    }
+    console.log("handle");
+  }
 
 
   const productHandleChange = panel => (event, isExpanded) => {
@@ -230,7 +241,7 @@ export default function Categories() {
     setProductExpanded(isExpanded ? panel : false);
   };
     return (
-    <div className={classes.root}>
+    <div className={classes.root} id="productAccordion">
       <Container maxWidth="md" >
         <Typography  className={classes.title} component="h1" variant="h2" align="left" color="textPrimary" gutterBottom >
           Conoce nuestro menú 🍲
@@ -305,13 +316,19 @@ export default function Categories() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <Button variant="body2" onClick={() => {addToCart(nombre, descripcion, precio, imagen)}} style={{ cursor: 'pointer' }}>
+                       
+                        <Button variant="text" onClick={(event) => {
+                            event.stopPropagation()
+                            event.preventDefault()             
+                            handleCart(nombre, descripcion, precio, imagen)
+                          }} 
+                          >
                           Añadir al carrito
                         </Button>         
                       </Grid>
                     </Grid>
                     <Grid item>
-                      <Typography variant="subtitle1">${precio}</Typography>
+                      <Typography variant="subtitle1">{currency(precio)}</Typography>
                     </Grid>
                     <Grid item>
                     {auth.user && auth.user.rol == 'Administrador' &&
@@ -323,7 +340,11 @@ export default function Categories() {
                     descripcion={descripcion}
                     cantidad={cantidad}
                     precio={precio}
-                    iva={iva}/>}
+                    iva={iva}
+                    imagen={imagen}
+                    products={products}
+                    setProducts={setProducts}
+                    />}
                     </Grid>
                     <Grid item>
                     {auth.user && auth.user.rol == 'Administrador' &&

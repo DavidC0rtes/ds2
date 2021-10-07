@@ -57,7 +57,7 @@ const Perfil = () => {
 	 */
 	useEffect(() => {
 		const fetchUser = async () => {
-			const result = await users.getByEmail(query.get('mail'), 'get')
+			let result = await users.getByEmail(query.get('mail'), 'get')
 
 			let user = result[0].id_info
 				? Object.assign(result[0].id_info)

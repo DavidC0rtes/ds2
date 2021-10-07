@@ -26,13 +26,17 @@ export default function CreateSede() {
   const addSede = async (event) =>{
     event.preventDefault()
     // Verificación todo está lleno
-    if (Object.keys(state).length === 4) {
+    if (Object.keys(state).length === 5) {
       const direccionInUse = await SedeService.getByDireccion(state.direccion)
-      
       if (direccionInUse) {
         const _copyState = JSON.parse(JSON.stringify(state))
         _copyState.errorDireccion = 'Direccion ya existente'
         setState(_copyState)
+      } else if (isNaN(state.telefono) || isNaN(state.hora_apertura) || isNaN(state.hora_cierre)) {
+        setMessage('Telefono, hora de apertura y hora de cierre deben ser numeros')
+        setTimeout(() => {
+          setMessage(null)
+        }, 4000)
       } else {
         // Objeto de la nueva sede
         var results = await getGeocode({address: state.direccion})
@@ -43,13 +47,13 @@ export default function CreateSede() {
         }
         const newSede = {
             direccion: state.direccion,
+            telefono: state.telefono,
             hora_apertura: state.hora_apertura,
             hora_cierre: state.hora_cierre,
             descripcion:  state.descripcion,
             latitud: newCoordinates.lat,
             longitud: newCoordinates.lng
         }
-
         try {
           const result = await SedeService.create(newSede)
           setMessage('Sede creada correctamente')

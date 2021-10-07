@@ -158,6 +158,21 @@ const useStyles = makeStyles((theme) => ({
                       </Grid>
                       <Grid item xs={12}>
                           <TextField
+                          error ={state.errorTelefono && true}
+                          helperText={ state.errorTelefono}                          
+                          name="telefono"
+                          variant="outlined"
+                          required
+                          fullWidth
+                          id="telefono"
+                          label="Telefono"
+                          autoFocus
+                          onChange={handleFieldChange}
+                          value={getState('telefono')}
+                          />
+                      </Grid>
+                      <Grid item xs={12}>
+                          <TextField
                           error ={state.errorHoraApertura && true}
                           helperText={ state.errorHoraApertura}                              
                           name="hora_apertura"

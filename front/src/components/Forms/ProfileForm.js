@@ -13,6 +13,9 @@ import { useAuth } from '../../misc/useAuth'
 
 import { makeStyles } from '@material-ui/core/styles';
 import WarningIcon from '@material-ui/icons/Warning';
+import { getLocalTime } from 'misc/misc'
+import { useLocation } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 /**
  * Estilos del formulario
@@ -41,6 +44,11 @@ const useStyles = makeStyles({
 		minWidth: '11em'
 	},
 })
+
+// A custom hook that builds on useLocation to parse
+// the query string for you. https://reactrouter.com/web/example/query-parameters
+const useQuery = () => new URLSearchParams(useLocation().search)
+
 /**
  * Se encarga de construir y manejar el formulario que se le presenta al usuario
  * en /perfil
@@ -58,6 +66,11 @@ const ProfileForm = ({ user }) => {
 	const [message, setMessage] = useState(null)
 	const [disable, setDisable] = useState(true)
     const auth = useAuth()
+
+	// Hook de URLSearchParams
+	const hookUrl = useQuery()
+
+	const history = useHistory()
 
 	// Actualizar state cada que el prop user cambie.
 	useEffect(() => setState(user), [user])
@@ -82,6 +95,11 @@ const ProfileForm = ({ user }) => {
 			const result = await userService.update(toSend, user.id)
 			if (result.status === 200) {
 				setMessage('¡Actualizado con éxito!')
+				if (toSend.email) {
+					user.email = toSend.email
+					hookUrl.set('mail', toSend.email)
+					history.replace(`/perfil?mail=${hookUrl.get('mail')}`)
+				}
 			} else {
 				setMessage('Ha ocurrido un error')
 				console.error(result)
@@ -148,7 +166,7 @@ const ProfileForm = ({ user }) => {
 	const classes = useStyles()
 	return (
 		<>
-		<form validate="true" onSubmit={handleSubmit} className={classes.root} autoComplete="off">
+		<form validate onSubmit={handleSubmit} className={classes.root} autoComplete="off">
 			<Grid container spacing={2}>
 				<Grid item xs={12} md={6} >
 					<TextField
@@ -206,6 +224,7 @@ const ProfileForm = ({ user }) => {
 					<TextField
 						name="email"
 						label="Correo electrónico"
+						type="email"
 						InputLabelProps={{ shrink: true }}
 						error={ getState('errorEmail') }
 						value={ getState('email') }
@@ -240,6 +259,8 @@ const ProfileForm = ({ user }) => {
 						fullWidth
 						onChange={handleFieldChange}
 						InputLabelProps={{ shrink: true }}
+						inputProps={{max: getLocalTime('18 años'),
+									min: getLocalTime('120 años')}}
 					/>
 				</Grid>
 				<Grid item xs={12} md={7}>

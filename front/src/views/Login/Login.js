@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Login = (props) => {
   const auth = useAuth()
+  console.log(auth)
   const classes = useStyles();
 
   const [email, setEmail] = useState('')

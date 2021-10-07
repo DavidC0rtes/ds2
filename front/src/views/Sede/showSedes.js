@@ -31,10 +31,6 @@ function removeSede(event, params){
   sedeService.removeById(params.row.id_horario)
 }
 
-
-  
-
-
 export default function SedesTable(value, onValueChange) {
 
   const [sedes, setSedes] = useState([]) // Almacena los usuarios traídos de la db.
@@ -51,13 +47,14 @@ export default function SedesTable(value, onValueChange) {
 
   const headers = [
     { field: 'direccion', headerName: 'Direccion', width: 150, id: 'direccion' },
+    { field: 'telefono', headerName: 'telefono', width: 150, id: 'telefono'},
     { field: 'hora_apertura', headerName: 'Hora de apertura', width: 150, id: 'hora_apertura' },
     { field: 'hora_cierre', headerName: 'Hora de cierre', width: 150, id: 'hora_cierre' },
-    { field: 'descripcion', headerName: 'Descripcion', width: 300, id: 'descripcion' },
+    { field: 'descripcion', headerName: 'Descripcion', width: 230, id: 'descripcion' },
     {
       field: 'edicion',
       headerName: ' ',
-      width: '100',
+      width: '50',
       renderCell: (params) => (
         <AlertDialog
 						    message="¿Estas seguro? Esta acción no se puede deshacer."
@@ -71,11 +68,12 @@ export default function SedesTable(value, onValueChange) {
     {
       field: '',
       headerName: '',
-      width: '100',
+      width: '50',
       renderCell: (params) => (
         <ModalNewSede
         id={params.row.id}
         direccion={params.row.direccion}
+        telefono={params.row.telefono}
         id_horario={params.row.id_horario}
         hora_apertura={params.row.hora_apertura}
         hora_cierre={params.row.hora_cierre}
@@ -101,6 +99,7 @@ export default function SedesTable(value, onValueChange) {
       
       result.forEach((item) => {
         item.id_direccion = item.direccion
+        item.id_telefono = item.telefono
         item.id_hora_apertura = item.hora_apertura
         item.id_hora_cierre = item.hora_cierre
         item.id_descripcion = item.descripcion

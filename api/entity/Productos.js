@@ -15,10 +15,6 @@ module.exports = new EntitySchema({
         descripcion: {
             type: "varchar"
         },
-        cantidad: {
-            type: "int",
-            default: 1
-        },
         iva: {
             type: "float",
             default: 0.19
@@ -46,7 +42,11 @@ module.exports = new EntitySchema({
                 name: "id_categoria"
             },
             eager:true
-           
+        },
+        cantidad: {
+            target: "producto_cant_sede",
+            type: "one-to-many",
+            inverseSide: "producto"
         }
     }
 })

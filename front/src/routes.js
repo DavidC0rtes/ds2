@@ -109,20 +109,13 @@ const subRoutes = [
 const clientRoutes = [
   {
     path: "/dashboard",
-    name: "Dashboard",
+    name: "Productos",
     icon: Dashboard,
     component: Categories,
     layout: "/client"
   },
   {
     path: "/cart",
-    name: "Cart",
-    icon: Dashboard,
-    component: CartClient,
-    layout: "/client"
-  },
-  {
-    path: "/checkout",
     name: "Cart",
     icon: Dashboard,
     component: CartClient,
