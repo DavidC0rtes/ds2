@@ -28,9 +28,13 @@ typeorm.createConnection(config.DBNAME).then(() => {
     const facturasRouter = require('./routes/facturas')
 
     if (config.ENV === 'production') {
-        app.use(express.static('build'))
-        app.get('*', function (req, res) {
-            res.sendFile(path.join(__dirname, 'build/index.html'))
+        app.use(express.static(path.join(__dirname, 'build')))
+        app.get('/*', function (req, res) {
+            try {
+                res.sendFile(path.join(__dirname, 'build', 'index.html'))
+            } catch (err) {
+                res.status(500).send(err)
+            }
         })
     }
 
