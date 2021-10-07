@@ -2,10 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from 'react-router-dom';
 
 import {GoogleMap, useLoadScript, Marker, InfoWindow} from "@react-google-maps/api"
-import usePlacesAutocomplete, {
-    getGeocode,
-    getLatLng,
-  } from "use-places-autocomplete";
 import sedeService from '../../services/sedes'
 
 function usePrevious(value) {
@@ -41,16 +37,6 @@ export default function sedesMap () {
     const [selectedSede, setSelectedSede] = useState(null)
     const previousUpdate = usePrevious(update)
 
-    const convertAddress = (address) => { //convertir la direccion a
-        try {
-            getGeocode({address}).then((results) => getLatLng(results[0]))
-            .then(({ lat, lng }) => {
-               return { lat, lng }      
-            })
-        } catch (error) {
-            console.log (error)
-        }      
-    }
 
 
 
@@ -86,31 +72,36 @@ export default function sedesMap () {
         googleMapsApiKey: 'AIzaSyCpAjZ9gvtVirroeofdUv3ei7lkBTkpEQY',
         libraries,  //Cambiar clave al probar que todo funcione
     });
+    
 
     if (loadError) return "Error cargando el mapa";
     if (!isLoaded) return "Cargando"
 
 
 
-
-
     return (
+      <div>
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
-          zoom={16}
+          zoom={14}
           center={center}
           options={options}
+   
 
         >
          {sedes.map(sede => (  //Crear marcadores para el mapa
             <Marker 
             key={sede.id} 
-            position= {{
+            position = {{
                 lat: parseFloat(sede.latitud), //Se me escapa por qué, pero las coordenadas se convierten en texto en 
                 lng: parseFloat(sede.longitud) //algun lado del traerlas de la BD
             }}
-            onClick={() => {
+            onClick = {() => {
               setSelectedSede(sede);
+            }}
+            icon = {{
+              url: "https://i.postimg.cc/yNpPwzwg/pollo-logo-1.png",
+              scaledSize: new window.google.maps.Size(30,30)
             }}
             /> 
            
@@ -133,5 +124,7 @@ export default function sedesMap () {
            </InfoWindow>
          ) : null}
         </GoogleMap>
-    )
+        </div>
+    );
 }
+

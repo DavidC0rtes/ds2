@@ -46,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
     sede.descripcion = props.descripcion
     sede.latitud = props.latitud
     sede.longitud = props.longitud
-    console.log(props.latitud)
 
     const [state, setState] = useState(sede)
     const [open, setOpen] = useState(false);
@@ -80,10 +79,7 @@ const useStyles = makeStyles((theme) => ({
 		const toSend = {}
         Object.keys(state).forEach( async (key) => {
             console.log(state[key])
-            console.log(state.direccion)
-            console.log(state)
             if (key === 'direccion' && state[key] !== sede[key]){ //Llamamos a geocode solo si la direccion es diferente
-                console.log("direcciones")
                 toSend[key] = state[key]
                 var results = await getGeocode({address: state[key]})
                 var coordinates = (await getLatLng(results[0]))

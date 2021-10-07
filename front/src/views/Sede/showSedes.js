@@ -128,7 +128,6 @@ export default function SedesTable(value, onValueChange) {
     )
     : sedes
 
-    console.log(sedes)
 
   return (
     <React.Fragment>
