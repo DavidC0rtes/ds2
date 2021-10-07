@@ -47,6 +47,11 @@ module.exports = new EntitySchema({
             target: "producto_cant_sede",
             type: "one-to-many",
             inverseSide: "producto"
-        }
+        },
+        descuento: {
+            target: "descuento",
+            type: "one-to-many",
+            inverseSide: "producto",
+        },
     }
 })
