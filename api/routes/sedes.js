@@ -26,6 +26,8 @@ sedesRouter.get('/', async (request, response) => {
                 const newSede = {
                     id: sedes[x].id,
                     direccion: sedes[x].direccion,
+                    latitud: sedes[x].latitud,
+                    longitud: sedes[x].longitud,
                     id_horario: horario[y].id,
                     telefono: sedes[x].telefono,
                     hora_apertura: horario[y].hora_apertura,
@@ -90,6 +92,8 @@ sedesRouter.post('/', async (request, response) => {
 
     const newSede =  {
         direccion: body.direccion,
+        latitud: body.latitud,
+        longitud: body.longitud,
         id_horario: savedHorario.identifiers[0].id,
         telefono: body.telefono
     }
@@ -116,6 +120,8 @@ sedesRouter.put('/update/:id_horario', async (request, response) => {
     const SedeUpdate = {
         id: body.id,
         direccion: body.direccion,
+        latitud: body.latitud,
+        longitud: body.longitud,
         id_horario: body.id_horario,
         telefono: body.telefono
     }

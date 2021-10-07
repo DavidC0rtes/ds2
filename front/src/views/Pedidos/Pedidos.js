@@ -1,5 +1,6 @@
 import React from "react";
 import { GoogleMap, LoadScript } from '@react-google-maps/api'
+import sedesMap from "../Sede/sedesMap"
 
 // Cali
 const center = {
@@ -22,9 +23,6 @@ const CustomSkinMap = ({googleMapURL, containerStyle}) => {
 
 export default function Maps() {
   return (
-    <CustomSkinMap
-      googleMapURL="YOUR_KEY_HERE"
-      containerStyle={ {height: `100vh` }} 
-    />
+    sedesMap
   );
 }
