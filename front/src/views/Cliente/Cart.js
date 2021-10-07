@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 // Hook del carrito
 import { addToCart, removeFromCart, printedLocal, totallPrice, getPrice } from '../../hooks/cart.js';
+import FacturaService from '../../services/facturas'
+import UserService from '../../services/users'
 // @material-ui/core components
 import { makeStyles, useTheme } from "@material-ui/core/styles";
+
 // Core components
 import {
     AppBar, 
@@ -114,11 +117,28 @@ const useStyles = makeStyles((theme) => ({
         removeFromCart(product, description, price, image);
         setPrice(priceState - price);
       } else {
-        addToCart(product, description, price, image)
+        addToCart(product, description, price, image);
         setPrice(priceState + price)
       }
       var cartArray = JSON.parse(localStorage.getItem("cart"));
       setCart(cartArray);
+    }
+
+    const  handlerCheckout = async () => {
+      var email = JSON.parse(localStorage.getItem("user")).email;
+      const usuario = await UserService.getByEmail(email, 'get');
+      const newFactura = {
+        id_usuario: usuario[0].id,
+        costo: priceState,        
+      }
+      try {
+        const result = await FacturaService.create(newFactura)
+        var new_array = [];
+        localStorage.setItem("cart", JSON.stringify(new_array));
+        alert("Factura creada correctamente, el carrito sera eliminado");
+      } catch (err) {
+        console.log(err)
+      }
     }
 
     /* 
@@ -161,7 +181,7 @@ const useStyles = makeStyles((theme) => ({
 
         </Grid>    
         <p>Precio total: { priceState }</p>
-        <Button className = {classes.btn}><Link href = "cart" style={{ color: 'white', textDecoration: 'none' }} > Checkout </Link></Button>
+        <Button className = {classes.btn} onClick={() => {handlerCheckout()}}> Checkout </Button>
       </Container>
     );
     }
