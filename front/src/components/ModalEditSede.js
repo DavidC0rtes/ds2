@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 	const [message, setMessage] = useState(null)
     const [checked, setChecked] = useState(true);
     const { isLoaded, loadError} = useLoadScript({
-        googleMapsApiKey: 'AIzaSyCpAjZ9gvtVirroeofdUv3ei7lkBTkpEQY'  //Cambiar clave al probar que todo funcione
+        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY  //Cambiar clave al probar que todo funcione
     });
 
  	// Actualizar state cada que el prop cambie.

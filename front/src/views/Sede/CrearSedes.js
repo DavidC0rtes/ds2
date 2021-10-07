@@ -21,7 +21,7 @@ export default function CreateSede() {
   const [message, setMessage] = React.useState(null)
   
   const { isLoaded, loadError} = useLoadScript({
-    googleMapsApiKey: 'AIzaSyCpAjZ9gvtVirroeofdUv3ei7lkBTkpEQY'  //Cambiar clave al probar que todo funcione
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY  //Cambiar clave al probar que todo funcione
 });
   const addSede = async (event) =>{
     event.preventDefault()

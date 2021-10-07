@@ -69,7 +69,7 @@ export default function sedesMap () {
   
 
     const { isLoaded, loadError} = useLoadScript({
-        googleMapsApiKey: 'AIzaSyCpAjZ9gvtVirroeofdUv3ei7lkBTkpEQY',
+        googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
         libraries,  //Cambiar clave al probar que todo funcione
     });
     
