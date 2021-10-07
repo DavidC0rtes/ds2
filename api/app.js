@@ -31,9 +31,6 @@ typeorm.createConnection(config.DBNAME).then(() => {
         app.use(express.static('build'))
         app.get('*', function (req, res) {
             res.sendFile(path.join(__dirname, 'build/index.html'))
-            if (err) {
-                res.status(500).send(err)
-            }
         })
     }
 
