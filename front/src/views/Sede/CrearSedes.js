@@ -6,7 +6,12 @@
 import React from "react";
 // @material-ui/core components
 import SedeService from '../../services/sedes'
+import {useLoadScript} from "@react-google-maps/api"
 
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
 import FormNewSede from '../../components/FormNewSede'
 import Toast from '../../components/Toast'
 import FormHandler from '../../variables/formHandler'
@@ -15,6 +20,9 @@ export default function CreateSede() {
   const [state, setState] = React.useState({})
   const [message, setMessage] = React.useState(null)
   
+  const { isLoaded, loadError} = useLoadScript({
+    googleMapsApiKey: 'AIzaSyCpAjZ9gvtVirroeofdUv3ei7lkBTkpEQY'  //Cambiar clave al probar que todo funcione
+});
   const addSede = async (event) =>{
     event.preventDefault()
     // Verificación todo está lleno
@@ -26,14 +34,20 @@ export default function CreateSede() {
         _copyState.errorDireccion = 'Direccion ya existente'
         setState(_copyState)
       } else {
-        // Objeto del nuevo usuario
+        // Objeto de la nueva sede
+        var results = await getGeocode({address: state.direccion})
+        var coordinates = (await getLatLng(results[0]))
+        const newCoordinates = {
+         lat: coordinates.lat,
+         lng: coordinates.lng
+        }
         const newSede = {
             direccion: state.direccion,
             hora_apertura: state.hora_apertura,
             hora_cierre: state.hora_cierre,
             descripcion:  state.descripcion,
-            latitud: state.latitud,
-            longitud: state.longitud
+            latitud: newCoordinates.lat,
+            longitud: newCoordinates.lng
         }
 
         try {

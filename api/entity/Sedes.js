@@ -15,10 +15,10 @@ module.exports = new EntitySchema({
             type: "int",
         },
         latitud:{
-            type: "int"
+            type: "decimal"
         },
         longitud:{
-            type: "int"
+            type: "decimal"
         } 
     },
     relations: {

@@ -103,7 +103,7 @@ sedesRouter.post('/', async (request, response) => {
 
     const newSede =  {
         direccion: body.direccion,
-        latitud: body.latidud,
+        latitud: body.latitud,
         longitud: body.longitud,
         id_horario: savedHorario.identifiers[0].id
     }

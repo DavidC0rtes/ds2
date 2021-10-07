@@ -14,7 +14,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import sedeService from '../services/sedes'
+import {useLoadScript} from "@react-google-maps/api"
 
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
 
 import Toast from './Toast'
 
@@ -44,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
     const [open, setOpen] = useState(false);
 	const [message, setMessage] = useState(null)
     const [checked, setChecked] = useState(true);
+    const { isLoaded, loadError} = useLoadScript({
+        googleMapsApiKey: 'AIzaSyCpAjZ9gvtVirroeofdUv3ei7lkBTkpEQY'  //Cambiar clave al probar que todo funcione
+    });
 
  	// Actualizar state cada que el prop cambie.
      useEffect(() => setState(sede), [])   
@@ -67,8 +75,23 @@ const useStyles = makeStyles((theme) => ({
         event.stopPropagation();
         event.preventDefault()
 		const toSend = {}
-        Object.keys(state).forEach((key) => {
+        Object.keys(state).forEach( async (key) => {
             console.log(state[key])
+            console.log(state.direccion)
+            if (key === 'direccion'){
+                console.log("direcciones")
+                toSend[key] = key
+                var results = await getGeocode({address: state[key]})
+                var coordinates = (await getLatLng(results[0]))
+                const newCoordinates = {
+                    lat: coordinates.lat,
+                    lng: coordinates.lng
+                }
+                state.latitud = newCoordinates.lat
+                state.longitud = newCoordinates.lng
+                   
+            }
+            
             toSend[key] = state[key]
         })
         
