@@ -31,7 +31,9 @@ export default function CreateSede() {
             direccion: state.direccion,
             hora_apertura: state.hora_apertura,
             hora_cierre: state.hora_cierre,
-            descripcion:  state.descripcion
+            descripcion:  state.descripcion,
+            latitud: state.latitud,
+            longitud: state.longitud
         }
 
         try {

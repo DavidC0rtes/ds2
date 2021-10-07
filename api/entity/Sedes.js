@@ -13,7 +13,13 @@ module.exports = new EntitySchema({
         },
         id_horario:{
             type: "int",
-        }
+        },
+        latitud:{
+            type: "int"
+        },
+        longitud:{
+            type: "int"
+        } 
     },
     relations: {
         categoria: {
