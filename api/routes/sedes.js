@@ -122,7 +122,7 @@ sedesRouter.put('/update/:id_horario', async (request, response) => {
         direccion: body.direccion,
         latitud: body.latitud,
         longitud: body.longitud,
-        id_horario: body.id_horario
+        id_horario: body.id_horario,
         telefono: body.telefono
     }
 
