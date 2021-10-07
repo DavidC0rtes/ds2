@@ -127,9 +127,11 @@ const useStyles = makeStyles((theme) => ({
     const  handlerCheckout = async () => {
       var email = JSON.parse(localStorage.getItem("user")).email;
       const usuario = await UserService.getByEmail(email, 'get');
+      var sede = JSON.parse(localStorage.getItem("sede")).id;
       const newFactura = {
         id_usuario: usuario[0].id,
         costo: priceState,        
+        id_sede: sede
       }
       try {
         const result = await FacturaService.create(newFactura)
