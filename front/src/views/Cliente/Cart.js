@@ -133,7 +133,9 @@ const useStyles = makeStyles((theme) => ({
       }
       try {
         const result = await FacturaService.create(newFactura)
-        console.log(result)
+        var new_array = [];
+        localStorage.setItem("cart", JSON.stringify(new_array));
+        alert("Factura creada correctamente, el carrito sera eliminado");
       } catch (err) {
         console.log(err)
       }
