@@ -18,7 +18,7 @@
   "bugs": {
     "url": "https://github.com/DavidC0rtes/ds2/issues"
   },
-  "homepage": "https://github.com/DavidC0rtes/ds2#readme",
+  "homepage": "https://proyecto-ds2.herokuapp.com",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",

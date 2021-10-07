@@ -4,6 +4,7 @@
  * no podría funcionar
  */
 require('express-async-errors')
+const path = require('path')
 const typeorm = require('typeorm')
 const express = require('express')
 
@@ -26,7 +27,16 @@ typeorm.createConnection(config.DBNAME).then(() => {
     const sedesRouter = require('./routes/sedes')
     const facturasRouter = require('./routes/facturas')
 
-    if (config.ENV === 'production') app.use(express.static('build'))
+    if (config.ENV === 'production') {
+        app.use(express.static(path.join(__dirname, 'build')))
+        app.get('/', function (req, res) {
+            try {
+                res.sendFile(path.join(__dirname, 'build', 'index.html'))
+            } catch (err) {
+                return res.status(500).send(err)
+            }
+        })
+    }
 
     app.use(cors())
     app.use(express.json())
