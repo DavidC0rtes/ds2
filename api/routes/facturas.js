@@ -43,7 +43,7 @@ facturasRouter.post('/', async (request, response) => {
     const newFactura = { 
         id_usuario: body.id_usuario,
         costo: body.costo,
-        id_sede: 20,
+        id_sede: body.id_sede,
         fecha: todayDate
     }
 
