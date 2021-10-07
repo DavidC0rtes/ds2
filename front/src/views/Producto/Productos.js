@@ -32,6 +32,8 @@ import { addToCart } from '../../hooks/cart.js';
 // Sesión del usuario
 import { useAuth } from '../../misc/useAuth'
 
+import { useHistory } from 'react-router-dom'
+
 
 const styles = {
   AppBarClass: {
@@ -100,6 +102,7 @@ export default function Categories() {
   const [message, setNewMessage] = useState(null)
 
   const auth = useAuth()
+  const history = useHistory()
 
   //Obtener los productos de una categoria dada
   //Se haca la petición y se cambia el estado.
@@ -225,7 +228,7 @@ export default function Categories() {
     if(auth.user){
       addToCart(nombre, descripcion, precio, imagen);
     } else {
-      location = '/login'
+      history.replace('/login')
     }
     console.log("handle");
   }
