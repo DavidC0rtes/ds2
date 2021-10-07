@@ -27,7 +27,6 @@ function addToCart(product, description, price, image){
             'precio': price,
             'cantidad': 1,
             'imagen': image
-
         }   
         var arrayUsed = [];
         arrayUsed.push(productSaved2);

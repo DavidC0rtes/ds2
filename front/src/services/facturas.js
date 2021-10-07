@@ -16,10 +16,16 @@
      const request = axios.get(baseUrl)
      return request.then(response => response.data)
  }
+
+ const create = (newObject) => {
+    const request = axios.post(baseUrl, newObject)
+    return request.then(response => response.data)
+}
  
  
  // eslint-disable-next-line
  export default {
-     getAll
+     getAll,
+     create
  }
  

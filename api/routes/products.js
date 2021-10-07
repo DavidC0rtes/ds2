@@ -72,7 +72,6 @@ productsRouter.put('/:id', async (request, response) => {
 
 productsRouter.delete('/:id', async (request, response) =>  {
     const body = request.body
-
     await control.borrar(product,{id: request.params.id})
 })
 
