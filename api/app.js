@@ -29,7 +29,7 @@ typeorm.createConnection(config.DBNAME).then(() => {
 
     if (config.ENV === 'production') {
         app.use(express.static('build'))
-        app.get('*', function (res, req) {
+        app.get('*', function (req, res) {
             res.sendFile(path.join(__dirname, 'build/index.html'))
             if (err) {
                 res.status(500).send(err)
